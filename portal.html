@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/logo.png">
+<title>PTE Decode Academy · PTE Core Practice</title>
+<style>
+:root{
+  --bg:#F5F7FB; --card:#ffffff; --fg:#1f2430; --muted:#6b7280; --border:#e3e6ee;
+  --navy:#0A1F44; --orange:#FF7A00;
+  --brand:#0A1F44; --brand-2:#17377a; --brand-soft:#e9eef8;
+  --ai:#e86a00; --ai-soft:#fff1e3; --ok:#15803d; --ok-soft:#dcfce7; --warn:#b45309; --warn-soft:#fef3c7;
+  --bad:#b91c1c; --bad-soft:#fee2e2; --shadow:0 1px 3px rgba(16,24,40,.08),0 1px 2px rgba(16,24,40,.04);
+  --radius:12px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+a{color:var(--brand)}
+button,input,select,textarea{font:inherit;color:inherit}
+.hidden{display:none !important}
+header.top{position:sticky;inset-block-start:0;z-index:20;background:var(--navy);border-block-end:3px solid var(--orange);box-shadow:var(--shadow)}
+.top-in{max-inline-size:1180px;margin-inline:auto;padding:10px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.wm{display:inline-flex;flex-direction:column;line-height:1;font-family:Montserrat,"Segoe UI",system-ui,sans-serif}
+.wm b{font-size:21px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.wm b span{color:var(--orange)}
+.wm small{font-size:9.5px;letter-spacing:.42em;color:#dfe6f3;margin-block-start:3px;font-weight:500}
+.logo-badge{inline-size:34px;block-size:34px;border-radius:9px;background:linear-gradient(135deg,var(--brand),#5a67d8);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:800}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap}
+nav.tabs button{background:none;border:0;padding:8px 12px;border-radius:8px;cursor:pointer;color:#c9d3e6;font-weight:600}
+nav.tabs button.on,nav.tabs button:hover{background:rgba(255,255,255,.1);color:#fff;box-shadow:inset 0 -2px 0 var(--orange)}
+.spacer{flex:1}
+.who{font-size:13px;color:#c9d3e6}
+header.top .btn.ghost{color:#fff;border-color:rgba(255,255,255,.5)}
+header.top .btn.ghost:hover{background:rgba(255,255,255,.12)}
+main{max-inline-size:1180px;margin-inline:auto;padding:22px 18px 60px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.grid{display:grid;gap:18px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+h1{font-size:24px;margin:0 0 6px}
+h2{font-size:19px;margin:0 0 10px}
+h3{font-size:16px;margin:0 0 8px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--brand);background:var(--brand);color:#fff;padding:9px 16px;border-radius:9px;font-weight:600;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--brand-2)}
+.btn.ghost{background:transparent;color:var(--brand)}
+.btn.accent{background:var(--orange);border-color:var(--orange);color:#fff}
+.btn.accent:hover{background:#e56d00}
+.btn.fb{background:#1877F2;border-color:#1877F2;color:#fff}
+.btn.fb:hover{background:#0f63d0}
+/* landing */
+.landing{max-inline-size:1100px;margin-inline:auto}
+.lhero{background:var(--navy);border-radius:16px;overflow:hidden;display:grid;grid-template-columns:1.25fr 1fr;align-items:center;box-shadow:0 10px 30px rgba(10,31,68,.25)}
+@media (max-width:860px){.lhero{grid-template-columns:1fr}}
+.lhero img{inline-size:100%;display:block}
+.lhero .lform{background:var(--card);margin:22px;border-radius:14px;padding:22px}
+.lhero .lform h2{margin:0 0 4px}
+.lfeat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-block:18px}
+.lfeat div{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;border-block-start:3px solid var(--orange)}
+.lfeat b{display:block;margin-block-end:4px}
+.social{display:grid;grid-template-columns:1fr 1.2fr;gap:18px}
+@media (max-width:860px){.social{grid-template-columns:1fr}}
+.vid{position:relative;display:block;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,var(--navy) 0%,#17377a 60%,#24489a 100%);min-block-size:210px;text-decoration:none;color:#fff}
+.vid .play{position:absolute;inset:0;display:grid;place-items:center}
+.vid .play span{inline-size:74px;block-size:74px;border-radius:50%;background:var(--orange);display:grid;place-items:center;font-size:30px;box-shadow:0 6px 20px rgba(0,0,0,.35);transition:transform .15s}
+.vid:hover .play span{transform:scale(1.08)}
+.vid .cap{position:absolute;inset-inline:0;inset-block-end:0;padding:12px 16px;background:linear-gradient(transparent,rgba(0,0,0,.55));font-weight:600}
+.vid .tagl{position:absolute;inset-block-start:14px;inset-inline-start:16px;font-weight:800;font-size:18px}
+.vid .tagl span{color:var(--orange)}
+footer.site{margin-block-start:28px;padding-block:16px;border-block-start:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;font-size:13px;color:var(--muted)}
+.btn.ghost:hover{background:var(--brand-soft)}
+.btn.danger{background:var(--bad);border-color:var(--bad)}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input[type=text],input[type=date],input[type=number],input[type=email],select,textarea{border:1px solid var(--border);background:var(--card);border-radius:8px;padding:9px 11px;inline-size:100%}
+textarea{min-block-size:120px;resize:vertical;line-height:1.6}
+label.f{display:block;font-weight:600;font-size:13px;margin-block:10px 4px}
+/* section list (mirrors the reference menu) */
+.sec-head{display:flex;align-items:center;justify-content:space-between;border-block-end:2px solid var(--border);padding-block-end:8px;margin-block-end:6px}
+.sec-head h2{margin:0;position:relative}
+.sec-head h2::after{content:"";position:absolute;inset-inline-start:0;inset-block-end:-10px;inline-size:100%;block-size:2px;background:var(--brand)}
+.tag-ai{color:var(--ai);font-weight:700;font-size:12px;white-space:nowrap}
+.tag-pill{background:var(--ai-soft);color:var(--ai);font-weight:700;font-size:11px;border-radius:6px;padding:2px 8px}
+.task-link{display:flex;align-items:center;gap:8px;padding:9px 6px;border-radius:8px;cursor:pointer;background:none;border:0;inline-size:100%;text-align:start}
+.task-link:hover{background:var(--brand-soft)}
+.task-link .nm{font-size:15px}
+.task-link .cnt{margin-inline-start:auto;font-size:12px;color:var(--muted)}
+.hero{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-block-end:20px}
+.stat{display:flex;gap:14px;flex-wrap:wrap}
+.stat div{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px;min-inline-size:120px}
+.stat b{display:block;font-size:22px}
+/* practice */
+.prac{display:grid;grid-template-columns:220px 1fr;gap:18px}
+@media (max-width:820px){.prac{grid-template-columns:1fr}}
+.qnav{display:flex;flex-direction:column;gap:6px}
+.qnav button{border:1px solid var(--border);background:var(--card);border-radius:8px;padding:8px 10px;text-align:start;cursor:pointer;display:flex;gap:8px;align-items:center}
+.qnav button.on{border-color:var(--brand);background:var(--brand-soft)}
+.qnav .done{margin-inline-start:auto;color:var(--ok);font-weight:700}
+.instr{background:var(--brand-soft);border-radius:10px;padding:10px 14px;margin-block-end:14px;font-size:14px}
+.tip{border-inline-start:4px solid var(--warn);background:var(--warn-soft);padding:10px 14px;border-radius:8px;font-size:14px;margin-block:12px}
+.passage{font-size:16px;line-height:1.85;background:var(--bg);border-radius:10px;padding:14px 16px;border:1px solid var(--border)}
+.rec{border:1px solid var(--border);border-radius:10px;padding:14px;margin-block-start:14px;max-inline-size:520px}
+.rec-status{font-weight:600;margin-block-end:8px}
+.bar{block-size:8px;background:var(--border);border-radius:99px;overflow:hidden}
+.bar>i{display:block;block-size:100%;inline-size:0;background:var(--brand);transition:inline-size .2s linear}
+.bar.recording>i{background:var(--ai)}
+.rec-live{font-size:13px;color:var(--muted);margin-block-start:8px;min-block-size:1.2em;font-style:italic}
+.score{margin-block-start:16px;border:1px solid var(--border);border-radius:10px;padding:14px}
+.score .tot{font-size:26px;font-weight:800;color:var(--brand)}
+.parts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-block:10px}
+.parts div{background:var(--bg);border-radius:8px;padding:8px 10px;font-size:13px}
+.parts b{font-size:16px}
+.model{background:var(--ok-soft);border-radius:8px;padding:10px 14px;margin-block-start:10px;font-size:14px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--border);border-radius:8px;margin-block:6px;cursor:pointer}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+select.blank{inline-size:auto;display:inline-block;padding:3px 6px;margin:0 2px}
+input.blank{inline-size:130px;display:inline-block;padding:3px 6px;margin:0 2px}
+.blank.right{border-color:var(--ok);background:var(--ok-soft)}
+.blank.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.drop{display:inline-block;min-inline-size:110px;border-block-end:2px dashed var(--brand);padding:1px 8px;margin:0 3px;text-align:center;cursor:pointer;border-radius:4px}
+.drop.filled{background:var(--brand-soft);border-block-end-style:solid}
+.drop.right{background:var(--ok-soft);border-color:var(--ok)}
+.drop.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-block:14px;padding:10px;border:1px dashed var(--border);border-radius:10px;min-block-size:50px}
+.chip{background:var(--card);border:1px solid var(--brand);color:var(--brand-2);border-radius:8px;padding:5px 12px;cursor:grab;font-weight:600}
+.chip.sel{background:var(--brand);color:#fff}
+.ro-item{display:flex;gap:10px;align-items:center;border:1px solid var(--border);border-radius:8px;padding:10px;margin-block:6px;background:var(--card)}
+.ro-item .t{flex:1}
+.ro-item.right{border-color:var(--ok)} .ro-item.wrong{border-color:var(--bad)}
+.hiw span{cursor:pointer;border-radius:4px;padding:1px 2px}
+.hiw span:hover{background:var(--brand-soft)}
+.hiw span.sel{background:var(--warn-soft);outline:1px solid var(--warn)}
+.hiw span.right{background:var(--ok-soft);outline:1px solid var(--ok)}
+.hiw span.wrong{background:var(--bad-soft);outline:1px solid var(--bad)}
+.hiw span.missed{text-decoration:underline wavy var(--bad)}
+.wc{font-size:13px;color:var(--muted);margin-block-start:6px;display:flex;justify-content:space-between}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--brand)}
+.timer.low{color:var(--ai)}
+table.t{inline-size:100%;border-collapse:collapse;font-size:14px}
+table.t th,table.t td{padding:9px 10px;border-block-end:1px solid var(--border);text-align:start;vertical-align:top}
+table.t th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.badge{display:inline-block;font-size:12px;font-weight:700;border-radius:99px;padding:2px 10px}
+.b-ok{background:var(--ok-soft);color:var(--ok)} .b-warn{background:var(--warn-soft);color:var(--warn)} .b-bad{background:var(--bad-soft);color:var(--bad)} .b-info{background:var(--brand-soft);color:var(--brand-2)}
+.login-wrap{min-block-size:80vh;display:grid;place-items:center}
+.login{max-inline-size:460px;inline-size:100%}
+.code-box{font-family:Consolas,Menlo,monospace;font-size:12px;word-break:break-all;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px}
+.toast{position:fixed;inset-block-end:20px;inset-inline-start:50%;transform:translateX(-50%);background:#1f2430;color:#fff;padding:10px 18px;border-radius:10px;z-index:99;box-shadow:var(--shadow);max-inline-size:90vw}
+.review-card{border:1px solid var(--border);border-radius:10px;padding:14px;margin-block:12px;background:var(--card)}
+.review-card .resp{background:var(--bg);border-radius:8px;padding:10px;white-space:pre-wrap;font-size:14px}
+.fb{background:var(--brand-soft);border-radius:8px;padding:10px 12px;margin-block-start:8px;font-size:14px;white-space:pre-wrap}
+.chart{inline-size:100%;max-inline-size:640px;background:#fff;border:1px solid var(--border);border-radius:10px}
+.kbd{font-family:Consolas,monospace;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:0 5px;font-size:12px}
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{counter-increment:s;position:relative;padding-inline-start:36px;margin-block:10px}
+.steps li::before{content:counter(s);position:absolute;inset-inline-start:0;inline-size:24px;block-size:24px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700}
+@media print{.no-print{display:none !important}}
+</style>
+</head>
+<body>
+<header class="top no-print">
+  <div class="top-in">
+    <a class="logo" href="index.html" aria-label="PTE Decode Academy website"><img src="assets/logo.png" alt="PTE Decode Academy" style="block-size:42px;inline-size:auto"></a>
+    <nav class="tabs" id="tabs"></nav>
+    <span class="spacer"></span>
+    <a class="btn ghost sm" href="index.html">← Website</a>
+    <span class="who" id="who"></span>
+    <button class="btn ghost sm hidden" id="logoutBtn" type="button">Sign out</button>
+  </div>
+</header>
+<main id="app"></main>
+<div id="toast" class="toast hidden" role="status"></div>
+<input type="file" id="filePick" class="hidden" accept=".json,application/json" multiple>
+<script src="assets/config.js"></script>
+<script>
+/* =====================================================================
+   PTE CORE PRACTICE HUB — CONFIGURATION
+   Edit ONLY this block: paste your Google Apps Script Web app URL once after setup.
+   ===================================================================== */
+const CONFIG = {
+  platformName: "PTE Decode Academy",
+  tagline: "Decode PTE. Achieve Your Target.",
+  teacherName: "PTE Decode Academy",
+  facebookPage: "https://www.facebook.com/ptedecodeacademy",
+  facebookVideo: "https://www.facebook.com/share/r/1FMfFRWzAQ/",
+  /* The Web app URL is read from assets/config.js (shared with the website). */
+  apiUrl: (window.SITE_CONFIG && window.SITE_CONFIG.apiUrl) || ""
+};
+
+/* =====================================================================
+   TASK CATALOGUE — the 19 scored PTE Core question types
+   ===================================================================== */
+const SECTIONS = [
+  {id:"speaking", name:"Speaking", part:"Part 1 · Speaking & Writing"},
+  {id:"writing",  name:"Writing",  part:"Part 1 · Speaking & Writing"},
+  {id:"reading",  name:"Reading",  part:"Part 2 · Reading"},
+  {id:"listening",name:"Listening",part:"Part 3 · Listening"}
+];
+const TASKS = [
+  {id:"ra",  sec:"speaking", name:"Read Aloud", ai:true, kind:"speak",
+   instr:"Look at the text below. In 35 seconds, you must read this text aloud as naturally and clearly as possible. You have 40 seconds to read aloud.",
+   timing:{prep:35, rec:40, showText:true}, exam:"6–7 items · 30–40 s prep · up to 40 s to speak",
+   tip:"Use the preparation time to read silently and mark natural pauses at commas and full stops. Keep a steady, conversational pace — fluency and pronunciation matter more than speed. If you stumble, keep going; do not go back to correct yourself."},
+  {id:"rs",  sec:"speaking", name:"Repeat Sentence", ai:true, kind:"speak",
+   instr:"You will hear a sentence. Please repeat the sentence exactly as you hear it. You will hear the sentence only once.",
+   timing:{prep:0, rec:15, audio:true}, exam:"10–12 items · listen once · ~15 s to answer",
+   tip:"Remember the sentence as an idea, not a string of words. Start speaking immediately after the tone and copy the speaker's rhythm. If you miss a word, carry on fluently rather than stopping."},
+  {id:"di",  sec:"speaking", name:"Describe Image", ai:true, kind:"speak",
+   instr:"Look at the image below. In 25 seconds, please speak into the microphone and describe in detail what the image is showing. You will have 40 seconds to give your response.",
+   timing:{prep:25, rec:40, showImage:true}, exam:"3–4 items · 25 s prep · 40 s to speak",
+   tip:"Use a simple structure: (1) what the image shows, (2) the highest and lowest values or first and last steps, (3) one or two other details, (4) a short conclusion. Speak for most of the 40 seconds without long pauses."},
+  {id:"rts", sec:"speaking", name:"Respond to a Situation", ai:true, kind:"speak",
+   instr:"Listen to and read a description of a situation. You will have 20 seconds to think about your answer. Then you will hear a beep. You will have 40 seconds to answer the question. Please answer as completely as you can.",
+   timing:{prep:20, rec:40, audio:true, showText:true}, exam:"2–4 items · 20 s prep · 40 s to speak",
+   tip:"Decide on the right tone (polite and formal for a manager or customer service, friendly for a neighbour). Greet the person, explain the problem or reason, suggest a solution, and close politely. Cover every part of the situation."},
+  {id:"asq", sec:"speaking", name:"Answer Short Question", ai:true, kind:"speak",
+   instr:"You will hear a question. Please give a simple and short answer. Often just one or a few words is enough.",
+   timing:{prep:0, rec:10, audio:true}, exam:"5–6 items · ~10 s to answer",
+   tip:"Answer immediately after the tone with one word or a short phrase. Extra explanation earns no extra marks."},
+  {id:"swt", sec:"writing", name:"Summarize Written Text", ai:true, kind:"write",
+   instr:"Read the passage below and summarize it in 25–50 words. Type your response in the box at the bottom of the screen. You have 10 minutes to finish this task.",
+   timing:{min:10, words:[25,50]}, exam:"1–2 items · 10 minutes · 25–50 words",
+   tip:"Find the topic sentence, the two or three main supporting points and any contrast (however, but). Join them with linking words (and, while, although, therefore). Check spelling, capital letters and the final full stop."},
+  {id:"we",  sec:"writing", name:"Write Email", ai:true, kind:"write",
+   instr:"Read the description of a situation. Then write an email about the situation. You will have 9 minutes. You should aim to write at least 50 words. Make sure you address all three points in the task.",
+   timing:{min:9, words:[50,120]}, exam:"2–3 items · 9 minutes · 50–120 words",
+   tip:"Use a clear email layout: greeting (Dear… / Hi…), a short opening line, one short paragraph for each of the three points, and a polite closing (Kind regards, + your name). Match the tone to the reader."},
+  {id:"rwfib", sec:"reading", name:"Reading & Writing: Fill in the Blanks", ai:false, kind:"rwfib",
+   instr:"There are some words missing in the following text. Please select the correct word in the drop-down box.",
+   exam:"5–6 items · shared section time (~2 min each)",
+   tip:"Read the whole sentence first. Check grammar (noun, verb, adjective, tense) and collocation — which word naturally goes with its neighbours."},
+  {id:"rmcm", sec:"reading", name:"Multiple Choice, Multiple Answers", ai:false, kind:"mcm",
+   instr:"Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+   exam:"1–2 items · negative marking", tip:"Each wrong choice loses a point, so only select options you can find evidence for in the text."},
+  {id:"ro",  sec:"reading", name:"Re-order Paragraphs", ai:false, kind:"ro",
+   instr:"The text boxes below have been placed in a random order. Restore the original order using the arrow buttons.",
+   exam:"2–3 items · scored on correct adjacent pairs", tip:"Find the opening sentence (it introduces the topic and has no pronoun pointing back). Then follow pronouns (this, they), time words (first, later) and linking words (however, finally)."},
+  {id:"rfib", sec:"reading", name:"Reading: Fill in the Blanks", ai:false, kind:"dnd",
+   instr:"In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, click the word in the gap to return it to the box. (You can also click a word, then click a gap.)",
+   exam:"4–5 items · extra distractor words", tip:"Decide what part of speech each gap needs before looking at the word box. There are more words than gaps."},
+  {id:"rmcs", sec:"reading", name:"Multiple Choice, Single Answer", ai:false, kind:"mcs",
+   instr:"Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+   exam:"1–2 items", tip:"Spend no more than 1–2 minutes here. Eliminate options that are too extreme or not mentioned."},
+  {id:"sst", sec:"listening", name:"Summarize Spoken Text", ai:true, kind:"write",
+   instr:"You will hear a short recording. Write a summary for a fellow student who was not present. You should write 20–30 words. You have 8 minutes to finish this task.",
+   timing:{min:8, words:[20,30], audio:true}, exam:"1–2 items · 8 minutes · 20–30 words",
+   tip:"Note key words while listening (who, what, why, change, result). Write one or two clear sentences with correct spelling and punctuation."},
+  {id:"lmcm", sec:"listening", name:"Multiple Choice, Multiple Answers", ai:false, kind:"mcm", audio:true,
+   instr:"Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+   exam:"1–2 items · negative marking", tip:"Read the question and options before the audio starts. Only choose what you clearly heard."},
+  {id:"lfib", sec:"listening", name:"Fill in the Blanks", ai:false, kind:"lfib", audio:true,
+   instr:"You will hear a recording. Type the missing words in each blank.",
+   exam:"2–3 items · spelling counts", tip:"Read the transcript ahead of the audio. Type the first letters as you hear each word, then complete and check spelling afterwards."},
+  {id:"lmcs", sec:"listening", name:"Multiple Choice, Single Answer", ai:false, kind:"mcs", audio:true,
+   instr:"Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+   exam:"1–2 items", tip:"Listen for the main purpose or message, not one isolated word that appears in an option."},
+  {id:"smw", sec:"listening", name:"Select Missing Word", ai:false, kind:"mcs", audio:true,
+   instr:"You will hear a recording. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+   exam:"1–2 items", tip:"Follow the logic of the whole recording — the missing words complete the speaker's main point."},
+  {id:"hiw", sec:"listening", name:"Highlight Incorrect Words", ai:false, kind:"hiw", audio:true,
+   instr:"You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+   exam:"2–3 items · negative marking", tip:"Follow the text with your eyes (or a cursor) as the speaker talks and click a word the moment it sounds different. Do not guess."},
+  {id:"wfd", sec:"listening", name:"Write from Dictation", ai:false, kind:"wfd", audio:true,
+   instr:"You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+   exam:"3–4 items · scored per correct word", tip:"Type quickly as you listen, then fix spelling, plurals (-s) and past tense (-ed). Every correct word counts."}
+];
+const TASK = Object.fromEntries(TASKS.map(t=>[t.id,t]));
+/* AI-scored types show the pink "AI Score" tag. Objective types are auto-marked. */
+
+/* =====================================================================
+   QUESTION BANK — original practice items written for this platform.
+   To add a question, copy an existing item in the same list and edit it.
+   ===================================================================== */
+const BANK = {
+ra:[
+ {text:"The community centre will be closed for renovations from the first of March until the end of April. During this time, all fitness classes will move to the public library on Elm Street. Members who prefer not to travel can pause their membership without any extra charge by speaking to the front desk."},
+ {text:"Working from home has changed the way many people plan their day. Without a daily commute, employees often start earlier and finish later. Experts recommend setting clear working hours, taking regular breaks and keeping a separate space for work, so that personal time is protected and stress does not build up."},
+ {text:"Before booking a holiday, it is worth checking whether your passport is valid for at least six months after your return date. Some countries refuse entry to travellers whose documents are close to expiring, and renewing a passport at short notice can be both stressful and expensive."},
+ {text:"Local farmers' markets give shoppers the chance to buy fresh produce directly from the people who grow it. Prices are not always lower than in supermarkets, but many customers say the quality is better and they enjoy knowing exactly where their food comes from."},
+ {text:"Public transport passes can now be loaded onto a mobile phone. Passengers simply tap their phone on the reader when they board a bus or train. The city says the new system will reduce queues at ticket machines and make it easier for visitors to travel around."}
+],
+rs:[
+ {text:"Please submit your timesheet before noon on Friday."},
+ {text:"The next train to the city centre has been delayed by fifteen minutes."},
+ {text:"Remember to bring a photo ID to your first appointment."},
+ {text:"The new parking rules will come into effect next month."},
+ {text:"If you have any questions, contact the front desk by email."},
+ {text:"Our office will be closed on Monday for the public holiday."},
+ {text:"All visitors must sign in at reception before entering the building."},
+ {text:"The swimming pool is open to members until eight in the evening."}
+],
+di:[
+ {chart:{type:"bar",title:"Average weekly hours spent on activities by adults",unit:"hours",labels:["Work","Screen time","Household chores","Commuting","Exercise"],values:[38,21,9,6,4]},
+  keywords:["bar|chart|graph","week|weekly","hours","work","screen","chores|household","commut","exercise","most|highest|largest","least|lowest|smallest"],
+  model:"The bar chart shows how many hours adults spend on different activities each week. Work takes up the most time, at around 38 hours, followed by screen time at 21 hours. Household chores account for 9 hours and commuting for 6. Exercise is the lowest, at only 4 hours. Overall, adults spend far more time working and looking at screens than exercising."},
+ {chart:{type:"pie",title:"How residents of Lakeview travel to work (%)",labels:["Car","Public transit","Walking","Cycling","Work from home"],values:[45,25,12,10,8]},
+  keywords:["pie|chart","travel|commut|work","percent|%","car","public transit|transit|bus|train","walk","cycl","home","most|largest|majority|almost half","least|smallest|lowest"],
+  model:"The pie chart illustrates how residents of Lakeview travel to work. The car is by far the most popular option, at 45 percent. Public transit comes second with 25 percent. Walking and cycling are much less common, at 12 and 10 percent. The smallest group, 8 percent, works from home. In conclusion, almost half of residents depend on cars."},
+ {chart:{type:"line",title:"Monthly visitors to Riverside Park, January–June (thousands)",labels:["Jan","Feb","Mar","Apr","May","Jun"],values:[12,14,20,31,42,55]},
+  keywords:["line|graph|chart","visitors","park","january|jan","june|jun","increase|rose|rise|grew|growth|went up","12|twelve","55|fifty","steadily|sharply|rapidly|significantly","summer|warmer|weather"],
+  model:"The line graph shows the number of visitors to Riverside Park from January to June. In January there were about 12 thousand visitors. The number rose slowly in February and then increased sharply from March onwards. By June it reached a peak of 55 thousand. Overall, visitor numbers grew steadily as the weather became warmer."},
+ {chart:{type:"process",title:"How to renew your library card online",labels:["Visit the library website","Log in to your account","Upload a photo ID","Pay the $5 fee","Receive new card by mail"]},
+  keywords:["process|steps|diagram|flow","renew","library card|card","first|firstly","website","log in|login|account","upload|photo|id","pay|fee|five dollars|\\$5","mail|post","finally|last|lastly"],
+  model:"The diagram shows the process of renewing a library card online. First, you visit the library website and log in to your account. Next, you upload a photo ID. After that, you pay a five-dollar fee. Finally, the new card is sent to you by mail. Overall, it is a simple five-step process that can be completed from home."}
+],
+rts:[
+ {text:"You recently started a new job. Your manager has asked you to work this Saturday, but you have already promised to help a friend move house that day. Your manager calls to confirm. What would you say to your manager?",
+  keywords:["sorry|apolog|unfortunately","saturday","promised|commitment|already","friend","move|moving","another day|sunday|next weekend|instead|alternative|other day","understand|appreciate","happy to|willing|could|can"],
+  model:"Hello, thank you for calling. I'm really sorry, but unfortunately I can't work this Saturday. I promised a friend several weeks ago that I would help him move house, and he is counting on me. I understand the work is important, so I'd be happy to work on Sunday instead, or stay later on Friday to finish anything urgent. Please let me know which option works best for you."},
+ {text:"Your neighbour's dog barks loudly every night, which keeps you awake and makes you tired at work. You meet your neighbour in the hallway of your building. What would you say to your neighbour?",
+  keywords:["hi|hello|excuse me|good morning|good evening","dog","bark","night","sleep|awake|tired","wonder|could you|would you mind|perhaps|maybe","understand|not complain|sorry to","thank|appreciate"],
+  model:"Hi, do you have a minute? I hope you don't mind me mentioning this, but your dog has been barking quite loudly at night recently, and it's been keeping me awake. I'm getting very tired at work. I understand dogs can be hard to settle, but I wonder if you could keep him in a different room at night, or perhaps try a trainer. Thanks so much for understanding."},
+ {text:"You ordered a birthday cake from a local bakery. When you go to collect it, you see that the name on the cake is spelled incorrectly. The party starts in two hours. What would you say to the shop assistant?",
+  keywords:["excuse me|hello|hi","cake","name","spell|wrong|mistake|incorrect","correct|fix|change|redo","two hours|party|soon|time","could you|would it be possible|possible|please","thank|appreciate"],
+  model:"Hello, excuse me. I've just come to collect the birthday cake I ordered, but I noticed the name has been spelled incorrectly. It should be Sarah with an H at the end. The party starts in two hours, so would it be possible to correct the writing now while I wait? If not, could you suggest another solution? Thank you very much for your help."}
+],
+asq:[
+ {q:"What do you call the instrument used to measure temperature?", a:["thermometer"]},
+ {q:"How many days are there in a leap year?", a:["366","three hundred sixty six","three hundred and sixty six"]},
+ {q:"What do you call a person who repairs water pipes in a house?", a:["plumber"]},
+ {q:"Which meal is usually eaten in the morning?", a:["breakfast"]},
+ {q:"If you want to send a letter, where do you put it after adding a stamp?", a:["mailbox","mail box","postbox","post box","letterbox","letter box","post office"]},
+ {q:"What is frozen water called?", a:["ice"]},
+ {q:"Which day comes after Friday?", a:["saturday"]}
+],
+swt:[
+ {title:"The four-day working week",
+  text:"Several companies around the world have recently tested a four-day working week, in which employees work fewer hours for the same pay. The results of these trials have been largely positive. Many organizations reported that productivity stayed the same or even improved, as staff became more focused and spent less time in unnecessary meetings. Employees, in turn, said they felt less stressed, slept better and had more time for family and personal interests. However, the model does not suit every industry. Businesses that must provide services every day, such as hospitals or retail stores, found it harder to organize schedules and sometimes had to hire extra workers to cover the gaps. Experts therefore suggest that companies should carefully consider their own needs before introducing a shorter week.",
+  keywords:["four-day|four day|shorter week|4-day","productiv","stress|well-being|wellbeing|family|happier","not suit|every industry|some industries|not all|hospital|retail|harder","consider|needs|careful"],
+  model:"Trials of a four-day working week have shown that productivity can stay the same or improve and employees feel less stressed, although the model does not suit every industry, so companies should consider their needs first."},
+ {title:"Community gardens",
+  text:"In many cities, empty plots of land are being turned into community gardens, where local residents grow vegetables, fruit and flowers together. Supporters say these gardens offer far more than fresh food. They give people from different backgrounds a reason to meet and work side by side, which can reduce loneliness and build trust between neighbours. Gardens also provide green space in crowded areas, helping to cool the air in summer and supporting birds and insects. Nevertheless, community gardens face challenges. Land is often only borrowed for a short time, and some projects close when developers decide to build on the site. Long-term success therefore depends on cooperation between residents and local governments.",
+  keywords:["community garden|garden","food|vegetable|fruit","neighbo|loneliness|trust|meet|social","green|environment|cool|insect|bird","land|developer|challenge|short time","government|cooperation|council|authorit"],
+  model:"Community gardens provide fresh food, bring neighbours together and add green space to cities, but because land is often only borrowed, their long-term success depends on cooperation between residents and local governments."}
+],
+we:[
+ {situation:"You recently stayed at a hotel for a business trip and left your jacket in the room when you checked out. Write an email to the hotel manager.",
+  points:[{label:"Describe the jacket",kw:["jacket","colour|color|black|blue|brown|grey|gray|green|red","size|pocket|leather|wool|brand|label"]},
+          {label:"Explain when and where you left it",kw:["room","left|forgot","check|stayed|stay","monday|tuesday|wednesday|thursday|friday|saturday|sunday|last week|night|date|morning","wardrobe|closet|chair|bed|hook|bathroom"]},
+          {label:"Ask how you can get it back",kw:["send|post|mail|courier|ship","collect|pick up|pick it up|return|get it back","pay|cost|address"]}],
+  model:"Dear Hotel Manager,\n\nI stayed in Room 214 from 12 to 14 October and I'm afraid I left my jacket behind when I checked out on Wednesday morning. I believe it is hanging in the wardrobe next to the door.\n\nThe jacket is a dark blue wool coat, size medium, with a grey scarf in the left pocket.\n\nCould you please let me know whether it has been found? If so, I would be grateful if you could post it to my home address. I am happy to pay for the delivery.\n\nKind regards,\nAlex Morgan"},
+ {situation:"Your colleague, Maria, is leaving the company at the end of the month. Write an email to your team about saying goodbye to her.",
+  points:[{label:"Suggest a farewell lunch",kw:["lunch|meal|farewell|goodbye|celebrat"]},
+          {label:"Propose a date and place",kw:["monday|tuesday|wednesday|thursday|friday|next week|date","restaurant|café|cafe|bistro|place|venue|office","pm|p\\.m\\.|noon|o'clock|12|1:00|time"]},
+          {label:"Ask colleagues to contribute to a gift",kw:["gift|present|card|flowers","contribut|donat|chip in|collect|money|\\$"]}],
+  model:"Hi everyone,\n\nAs you know, Maria is leaving us at the end of the month. I think it would be lovely to say goodbye with a farewell lunch.\n\nI suggest Friday the 28th at 12:30 at Olive Tree Café, which is just around the corner. Please reply by Wednesday so I can book a table.\n\nI'd also like to buy her a gift from the team. If you would like to contribute, please give me $10 by Thursday.\n\nThanks,\nJordan"},
+ {situation:"Your home internet connection has been unreliable for the past two weeks. Write an email to your internet service provider.",
+  points:[{label:"Describe the problem",kw:["disconnect|drop|slow|outage|unreliable|stops working|signal|cuts out|keeps","connection|internet|wi-fi|wifi|router"]},
+          {label:"Explain how it affects you",kw:["work from home|working from home|meeting|study|class|children|online|job","cannot|can't|could not|couldn't|unable|difficult|affect|lost|missed|problem|serious"]},
+          {label:"Say what you want them to do",kw:["technician|engineer|visit","refund|discount|compensation|credit|reduce","fix|repair|resolve|solve|replace"]}],
+  model:"Dear Customer Support Team,\n\nI am writing about my home internet service (account 482 119). For the past two weeks, the connection has dropped several times a day, often for up to an hour.\n\nThis is a serious problem because I work from home. I have missed two online meetings with clients and could not send important files on time.\n\nI would like you to send a technician to check the line as soon as possible. I also expect a discount on this month's bill for the days without service.\n\nYours faithfully,\nSam Lee"}
+],
+rwfib:[
+ {text:"Many employers now offer flexible working hours. This allows staff to [[0]] their schedules around family commitments. Research suggests that employees who have more control over their time are generally more [[1]] and less likely to leave. However, flexible arrangements only work well when teams [[2]] clearly and agree on when everyone will be [[3]] for meetings.",
+  blanks:[{o:["adjust","admit","advance","adopt"],a:"adjust"},{o:["productivity","productive","produce","product"],a:"productive"},{o:["communication","communicating","communicate","communicated"],a:"communicate"},{o:["availability","available","avail","valuable"],a:"available"}]},
+ {text:"Recycling programs have become common in most cities, but many residents are still [[0]] about which items can be placed in the blue bin. Plastic bags, for example, often [[1]] sorting machines and should be returned to supermarkets instead. To reduce [[2]], several councils have started sending households a simple guide [[3]] the most frequent mistakes.",
+  blanks:[{o:["confusing","confused","confuse","confusion"],a:"confused"},{o:["damage","repair","improve","support"],a:"damage"},{o:["contaminate","contaminated","contamination","contaminating"],a:"contamination"},{o:["explaining","explains","explained","explanation"],a:"explaining"}]},
+ {text:"Volunteering can be a valuable way to gain work experience, [[0]] for newcomers to a country. It helps people build local [[1]], practise their language skills and learn about workplace culture. Many organizations also provide [[2]] letters to volunteers who have [[3]] with them for several months.",
+  blanks:[{o:["specially","especially","special","specialty"],a:"especially"},{o:["contracts","contents","contacts","contests"],a:"contacts"},{o:["referee","reference","referral","refer"],a:"reference"},{o:["working","works","work","worked"],a:"worked"}]}
+],
+rmcm:[
+ {text:"Modern public libraries offer much more than books. At the Westbrook branch, members can borrow laptops for up to two weeks, attend free English conversation groups on Tuesday evenings, and get help writing a résumé from a volunteer careers adviser. The library also has quiet study rooms, which must be booked online at least a day in advance. Printing is available, although there is a small charge per page.",
+  q:"According to the text, which services does the Westbrook library offer?",
+  o:["Laptops that members can borrow","Free printing for all members","English conversation groups","Help with writing a résumé","Study rooms that can be booked on the same day"], a:[0,2,3]},
+ {text:"Shift workers often struggle to get enough sleep because their working hours conflict with the body's natural clock. Health experts suggest several strategies. Keeping the bedroom dark and cool can help, as can avoiding caffeine in the four hours before sleep. Some workers find that following a consistent routine, even on days off, makes the adjustment easier. Experts warn, however, that relying on sleeping pills is not a long-term solution.",
+  q:"Which strategies do health experts recommend for shift workers?",
+  o:["Keeping the bedroom dark and cool","Taking sleeping pills regularly","Avoiding caffeine before sleep","Drinking coffee to stay alert at night","Keeping a consistent routine"], a:[0,2,4]}
+],
+ro:[
+ {items:["Last spring, the town council announced a plan to improve cycling safety.",
+         "The plan included building protected bike lanes on three main roads.",
+         "At first, some local businesses worried that losing parking spaces would reduce their customers.",
+         "However, a survey six months later showed that shop sales had actually increased slightly."]},
+ {items:["Applying for a job in a new country can feel overwhelming.",
+         "The first step is to adapt your résumé to local expectations, which may differ from those at home.",
+         "Once your résumé is ready, it is a good idea to practise answering common interview questions.",
+         "Finally, sending a polite thank-you email after the interview can leave a positive impression."]},
+ {items:["Our team will move to the new office on the fifth floor next month.",
+         "Before the move, each employee will receive three boxes for their personal items.",
+         "These boxes should be labelled with your name and desk number.",
+         "On the day of the move, the removal company will collect them and deliver them to your new desk."]}
+],
+rfib:[
+ {text:"Saving money does not have to be difficult. One simple [[0]] is to set up an automatic transfer to a savings account on payday. This way, the money is put aside before you have a chance to [[1]] it. Tracking daily expenses for a month can also [[2]] spending habits that are easy to [[3]].",
+  a:["strategy","spend","reveal","change"], extra:["borrow","costs","hidden"]},
+ {text:"Good customer service begins with listening. When a customer [[0]] a problem, staff should stay calm and avoid interrupting. Repeating the main points back to the customer shows that the issue has been [[1]]. Staff can then [[2]] possible solutions and agree on the next [[3]].",
+  a:["reports","understood","suggest","steps"], extra:["ignored","refuses","prices"]},
+ {text:"Many people now grow food on their balconies. Herbs such as basil and mint are a popular [[0]] because they grow quickly and need little [[1]]. Even in small apartments, a few containers can [[2]] fresh food throughout the summer.",
+  a:["choice","space","provide"], extra:["reason","damage","weather"]}
+],
+rmcs:[
+ {text:"Notice to tenants: The water supply to Building B will be turned off on Thursday between 9 a.m. and 1 p.m. while plumbers replace an old pipe in the basement. Tenants are advised to store some water in advance. The laundry room will remain closed until 3 p.m. to allow the floor to dry. We apologize for any inconvenience.",
+  q:"Why will the laundry room stay closed after the water returns?",
+  o:["The plumbers will still be working there.","The floor needs time to dry.","The washing machines are being replaced.","There will be no electricity in the building."], a:1},
+ {text:"A recent survey of 2,000 commuters found that people who walk or cycle to work report higher levels of satisfaction with their journey than those who drive. Surprisingly, the length of the trip mattered less than the type of transport. Even long walking commutes were rated more positively than short car journeys, mainly because drivers reported stress caused by traffic.",
+  q:"What is the main finding of the survey?",
+  o:["Short commutes are always the most satisfying.","The way people travel affects satisfaction more than distance.","Most commuters would prefer to drive to work.","Cycling is faster than driving in cities."], a:1}
+],
+sst:[
+ {script:"Good morning, everyone. I'd like to update you on the changes to our customer support hours. Starting next month, the phone line will be open from seven a.m. to nine p.m., instead of the current nine to five. We are making this change because our surveys showed that many customers work during the day and find it hard to call us. To cover the longer hours, we are hiring six new support agents, and the current team will move to a rotating shift schedule. We'll share the new roster by Friday, so please check your email and let your supervisor know if you have any concerns.",
+  keywords:["support|phone|hours","longer|7|seven|9 p|nine p|extended","customers|work during|day","hiring|new agents|six|staff","shift|roster|rotat"],
+  model:"Customer support hours will extend to 7 a.m.–9 p.m. next month because customers work during the day; six agents will be hired and staff will work rotating shifts."},
+ {script:"Many people believe that drinking eight glasses of water a day is a strict rule for good health. In fact, there is little scientific evidence for that exact number. The amount of water a person needs depends on their size, how active they are, and the climate they live in. A lot of our daily water also comes from food, especially fruit and vegetables, as well as from drinks like tea and milk. The simplest advice from doctors is to drink when you are thirsty and to check that your urine is pale in colour.",
+  keywords:["eight glasses|8 glasses|eight|rule","evidence|myth|not proven|little","depends|size|active|climate","food|fruit|vegetable|tea|milk","thirsty|pale"],
+  model:"The eight-glasses rule has little evidence; water needs depend on size, activity and climate, food and other drinks also count, and doctors advise drinking when thirsty."}
+],
+lmcm:[
+ {script:"Thank you for calling the City History Museum. The museum is open Tuesday to Sunday, from ten a.m. to five p.m., and is closed on Mondays. Entry is free for children under twelve. On the first Thursday of each month, we stay open until nine p.m. and offer guided evening tours. Please note that the café is currently closed for renovation, but visitors are welcome to use the picnic area in the garden.",
+  q:"Which statements about the museum are true?",
+  o:["It is closed on Mondays.","Children under twelve enter for free.","The café is open as usual.","Evening tours run every Thursday.","Visitors can eat in the garden."], a:[0,1,4]},
+ {script:"Hi Sam, it's Priya from the training team. I'm calling about next week's first aid course. The course has moved from Room 4 to the main conference room, because more people signed up than we expected. It still starts at nine thirty, but please arrive ten minutes early to sign the attendance sheet. Lunch will be provided, so you don't need to bring anything except a pen. Call me back if you can't attend.",
+  q:"What does Priya tell Sam?",
+  o:["The course location has changed.","The course now starts at nine twenty.","He should arrive a little early.","He needs to bring his own lunch.","More people registered than expected."], a:[0,2,4]}
+],
+lfib:[
+ {script:"Our building's [fire] alarm will be tested on Wednesday [morning]. You do not need to [leave] the building during the test. If the alarm continues for more than two [minutes], please follow the normal evacuation procedure."},
+ {script:"Online shopping has grown [rapidly] over the past decade. Customers enjoy the [convenience] of ordering from home, but many also worry about [delivery] costs and the difficulty of [returning] items that do not fit."}
+],
+lmcs:[
+ {script:"Hi, this is a message for Daniel. It's Doctor Moore's office calling. Unfortunately, Doctor Moore is unwell tomorrow, so we need to move your eleven o'clock appointment. We have a free slot on Friday at two, or next Monday at nine thirty. Please call us back to let us know which one suits you.",
+  q:"Why is the clinic calling Daniel?",
+  o:["To remind him about tomorrow's appointment","To reschedule his appointment because the doctor is unavailable","To cancel all appointments for the week","To ask him to arrive earlier than planned"], a:1},
+ {script:"When choosing a used car, many buyers focus on the price and the colour. Mechanics, however, say the most important thing to check is the service history. A car with regular maintenance records is usually a safer purchase, even if it has higher mileage.",
+  q:"What do mechanics say buyers should check most carefully?",
+  o:["The price","The colour","The service history","The mileage"], a:2}
+],
+smw:[
+ {script:"To keep your online accounts secure, choose a password that is long and hard to guess. Never share it with anyone, and change it regularly. If you think someone else knows your password, you should",
+  q:"Select the missing words.", o:["write it on paper","change it immediately","share it with a friend","use it on more websites"], a:1},
+ {script:"The weather forecast says heavy snow will start tonight and continue until tomorrow afternoon. Roads are expected to be very icy, so the city recommends that people",
+  q:"Select the missing words.", o:["go skiing in the park","drive faster to get home","avoid unnecessary travel","open their windows"], a:2}
+],
+hiw:[
+ {spoken:"The company plans to open three new stores next year, mainly in suburban areas where rents are lower and parking is easier for customers.",
+  shown:"The company plans to open four new stores next year, mainly in urban areas where rents are higher and parking is easier for customers."},
+ {spoken:"Regular exercise improves not only physical health but also mood, because it helps the body release chemicals that reduce stress.",
+  shown:"Regular exercise improves not only physical strength but also sleep, because it helps the body release chemicals that reduce stress."}
+],
+wfd:[
+ {text:"The library will close early on public holidays."},
+ {text:"Please read the safety instructions before using the equipment."},
+ {text:"Most applicants receive a reply within two weeks."},
+ {text:"The meeting has been moved to the larger conference room."},
+ {text:"Customers can return unused items with the original receipt."},
+ {text:"Volunteers are needed to help organize the community festival."}
+]
+};
+const BRAND_BANNER = "assets/logo-full.jpg";
+/* =====================================================================
+   CORE UTILITIES
+   ===================================================================== */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const te = new TextEncoder(), td = new TextDecoder();
+const b64u = {
+  enc(buf){ const by = new Uint8Array(buf); let s=""; for (const b of by) s += String.fromCharCode(b); return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); },
+  dec(str){ str = str.replace(/-/g,"+").replace(/_/g,"/"); while (str.length % 4) str += "="; const bin = atob(str); return Uint8Array.from(bin, c => c.charCodeAt(0)); }
+};
+const uid = (p="") => p + Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+const words = s => (String(s||"").toLowerCase().replace(/[’']/g,"'").match(/[a-z0-9$]+(?:['-][a-z0-9]+)*/g) || []);
+const wordCount = s => (String(s||"").trim().match(/\S+/g) || []).length;
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const fmtDate = iso => { try { return new Date(iso).toLocaleString(undefined,{dateStyle:"medium",timeStyle:"short"}); } catch(e){ return iso; } };
+const shuffle = (arr, seed=1) => { const a = arr.slice(); let s = seed; for (let i=a.length-1;i>0;i--){ s = (s*9301+49297)%233280; const j = Math.floor(s/233280*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+function toast(msg, ms=3200){ const t=$("#toast"); t.textContent=msg; t.classList.remove("hidden"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.add("hidden"), ms); }
+function download(name, obj){
+  const blob = new Blob([typeof obj==="string"?obj:JSON.stringify(obj,null,1)], {type: name.endsWith(".csv")?"text/csv":"application/json"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+}
+function pickFiles(multiple=true){
+  return new Promise(res => {
+    const inp = $("#filePick"); inp.multiple = multiple; inp.value = "";
+    const h = async () => { inp.removeEventListener("change", h); const out=[]; for (const f of inp.files) { try { out.push({name:f.name, data:JSON.parse(await f.text())}); } catch(e){ out.push({name:f.name, error:true}); } } res(out); };
+    inp.addEventListener("change", h); inp.click();
+  });
+}
+const blobToDataURL = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b); });
+async function copyText(t){ try { await navigator.clipboard.writeText(t); toast("Copied to clipboard"); } catch(e){ prompt("Copy this:", t); } }
+const safeFile = s => String(s||"student").replace(/[^a-z0-9]+/gi,"-").replace(/^-|-$/g,"").slice(0,40) || "student";
+
+/* ---------- Online API (Google Apps Script backend) ---------- */
+async function api(action, data={}){
+  if (!CONFIG.apiUrl) { const e = new Error("This platform is not connected to its online storage yet. (Teacher: paste your Web app URL into CONFIG.apiUrl.)"); e.server = true; throw e; }
+  let res;
+  try { res = await fetch(CONFIG.apiUrl, {method:"POST", body: JSON.stringify({action, ...data}), redirect:"follow"}); }
+  catch(e){ throw new Error("Can't reach the server. Check your internet connection and try again."); }
+  let j; try { j = await res.json(); } catch(e){ throw new Error("The server sent an unexpected reply. Please try again in a minute."); }
+  if (!j.ok) { const e = new Error(j.error || "Something went wrong."); e.server = true; throw e; }
+  return j;
+}
+const normCode = raw => { const m = String(raw||"").toUpperCase().replace(/\s+/g,"").match(/PTE-?([A-Z0-9]{4})-?([A-Z0-9]{4})-?([A-Z0-9]{4})/); return m ? `PTE-${m[1]}-${m[2]}-${m[3]}` : ""; };
+
+/* ---------- IndexedDB storage (attempts incl. recordings) ---------- */
+const DB = {
+  _db:null,
+  open(){ if (this._db) return Promise.resolve(this._db);
+    return new Promise((res, rej) => { const r = indexedDB.open("pte-core-hub", 1);
+      r.onupgradeneeded = () => { const d = r.result; ["attempts","inbox","reviews"].forEach(n => { if (!d.objectStoreNames.contains(n)) d.createObjectStore(n, {keyPath:"id"}); }); };
+      r.onsuccess = () => { this._db = r.result; res(r.result); }; r.onerror = () => rej(r.error); }); },
+  async run(store, mode, fn){ const d = await this.open(); return new Promise((res, rej) => { const t = d.transaction(store, mode); const req = fn(t.objectStore(store)); t.oncomplete = () => res(req ? req.result : undefined); t.onerror = () => rej(t.error); }); },
+  put(s, v){ return this.run(s, "readwrite", st => st.put(v)); },
+  get(s, k){ return this.run(s, "readonly", st => st.get(k)); },
+  all(s){ return this.run(s, "readonly", st => st.getAll()); },
+  del(s, k){ return this.run(s, "readwrite", st => st.delete(k)); }
+};
+
+/* ---------- Audio: text-to-speech prompts, beep ---------- */
+let VOICE = null;
+function pickVoice(){
+  if (!("speechSynthesis" in window)) return null;
+  const vs = speechSynthesis.getVoices().filter(v => /^en[-_]/i.test(v.lang));
+  const pref = localStorage.getItem("pte_voice");
+  if (pref) { const v = vs.find(x => x.name === pref); if (v) return v; }
+  return vs.find(v => /natural|online/i.test(v.name) && /en-(US|GB|CA|AU)/i.test(v.lang)) || vs.find(v => /google/i.test(v.name) && /en-(US|GB)/i.test(v.lang)) || vs.find(v => /en-(US|CA)/i.test(v.lang)) || vs[0] || null;
+}
+if ("speechSynthesis" in window) { speechSynthesis.onvoiceschanged = () => { VOICE = pickVoice(); }; VOICE = pickVoice(); }
+function speakOne(text, rate){
+  return new Promise(res => { const u = new SpeechSynthesisUtterance(text); u.lang = "en-US"; if (VOICE) u.voice = VOICE; u.rate = rate; u.onend = () => res(true); u.onerror = () => res(false); speechSynthesis.speak(u); });
+}
+async function speak(text, token){
+  if (!("speechSynthesis" in window)) return false;
+  speechSynthesis.cancel();
+  const rate = parseFloat(localStorage.getItem("pte_rate") || "0.95");
+  const parts = String(text).split(/(?<=[.!?])\s+(?=[A-Z])/); // sentence chunks avoid long-utterance cut-offs
+  for (const p of parts) { if (token && token.cancelled) return false; if (p.trim()) await speakOne(p.trim(), rate); }
+  return true;
+}
+let _actx = null;
+function beep(freq=880, ms=320){
+  try { _actx = _actx || new (window.AudioContext || window.webkitAudioContext)(); const o = _actx.createOscillator(), g = _actx.createGain();
+    o.frequency.value = freq; o.connect(g); g.connect(_actx.destination); g.gain.setValueAtTime(.18, _actx.currentTime); o.start(); o.stop(_actx.currentTime + ms/1000); } catch(e){}
+  return new Promise(r => setTimeout(r, ms + 60));
+}
+
+/* ---------- Chart images for Describe Image (drawn as SVG) ---------- */
+function chartSVG(c){
+  const pal = ["#0e7c86","#5a67d8","#ef4b5b","#f59e0b","#10b981","#8b5cf6"];
+  const W = 640, H = 360, title = `<text x="${W/2}" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#1f2430">${esc(c.title)}</text>`;
+  let body = "";
+  if (c.type === "bar" || c.type === "line") {
+    const L=60, R=24, T=50, B=56, max = Math.ceil(Math.max(...c.values)*1.15/10)*10, n = c.values.length, cw = (W-L-R)/n;
+    const y = v => T + (H-T-B) * (1 - v/max);
+    for (let i=0;i<=5;i++){ const v = max*i/5; body += `<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e5e7eb"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="#6b7280">${Math.round(v)}</text>`; }
+    if (c.type === "bar") c.values.forEach((v,i) => { const x = L + i*cw + cw*.18, w = cw*.64; body += `<rect x="${x}" y="${y(v)}" width="${w}" height="${y(0)-y(v)}" rx="4" fill="${pal[i%pal.length]}"/><text x="${x+w/2}" y="${y(v)-6}" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2430">${v}</text>`; });
+    else { const pts = c.values.map((v,i) => [L + i*cw + cw/2, y(v)]); body += `<polyline fill="none" stroke="${pal[0]}" stroke-width="3" points="${pts.map(p=>p.join(",")).join(" ")}"/>`; pts.forEach((p,i) => body += `<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="${pal[0]}"/><text x="${p[0]}" y="${p[1]-10}" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2430">${c.values[i]}</text>`); }
+    c.labels.forEach((l,i) => body += `<text x="${L + i*cw + cw/2}" y="${H-B+20}" text-anchor="middle" font-size="12" fill="#374151">${esc(l)}</text>`);
+    if (c.unit) body += `<text x="16" y="${(H)/2}" transform="rotate(-90 16 ${H/2})" text-anchor="middle" font-size="12" fill="#6b7280">${esc(c.unit)}</text>`;
+  } else if (c.type === "pie") {
+    const cx=220, cy=200, r=125, tot = c.values.reduce((a,b)=>a+b,0); let a0 = -Math.PI/2;
+    c.values.forEach((v,i) => { const a1 = a0 + v/tot*2*Math.PI, big = a1-a0 > Math.PI ? 1 : 0;
+      const p = (a) => [cx + r*Math.cos(a), cy + r*Math.sin(a)], s = p(a0), e = p(a1), m = p((a0+a1)/2);
+      body += `<path d="M${cx},${cy} L${s[0]},${s[1]} A${r},${r} 0 ${big} 1 ${e[0]},${e[1]} Z" fill="${pal[i%pal.length]}" stroke="#fff" stroke-width="2"/>`;
+      body += `<text x="${cx + (m[0]-cx)*.65}" y="${cy + (m[1]-cy)*.65 + 4}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">${v}%</text>`; a0 = a1; });
+    c.labels.forEach((l,i) => body += `<rect x="400" y="${100+i*34}" width="18" height="18" rx="3" fill="${pal[i%pal.length]}"/><text x="428" y="${114+i*34}" font-size="14" fill="#1f2430">${esc(l)} (${c.values[i]}%)</text>`);
+  } else if (c.type === "process") {
+    const n = c.labels.length, bw = 106, gap = (W - 20 - n*bw)/(n-1);
+    c.labels.forEach((l,i) => { const x = 10 + i*(bw+gap), yb = 140;
+      body += `<rect x="${x}" y="${yb}" width="${bw}" height="96" rx="10" fill="${pal[i%pal.length]}"/><text x="${x+bw/2}" y="${yb-12}" text-anchor="middle" font-size="12" font-weight="700" fill="#6b7280">Step ${i+1}</text>`;
+      const ws = l.split(" "), lines = []; let cur = ""; ws.forEach(w => { if ((cur+" "+w).trim().length > 13) { lines.push(cur.trim()); cur = w; } else cur += " " + w; }); lines.push(cur.trim());
+      lines.forEach((ln,j) => body += `<text x="${x+bw/2}" y="${yb + 48 - (lines.length-1)*9 + j*18}" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">${esc(ln)}</text>`);
+      if (i < n-1) { const ax = x + bw + 3, bx = x + bw + gap - 3; body += `<line x1="${ax}" y1="${yb+48}" x2="${bx-6}" y2="${yb+48}" stroke="#374151" stroke-width="2"/><path d="M${bx-8},${yb+42} L${bx},${yb+48} L${bx-8},${yb+54} Z" fill="#374151"/>`; } });
+  }
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(c.title)}"><rect width="${W}" height="${H}" fill="#ffffff"/>${title}${body}</svg>`;
+}
+
+/* =====================================================================
+   SCORING (automatic estimates — your teacher gives the final feedback)
+   ===================================================================== */
+function lcsCount(a, b){ const m=a.length, n=b.length; const dp = Array.from({length:m+1}, () => new Array(n+1).fill(0));
+  for (let i=1;i<=m;i++) for (let j=1;j<=n;j++) dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1]+1 : Math.max(dp[i-1][j], dp[i][j-1]); return dp[m][n]; }
+function kwHits(text, list){ const t = " " + String(text||"").toLowerCase().replace(/\s+/g," ") + " "; return list.map(k => new RegExp(k, "i").test(t)); }
+function fluencyBand(n, secs){ if (!n || secs < 1) return 0; const wpm = n/secs*60; return wpm>=110&&wpm<=175?5 : wpm>=90&&wpm<=195?4 : wpm>=70?3 : wpm>=50?2 : 1; }
+function pronBand(confs, ratio, n){ if (!n) return 0; const good = confs.filter(c=>c>0); if (good.length) { const avg = good.reduce((a,b)=>a+b,0)/good.length; return clamp(Math.round(avg*5),1,5); } return clamp(Math.round(ratio*4)+1,1,5); }
+function grammarBand(text, email){ const s = String(text||"").trim(); if (!s) return 0; let g = 2;
+  const body = s.replace(/\b(?:[a-z]\.){2,}/gi, m => m.replace(/\./g,"")).replace(/\b(?:mr|mrs|ms|dr|etc|e\.g|i\.e)\./gi, m => m.replace(/\./g,""));
+  const lines = email ? body.split(/\n+/).filter(l => l.trim()) : [body];
+  const sentences = lines.flatMap(l => l.trim().split(/(?<=[.!?])\s+/)).filter(Boolean);
+  if (sentences.some(x => !/^[A-Z0-9"'(£$€]/.test(x.trim()))) g--;
+  if (!email && !/[.!?]$/.test(s)) g--;
+  if (/(^|\s)i(\s|'|$)/.test(s) || /[ \t]{2,}\S|[ \t][,.]/.test(s)) g--; return clamp(g,0,2); }
+
+function scoreSpeaking(task, item, r){
+  const n = words(r.transcript).length, secs = r.secs || 0;
+  if (!r.recognitionAvailable) return {parts:[], total:null, max:null, note:"Automatic scoring needs Chrome or Microsoft Edge (speech recognition). Your recording is saved for your teacher to review."};
+  if (!n) return {parts:[{label:"Content",got:0,max:task.id==="asq"?1:5}], total:0, max:task.id==="asq"?1:(task.id==="rs"?13:15), note:"No speech was detected. Check your microphone and speak clearly after the tone."};
+  if (task.id === "asq") { const said = " " + words(r.transcript).join(" ") + " "; const ok = item.a.some(a => said.includes(" " + words(a).join(" ") + " ")); return {parts:[{label:"Vocabulary",got:ok?1:0,max:1}], total:ok?1:0, max:1, note: ok ? "Correct." : "Expected: " + item.a[0]}; }
+  let content, cMax = 5, ratio;
+  if (task.id === "ra" || task.id === "rs") {
+    const target = words(item.text), said = words(r.transcript); ratio = lcsCount(target, said) / target.length;
+    if (task.id === "rs") { cMax = 3; content = ratio >= .98 ? 3 : ratio >= .5 ? 2 : ratio > .1 ? 1 : 0; } else content = clamp(Math.round(ratio*5),0,5);
+  } else {
+    const hits = kwHits(r.transcript, item.keywords); ratio = hits.filter(Boolean).length / hits.length;
+    const lenBonus = n >= 55 ? 1 : n >= 35 ? .5 : 0; content = clamp(Math.round(ratio*4 + lenBonus),0,5);
+  }
+  const flu = fluencyBand(n, secs), pro = pronBand(r.confs||[], ratio, n);
+  const parts = [{label: task.id==="rts" ? "Appropriacy" : "Content", got:content, max:cMax}, {label:"Oral fluency", got:flu, max:5}, {label:"Pronunciation", got:pro, max:5}];
+  return {parts, total: content+flu+pro, max: cMax+10, note: `${n} words in ${Math.round(secs)} s (${secs?Math.round(n/secs*60):0} words/min). Scores are estimates from speech recognition.`};
+}
+function scoreWriting(task, item, text){
+  const n = wordCount(text), [lo, hi] = task.timing.words, hits = kwHits(text, task.id==="we" ? [] : item.keywords);
+  if (!n) return {parts:[], total:0, max: task.id==="we"?11:7, note:"No answer was written."};
+  const gram = grammarBand(text, task.id === "we");
+  if (task.id === "we") {
+    const covered = item.points.map(p => kwHits(text, p.kw).filter(Boolean).length >= Math.min(2, p.kw.length));
+    const content = covered.filter(Boolean).length;
+    const form = n>=lo && n<=hi ? 2 : (n>=30 && n<=140 ? 1 : 0);
+    const conv = (/^\s*(dear|hi|hello|good (morning|afternoon)|to whom)/i.test(text) ? 1 : 0) + (/(regards|sincerely|faithfully|best wishes|thanks|thank you|cheers|best,)/i.test(text.slice(-120)) ? 1 : 0);
+    const paras = text.split(/\n\s*\n/).filter(x=>x.trim()).length, org = paras >= 4 ? 2 : paras >= 2 ? 1 : 0;
+    return {parts:[{label:"Content (task points)",got:content,max:3},{label:"Form (word count)",got:form,max:2},{label:"Email conventions",got:conv,max:2},{label:"Organization",got:org,max:2},{label:"Grammar & mechanics",got:gram,max:2}],
+      total: content+form+conv+org+gram, max:11, note:`${n} words. Points covered: ` + item.points.map((p,i)=>(covered[i]?"✓ ":"✗ ")+p.label).join(" · ")};
+  }
+  const ratio = hits.filter(Boolean).length / hits.length, content = clamp(Math.round(ratio*4),0,4), form = n>=lo && n<=hi ? 1 : 0;
+  return {parts:[{label:"Content (key ideas)",got:content,max:4},{label:`Form (${lo}–${hi} words)`,got:form,max:1},{label:"Grammar & mechanics",got:gram,max:2}], total: content+form+gram, max:7, note:`${n} words.`};
+}
+
+/* =====================================================================
+   APP STATE & ROUTING
+   ===================================================================== */
+const S = { mode:"student", session:null, view:"home", task:null, idx:0, teacher:{pass:null, tab:"review", filterStudent:"", filterStatus:"todo", filterTask:""} };
+let ACTIVE = null;
+function stopActive(){ if (ACTIVE) { try { ACTIVE.cancel(); } catch(e){} ACTIVE = null; } try { speechSynthesis.cancel(); } catch(e){} }
+
+function setTabs(list){
+  $("#tabs").innerHTML = list.map(([id,label]) => `<button type="button" data-nav="${id}" class="${S.view===id||S.teacher.tab===id&&S.mode==='teacher'?'on':''}">${esc(label)}</button>`).join("");
+}
+function header(){
+  if (S.mode === "teacher") { setTabs(S.teacher.pass ? [["review","Review work"],["questions","Questions"],["codes","Students & codes"],["website","Website"],["settings","Setup"]] : []); $("#who").textContent = S.teacher.pass ? "Teacher portal" : ""; $("#logoutBtn").classList.toggle("hidden", !S.teacher.pass); $("#logoutBtn").textContent = "Sign out"; return; }
+  if (!S.session) { setTabs([]); $("#who").textContent=""; $("#logoutBtn").classList.add("hidden"); return; }
+  setTabs([["home","Practice"],["work","My work & feedback"],["help","How it works"]]);
+  $("#who").textContent = S.session.n + " · " + S.session.id; $("#logoutBtn").textContent = "Sign out"; $("#logoutBtn").classList.remove("hidden");
+}
+function render(){
+  stopActive(); header();
+  const app = $("#app");
+  if (S.mode === "teacher") return renderTeacher(app);
+  if (!S.session) return renderLogin(app);
+  if (S.view === "task") return renderTask(app);
+  if (S.view === "work") return renderWork(app);
+  if (S.view === "help") return renderHelp(app);
+  return renderHome(app);
+}
+function go(view, task, idx){ S.view = view; if (task) S.task = task; if (idx !== undefined) S.idx = idx; render(); window.scrollTo(0,0); }
+
+document.addEventListener("click", e => {
+  const nav = e.target.closest("[data-nav]");
+  if (nav) { e.preventDefault(); const v = nav.dataset.nav;
+    if (S.mode === "teacher") { if (["codes","review","questions","website","settings"].includes(v)) { S.teacher.tab = v; render(); } else if (v==="home") render(); return; }
+    go(v === "home" ? "home" : v); }
+});
+$("#logoutBtn").addEventListener("click", () => {
+  if (S.mode === "teacher") { S.teacher.pass = null; sessionStorage.removeItem("pte_tpass"); localStorage.removeItem("pte_tpass"); render(); return; }
+  if (confirm("Sign out? Work you submitted stays with your teacher.")) { localStorage.removeItem("pte_session"); S.session = null; render(); }
+});
+
+/* =====================================================================
+   STUDENT: LOGIN
+   ===================================================================== */
+function renderLogin(app){
+  const fromLink = normCode(decodeURIComponent((location.hash.match(/code=([^&]+)/)||[])[1] || ""));
+  app.innerHTML = `<div class="landing">
+    <div class="lhero"><img src="${BRAND_BANNER}" alt="PTE Decode Academy — Decode PTE. Achieve Your Target.">
+      <div class="lform card"><h2>Student sign-in</h2><p class="small muted" style="margin-block-start:0">Practise all 19 PTE Core question types with instant scoring and personal feedback from your teacher.</p>
+        ${CONFIG.apiUrl ? "" : `<div class="tip small">This site isn't connected to its online storage yet, so nobody can sign in. Teacher: follow the setup guide and add your Web app URL.</div>`}
+        <label class="f" for="codeIn">Your access code</label>
+        <input type="text" id="codeIn" autocomplete="off" spellcheck="false" placeholder="PTE-XXXX-XXXX-XXXX" value="${esc(fromLink)}" style="font-family:Consolas,Menlo,monospace;letter-spacing:.05em;text-transform:uppercase">
+        <div id="loginErr" class="small" style="color:var(--bad);margin-block:6px"></div>
+        <button class="btn accent" id="loginBtn" type="button" style="inline-size:100%;justify-content:center">Sign in</button>
+        <p class="small muted" style="margin-block:12px 0">Don't have a code? Message us on <a href="${esc(CONFIG.facebookPage)}" target="_blank" rel="noopener">Facebook</a>. Codes are personal — please don't share yours.</p></div></div>
+    <div class="lfeat"><div><b>🎙 Speaking with AI Score</b><span class="small muted">Read Aloud, Repeat Sentence, Describe Image, Respond to a Situation and Answer Short Question — with real exam timers.</span></div>
+      <div><b>✍️ Writing & Reading</b><span class="small muted">Write Email, Summarize Written Text, Fill in the Blanks, Re-order Paragraphs and Multiple Choice.</span></div>
+      <div><b>🎧 Listening</b><span class="small muted">Write from Dictation, Highlight Incorrect Words, Summarize Spoken Text and more.</span></div>
+      <div><b>💬 Teacher feedback</b><span class="small muted">Submit any answer and get a score, written comments and voice messages from your teacher.</span></div></div>
+    <div class="social">
+      <div class="card"><h2>Follow PTE Decode Academy</h2><p class="small muted">Tips, live sessions, success stories and the latest PTE Core updates — join our community on Facebook.</p>
+        <a class="btn fb" href="${esc(CONFIG.facebookPage)}" target="_blank" rel="noopener"><b style="font-family:Arial,sans-serif;font-size:16px">f</b>&nbsp;Visit our Facebook page</a>
+        <p class="small" style="margin-block-start:12px"><a href="${esc(CONFIG.facebookPage)}" target="_blank" rel="noopener">facebook.com/ptedecodeacademy</a></p></div>
+      <a class="vid" href="${esc(CONFIG.facebookVideo)}" target="_blank" rel="noopener" aria-label="Watch our video on Facebook">
+        <span class="tagl">PTE <span>Decode</span> Academy</span><span class="play"><span>▶</span></span><span class="cap">Watch our latest video on Facebook ↗</span></a>
+    </div>
+    <footer class="site"><span>© ${new Date().getFullYear()} PTE Decode Academy · ${esc(CONFIG.tagline)}</span><span><a href="${esc(CONFIG.facebookPage)}" target="_blank" rel="noopener">Facebook</a></span></footer>
+  </div>`;
+  const doLogin = async () => { const code = normCode($("#codeIn").value); if (!code) { $("#loginErr").textContent = "Please enter the full code, for example PTE-AB12-CD34-EF56."; return; }
+    const btn = $("#loginBtn"); btn.disabled = true; btn.textContent = "Signing in…"; $("#loginErr").textContent = "";
+    try { const r = await api("login", {code}); S.session = {code, id:r.student.id, n:r.student.name, e:r.student.expires}; QLOADED = false; localStorage.setItem("pte_session", JSON.stringify(S.session));
+      history.replaceState(null,"",location.pathname); S.view = "home"; render(); toast("Welcome, " + r.student.name + "!"); }
+    catch(e){ $("#loginErr").textContent = e.message; btn.disabled = false; btn.textContent = "Sign in"; } };
+  $("#loginBtn").addEventListener("click", doLogin);
+  $("#codeIn").addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
+  if (fromLink && CONFIG.apiUrl) doLogin();
+}
+
+/* =====================================================================
+   STUDENT: HOME
+   ===================================================================== */
+async function renderHome(app){
+  await ensureQuestions();
+  const attempts = await DB.all("attempts"); const mine = attempts.filter(a => a.student.id === S.session.id);
+  const doneSet = new Set(mine.map(a => a.type + ":" + a.itemIdx));
+  const fbCount = mine.filter(a => a.submissionId).length;
+  const auto = mine.filter(a => a.auto && a.auto.max); const avg = auto.length ? Math.round(auto.reduce((s,a)=>s + a.auto.total/a.auto.max, 0)/auto.length*100) : null;
+  app.innerHTML = `<div class="hero"><div><h1>Hello, ${esc(S.session.n)} 👋</h1><div class="small" style="color:var(--ai);font-weight:700;margin-block-end:4px">${esc(CONFIG.tagline)}</div><div class="muted">Choose a question type to start practising. Tasks marked <span class="tag-ai">AI Score</span> are scored automatically; the rest are marked instantly.</div></div>
+    <div class="stat"><div><span class="small muted">Attempts</span><b>${mine.length}</b></div><div><span class="small muted">Average auto-score</span><b>${avg===null?"–":avg+"%"}</b></div><div><span class="small muted">Sent to teacher</span><b>${fbCount}</b></div></div></div><div id="fbBanner"></div>
+    <div class="grid g4">${SECTIONS.map(sec => `<div class="card"><div class="sec-head"><h2>${esc(sec.name)}</h2>${TASKS.some(t=>t.sec===sec.id&&t.ai)?'<span class="tag-pill">Score</span>':''}</div>
+      <div class="small muted" style="margin-block:12px 6px">${esc(sec.part)}</div>
+      ${TASKS.filter(t => t.sec === sec.id).map(t => { const vis = visibleList(t.id), tot = vis.length, done = vis.filter(v => doneSet.has(t.id+":"+v.idx)).length, fresh = vis.filter(v => v.custom).length;
+        return `<button type="button" class="task-link" data-task="${t.id}"><span class="nm">${esc(t.name)}</span>${t.ai?'<span class="tag-ai">AI Score</span>':''}${fresh?`<span class="badge b-info" title="Questions added by your teacher">★ ${fresh}</span>`:""}<span class="cnt">${done}/${tot}</span></button>`; }).join("")}
+    </div>`).join("")}</div>
+    <div class="card" style="margin-block-start:18px"><h3>Before you start</h3><ul class="small" style="margin:0;padding-inline-start:18px">
+      <li>Use <b>Google Chrome or Microsoft Edge</b> on a computer with a headset microphone for the best speaking scores.</li>
+      <li>Listening and speaking prompts are read aloud by your browser's voice. Turn your sound on.</li>
+      <li>After each answer, click <b>📤 Submit for teacher feedback</b> to send it to your teacher. Their feedback appears under <b>My work &amp; feedback</b>.</li></ul>
+      <div class="row" style="margin-block-start:10px"><label class="small" for="rateSel">Audio speed</label><select id="rateSel" style="inline-size:auto">${[["0.85","Slower"],["0.95","Normal"],["1.05","Exam-like"]].map(([v,l])=>`<option value="${v}" ${localStorage.getItem("pte_rate")===v?"selected":""}>${l}</option>`).join("")}</select>
+      <label class="small" for="voiceSel">Voice</label><select id="voiceSel" style="inline-size:auto;max-inline-size:260px"></select><button class="btn ghost sm" type="button" id="testVoice">Test sound</button></div></div>`;
+  $$(".task-link", app).forEach(b => b.addEventListener("click", () => go("task", b.dataset.task, -1)));
+  api("myWork", {code:S.session.code}).then(r => { const seen = localStorage.getItem("pte_fb_seen_" + S.session.id) || ""; const n = r.items.filter(x => x.reviewedAt && x.reviewedAt > seen).length; const el = $("#fbBanner");
+    if (n && el) { el.innerHTML = `<div class="card" style="margin-block-end:18px;border-color:var(--brand)"><div class="row"><span style="font-size:22px">💬</span><b>Your teacher left feedback on ${n} answer${n>1?"s":""}.</b><span class="spacer"></span><button class="btn sm" type="button" data-nav="work">See feedback</button></div></div>`; } }).catch(e => { if (e.server && /withdrawn|expired|not recognised/i.test(e.message)) { localStorage.removeItem("pte_session"); S.session = null; render(); toast(e.message, 6000); } });
+  $("#rateSel").addEventListener("change", e => localStorage.setItem("pte_rate", e.target.value));
+  const fillVoices = () => { const vs = ("speechSynthesis" in window) ? speechSynthesis.getVoices().filter(v=>/^en[-_]/i.test(v.lang)) : []; const sel = $("#voiceSel"); if (!sel) return;
+    sel.innerHTML = vs.length ? vs.map(v=>`<option ${VOICE&&VOICE.name===v.name?"selected":""}>${esc(v.name)}</option>`).join("") : "<option>Default voice</option>"; };
+  fillVoices(); setTimeout(fillVoices, 600);
+  $("#voiceSel").addEventListener("change", e => { localStorage.setItem("pte_voice", e.target.value); VOICE = pickVoice(); });
+  $("#testVoice").addEventListener("click", () => speak("This is how the audio prompts will sound."));
+}
+
+/* =====================================================================
+   STUDENT: PRACTICE A TASK
+   ===================================================================== */
+let CUR_ITEM = null;
+async function renderTask(app){
+  await ensureQuestions();
+  const t = TASK[S.task], list = visibleList(t.id);
+  if (!list.length) { app.innerHTML = `<div class="row" style="margin-block-end:14px"><button class="btn ghost sm" type="button" data-nav="home">← All question types</button><h1 style="margin:0">${esc(t.name)}</h1></div><div class="card"><p class="muted">There are no questions of this type yet. Your teacher will add some soon.</p></div>`; return; }
+  let pos = list.findIndex(v => v.idx === S.idx); if (pos < 0) { pos = 0; S.idx = list[0].idx; }
+  const item = list[pos].item; CUR_ITEM = item;
+  const attempts = (await DB.all("attempts")).filter(a => a.student.id === S.session.id && a.type === t.id);
+  app.innerHTML = `<div class="row" style="margin-block-end:14px"><button class="btn ghost sm" type="button" data-nav="home">← All question types</button>
+      <h1 style="margin:0">${esc(t.name)}</h1>${t.ai?'<span class="tag-ai">AI Score</span>':''}<span class="spacer"></span><span class="small muted">${esc(t.exam)}</span></div>
+    <div class="prac"><div class="qnav">${list.map(v=>`<button type="button" data-q="${v.idx}" class="${v.idx===S.idx?'on':''}">${esc(qLabel(t.id, v.idx))}${attempts.some(a=>a.itemIdx===v.idx)?'<span class="done">✓</span>':''}</button>`).join("")}
+      <div class="tip small"><b>Tip:</b> ${esc(t.tip)}</div></div>
+    <div class="card" id="qcard"><div class="instr">${esc(t.instr)}</div><div id="qbody"></div><div id="qresult"></div>
+      <div class="row" style="margin-block-start:16px;justify-content:space-between"><button class="btn ghost sm" type="button" id="prevQ" ${pos===0?"disabled":""}>← Previous</button><button class="btn ghost sm" type="button" id="nextQ" ${pos>=list.length-1?"disabled":""}>Next →</button></div></div></div>`;
+  $$("[data-q]", app).forEach(b => b.addEventListener("click", () => go("task", t.id, +b.dataset.q)));
+  $("#prevQ").addEventListener("click", () => go("task", t.id, list[pos-1].idx));
+  $("#nextQ").addEventListener("click", () => go("task", t.id, list[pos+1].idx));
+  const body = $("#qbody");
+  ({speak: buildSpeak, write: buildWrite, rwfib: buildRWFIB, mcm: buildMC, mcs: buildMC, ro: buildRO, dnd: buildDND, lfib: buildLFIB, hiw: buildHIW, wfd: buildWFD})[t.kind](t, item, body);
+}
+
+async function saveAttempt(t, response, auto, extra={}){
+  const a = {id: uid("A"), student:{id:S.session.id, name:S.session.n}, type:t.id, itemIdx:S.idx, createdAt:new Date().toISOString(), response, auto, ...extra};
+  await DB.put("attempts", a); $$(".qnav [data-q]").forEach(b => { if (+b.dataset.q === S.idx && !b.querySelector(".done")) b.insertAdjacentHTML("beforeend",'<span class="done">✓</span>'); });
+  return a;
+}
+function scoreHTML(auto, extra=""){
+  if (!auto) return "";
+  const pct = auto.max ? Math.round(auto.total/auto.max*100) : null;
+  return `<div class="score"><div class="row"><span class="tot">${auto.total===null?"Saved":auto.total+" / "+auto.max}</span>${pct!==null?`<span class="badge ${pct>=70?'b-ok':pct>=45?'b-warn':'b-bad'}">${pct}%</span>`:''}<span class="small muted">Automatic score (estimate)</span></div>
+    ${auto.parts.length?`<div class="parts">${auto.parts.map(p=>`<div>${esc(p.label)}<br><b>${p.got}</b> / ${p.max}</div>`).join("")}</div>`:""}
+    ${auto.note?`<div class="small muted">${esc(auto.note)}</div>`:""}${extra}</div>`;
+}
+const retryBtn = () => `<div class="row" style="margin-block-start:12px"><button class="btn" type="button" id="sendT">📤 Submit for teacher feedback</button><button class="btn ghost sm" type="button" id="retry">↻ Try again</button><span class="small muted" id="sendInfo"></span></div>`;
+function bindRetry(t, att){ const b = $("#retry"); if (b) b.addEventListener("click", () => go("task", t.id, S.idx));
+  const sb = $("#sendT"); if (!sb || !att) return;
+  sb.addEventListener("click", async () => { sb.disabled = true; sb.textContent = "Sending…";
+    try { await submitAttempt(att); sb.textContent = "✓ Sent to your teacher"; $("#sendInfo").textContent = "You'll see the feedback under My work & feedback."; }
+    catch(e){ sb.disabled = false; sb.textContent = "📤 Submit for teacher feedback"; toast(e.message, 5000); } }); }
+async function submitAttempt(a){
+  if (a.submissionId) return a;
+  const t = TASK[a.type], audio = a.response && a.response.audio instanceof Blob ? await blobToDataURL(a.response.audio) : null;
+  if (audio && audio.length > 8e6) throw new Error("This recording is too large to send. Please try the question again.");
+  const r = await api("submit", {code:S.session.code, attempt:{localId:a.id, type:a.type, taskName:t.name, section:(SECTIONS.find(x=>x.id===t.sec)||{}).name, itemIdx:a.itemIdx,
+    prompt:promptSummary(a.type, a.itemIdx), response:describeResponse(a), auto:a.auto, audio}});
+  a.submissionId = r.id; a.submittedAt = new Date().toISOString(); await DB.put("attempts", a); return a;
+}
+
+/* ---------- Speaking ---------- */
+function buildSpeak(t, item, body){
+  let html = "";
+  if (t.id === "ra") html += `<div class="passage">${esc(item.text)}</div>`;
+  if (t.id === "di") html += item.chart ? chartSVG(item.chart) : `${item.title?`<h3>${esc(item.title)}</h3>`:""}<div class="diwrap"><img id="diImg" class="chart" alt="${esc(item.title||"Image to describe")}" style="display:none"><p class="muted small" id="diLoad">Loading image…</p></div>`;
+  if (t.id === "rts") html += `<div class="passage">${esc(item.text)}</div>`;
+  if (t.id === "rs" || t.id === "asq") html += `<p class="muted">🎧 The ${t.id==="rs"?"sentence":"question"} will be played when you press Start. You will hear it once.</p>`;
+  html += `<div class="rec"><div class="rec-status">Press Start when you are ready.</div><div class="bar"><i></i></div><div class="rec-live" aria-live="polite"></div>
+    <div class="row" style="margin-block-start:10px"><button class="btn" type="button" id="recStart">▶ Start</button><button class="btn ghost hidden" type="button" id="recSkip">Skip waiting</button><button class="btn danger hidden" type="button" id="recStop">■ Finish</button></div></div>`;
+  body.innerHTML = html;
+  $("#recStart").addEventListener("click", () => runSpeaking(t, item));
+  if (t.id === "di" && item.imageQid) mediaURL(item.imageQid, "image").then(u => { const im = $("#diImg"); if (im) { im.src = u; im.style.display = "block"; $("#diLoad").remove(); } }).catch(e => { const l = $("#diLoad"); if (l) l.textContent = "The image couldn't be loaded: " + e.message; });
+}
+async function runSpeaking(t, item){
+  const status = $(".rec-status"), bar = $(".bar"), fill = $(".bar>i"), live = $(".rec-live"), startB = $("#recStart"), skipB = $("#recSkip"), stopB = $("#recStop");
+  const sess = {cancelled:false, timer:null, done:null, cancel(){ this.cancelled = true; clearInterval(this.timer); try { recorder && recorder.state !== "inactive" && recorder.stop(); } catch(e){} try { recog && recog.abort(); } catch(e){} stream && stream.getTracks().forEach(x=>x.stop()); try { speechSynthesis.cancel(); } catch(e){} }};
+  let stream, recorder, recog, chunks = [], transcript = "", interim = "", confs = [], recording = false;
+  stopActive(); ACTIVE = sess; startB.classList.add("hidden");
+  try { stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true}}); }
+  catch(e){ status.textContent = "Microphone access is blocked. Allow the microphone for this site in your browser settings, then try again."; startB.classList.remove("hidden"); return; }
+  const countdown = (secs, label, rec) => new Promise(res => { const t0 = Date.now(); bar.classList.toggle("recording", !!rec);
+    sess.done = () => { clearInterval(sess.timer); res(); };
+    const tick = () => { const el = (Date.now()-t0)/1000; status.textContent = label.replace("{s}", Math.max(0, Math.ceil(secs-el))); fill.style.inlineSize = Math.min(100, el/secs*100) + "%"; if (el >= secs) sess.done(); };
+    sess.timer = setInterval(tick, 200); tick(); });
+  const audioText = t.id === "rs" ? item.text : t.id === "asq" ? item.q : t.id === "rts" ? item.text : null;
+  if (audioText) { status.textContent = "🔊 Playing audio…"; fill.style.inlineSize = "0%"; await playPrompt(item, audioText, sess); if (sess.cancelled) return; if (!("speechSynthesis" in window)) live.textContent = "Audio is not supported in this browser. Prompt: " + audioText; }
+  if (t.timing.prep) { skipB.classList.remove("hidden"); skipB.onclick = () => sess.done && sess.done(); await countdown(t.timing.prep, "Recording begins in {s} seconds", false); skipB.classList.add("hidden"); if (sess.cancelled) return; }
+  await beep(); if (sess.cancelled) return;
+  // start recording + speech recognition
+  try { recorder = new MediaRecorder(stream); recorder.ondataavailable = e => e.data.size && chunks.push(e.data); recorder.start(); } catch(e){ recorder = null; }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recording = true;
+  if (SR) { try { recog = new SR(); recog.lang = "en-US"; recog.continuous = true; recog.interimResults = true;
+      recog.onresult = e => { interim = ""; for (let i = e.resultIndex; i < e.results.length; i++) { const r = e.results[i]; if (r.isFinal) { transcript += " " + r[0].transcript; if (r[0].confidence) confs.push(r[0].confidence); } else interim += r[0].transcript; } live.textContent = (transcript + " " + interim).trim(); };
+      recog.onend = () => { if (recording && !sess.cancelled) { try { recog.start(); } catch(e){} } };
+      recog.onerror = () => {}; recog.start(); } catch(e){ recog = null; } }
+  const recStart = Date.now(); stopB.classList.remove("hidden"); stopB.onclick = () => sess.done && sess.done();
+  await countdown(t.timing.rec, "● Recording… {s} seconds left", true); if (sess.cancelled) return;
+  const secs = (Date.now() - recStart)/1000; recording = false; stopB.classList.add("hidden");
+  status.textContent = "Processing your answer…"; fill.style.inlineSize = "100%";
+  if (recog) { try { recog.stop(); } catch(e){} await new Promise(r => setTimeout(r, 1200)); }
+  if (interim && !transcript.trim()) transcript = interim; else if (interim) transcript += " " + interim;
+  const blob = await new Promise(res => { if (!recorder || recorder.state === "inactive") return res(null); recorder.onstop = () => res(new Blob(chunks, {type: recorder.mimeType || "audio/webm"})); recorder.stop(); });
+  stream.getTracks().forEach(x => x.stop()); ACTIVE = null;
+  const auto = scoreSpeaking(t, item, {transcript: transcript.trim(), secs, confs, recognitionAvailable: !!recog});
+  const att = await saveAttempt(t, {transcript: transcript.trim(), seconds: Math.round(secs), audio: blob}, auto);
+  status.textContent = "✓ Response saved."; live.textContent = "";
+  const url = blob ? URL.createObjectURL(blob) : null;
+  const ref = t.id==="ra"||t.id==="rs" ? `<div class="model"><b>Text:</b> ${esc(item.text)}</div>` : t.id==="asq" ? `<div class="model"><b>Question:</b> ${esc(item.q)}<br><b>Answer:</b> ${esc(item.a[0])}</div>` : item.model ? `<div class="model"><b>Sample answer:</b> ${esc(item.model)}</div>` : "";
+  $("#qresult").innerHTML = scoreHTML(auto, `${url?`<div style="margin-block-start:10px"><audio controls src="${url}"></audio></div>`:""}<div class="small" style="margin-block-start:8px"><b>What we heard:</b> ${esc(transcript.trim()||"—")}</div>${ref}${retryBtn()}`);
+  bindRetry(t, att);
+}
+
+/* ---------- Writing (SWT, Write Email, SST) ---------- */
+function buildWrite(t, item, body){
+  let html = "";
+  if (t.id === "swt") html += `<h3>${esc(item.title)}</h3><div class="passage">${esc(item.text)}</div>`;
+  if (t.id === "we") html += `<div class="passage">${esc(item.situation)}<ul style="margin-block:8px 0">${item.points.map(p=>`<li>${esc(p.label)}</li>`).join("")}</ul></div>`;
+  if (t.id === "sst") html += `<div class="row"><button class="btn" type="button" id="playA">▶ Play recording</button><span class="small muted" id="playInfo">In the exam you hear it once.</span></div>`;
+  html += `<div class="row" style="justify-content:space-between;margin-block:14px 6px"><b>Your response</b><span>Time left: <span class="timer" id="wTimer">${t.timing.min}:00</span></span></div>
+    <textarea id="wText" spellcheck="false" autocomplete="off" placeholder="Type your answer here…" style="min-block-size:${t.id==='we'?220:140}px"></textarea>
+    <div class="wc"><span id="wCount">Word count: 0</span><span>Target: ${t.timing.words[0]}–${t.timing.words[1]} words</span></div>
+    <button class="btn" type="button" id="wSubmit" style="margin-block-start:10px">Submit answer</button>`;
+  body.innerHTML = html;
+  const ta = $("#wText"), cnt = $("#wCount"); ta.addEventListener("input", () => cnt.textContent = "Word count: " + wordCount(ta.value));
+  const sess = {cancelled:false, cancel(){ this.cancelled = true; clearInterval(this.iv); try { speechSynthesis.cancel(); } catch(e){} }};
+  ACTIVE = sess; let left = t.timing.min*60, started = Date.now();
+  sess.iv = setInterval(() => { left--; const el = $("#wTimer"); if (!el) return clearInterval(sess.iv); el.textContent = Math.floor(left/60) + ":" + String(left%60).padStart(2,"0"); el.classList.toggle("low", left <= 60); if (left <= 0) { clearInterval(sess.iv); toast("Time is up — your answer has been submitted."); submit(); } }, 1000);
+  if (t.id === "sst") { let plays = 0; $("#playA").addEventListener("click", async () => { plays++; $("#playA").disabled = true; $("#playInfo").textContent = "🔊 Playing…"; await playPrompt(item, item.script, sess); $("#playA").disabled = false; $("#playInfo").textContent = `Played ${plays} time${plays>1?"s":""}. In the exam you hear it once.`; }); }
+  let submitted = false;
+  async function submit(){ if (submitted) return; submitted = true; clearInterval(sess.iv); ta.readOnly = true; $("#wSubmit").disabled = true;
+    const auto = scoreWriting(t, item, ta.value);
+    const att = await saveAttempt(t, {text: ta.value, seconds: Math.round((Date.now()-started)/1000)}, auto);
+    const model = item.model ? `<div class="model" style="white-space:pre-wrap"><b>Sample answer:</b>\n${esc(item.model)}</div>` : "";
+    const scr = t.id === "sst" ? `<details style="margin-block-start:8px"><summary class="small">Show transcript</summary><div class="small">${esc(item.script)}</div></details>` : "";
+    $("#qresult").innerHTML = scoreHTML(auto, model + scr + retryBtn()); bindRetry(t, att); }
+  $("#wSubmit").addEventListener("click", submit);
+}
+
+/* ---------- Audio player for listening items ---------- */
+function audioBar(item, text){
+  return `<div class="row" style="margin-block-end:12px"><button class="btn" type="button" id="playA">▶ Play recording</button><span class="small muted" id="playInfo">In the exam you hear it once.</span></div>`;
+}
+function bindAudio(text, afterBeep){
+  const sess = {cancelled:false, cancel(){ this.cancelled = true; try { speechSynthesis.cancel(); } catch(e){} }}; ACTIVE = sess; let plays = 0;
+  const b = $("#playA"); if (!b) return;
+  b.addEventListener("click", async () => { plays++; b.disabled = true; $("#playInfo").textContent = "🔊 Playing…"; await playPrompt(CUR_ITEM, text, sess); if (afterBeep && !sess.cancelled) await beep(1000, 600); b.disabled = false; $("#playInfo").textContent = `Played ${plays} time${plays>1?"s":""}. In the exam you hear it once.`; });
+}
+const lis = t => t.sec === "listening";
+
+/* ---------- Reading & Writing FIB (drop-down) ---------- */
+function buildRWFIB(t, item, body){
+  const html = esc(item.text).replace(/\[\[(\d+)\]\]/g, (_, n) => `<select class="blank" data-b="${n}"><option value=""></option>${item.blanks[n].o.map(o=>`<option>${esc(o)}</option>`).join("")}</select>`);
+  body.innerHTML = `<div class="passage">${html}</div><button class="btn" type="button" id="chk" style="margin-block-start:14px">Submit answer</button>`;
+  $("#chk").addEventListener("click", async () => { const sels = $$("select.blank"); let got = 0; const ans = [];
+    sels.forEach(s => { const b = item.blanks[s.dataset.b], ok = s.value === b.a; ans.push(s.value); if (ok) got++; s.classList.add(ok?"right":"wrong"); s.disabled = true; });
+    const auto = {parts:[], total:got, max:item.blanks.length, note:"1 point per correct blank. Answers: " + item.blanks.map(b=>b.a).join(", ")};
+    const att = await saveAttempt(t, {selections: ans}, auto); $("#chk").disabled = true; $("#qresult").innerHTML = scoreHTML(auto, retryBtn()); bindRetry(t, att); });
+}
+/* ---------- Multiple choice (single / multiple; reading & listening) ---------- */
+function buildMC(t, item, body){
+  const multi = t.kind === "mcm";
+  body.innerHTML = (lis(t) ? audioBar() : `<div class="passage">${esc(item.text)}</div>`) + `<h3 style="margin-block:16px 8px">${esc(item.q)}</h3>` +
+    item.o.map((o,i) => `<label class="opt"><input type="${multi?"checkbox":"radio"}" name="mc" value="${i}"><span>${esc(o)}</span></label>`).join("") +
+    `<button class="btn" type="button" id="chk" style="margin-block-start:10px">Submit answer</button>`;
+  if (lis(t)) bindAudio(item.script, t.id === "smw");
+  $("#chk").addEventListener("click", async () => { const chosen = $$("input[name=mc]:checked").map(x => +x.value); if (!chosen.length) return toast("Select an answer first.");
+    const correct = multi ? item.a : [item.a]; let total, max;
+    if (multi) { total = Math.max(0, chosen.filter(c => correct.includes(c)).length - chosen.filter(c => !correct.includes(c)).length); max = correct.length; } else { total = chosen[0] === item.a ? 1 : 0; max = 1; }
+    $$(".opt").forEach((l,i) => { if (correct.includes(i)) l.classList.add("right"); else if (chosen.includes(i)) l.classList.add("wrong"); l.querySelector("input").disabled = true; });
+    const auto = {parts:[], total, max, note: multi ? "+1 for each correct option, −1 for each incorrect option (minimum 0)." : ""};
+    const att = await saveAttempt(t, {selections: chosen}, auto); $("#chk").disabled = true;
+    $("#qresult").innerHTML = scoreHTML(auto, (lis(t) ? `<details style="margin-block-start:8px"><summary class="small">Show transcript</summary><div class="small">${esc(item.script)}${t.id==="smw"?" <b>"+esc(item.o[item.a])+"</b>":""}</div></details>` : "") + retryBtn()); bindRetry(t, att); });
+}
+/* ---------- Re-order paragraphs ---------- */
+function buildRO(t, item, body){
+  let order = shuffle(item.items.map((_,i)=>i), S.idx + 7); if (order.every((v,i)=>v===i)) order.reverse();
+  const draw = (locked, res) => { $("#roList").innerHTML = order.map((k,pos) => `<div class="ro-item ${res?res[pos]:''}"><span class="badge b-info">${String.fromCharCode(65+k)}</span><span class="t">${esc(item.items[k])}</span>${locked?"":`<button class="btn ghost sm" type="button" data-up="${pos}" ${pos===0?"disabled":""} aria-label="Move up">↑</button><button class="btn ghost sm" type="button" data-dn="${pos}" ${pos===order.length-1?"disabled":""} aria-label="Move down">↓</button>`}</div>`).join("");
+    $$("[data-up]").forEach(b => b.addEventListener("click", () => { const p = +b.dataset.up; [order[p-1],order[p]] = [order[p],order[p-1]]; draw(); }));
+    $$("[data-dn]").forEach(b => b.addEventListener("click", () => { const p = +b.dataset.dn; [order[p+1],order[p]] = [order[p],order[p+1]]; draw(); })); };
+  body.innerHTML = `<div id="roList"></div><button class="btn" type="button" id="chk" style="margin-block-start:10px">Submit answer</button>`; draw();
+  $("#chk").addEventListener("click", async () => { let pairs = 0; for (let i=0;i<order.length-1;i++) if (order[i+1] === order[i]+1) pairs++;
+    draw(true, order.map((k,pos) => k===pos ? "right" : "wrong"));
+    const auto = {parts:[], total:pairs, max:order.length-1, note:"1 point for each correctly ordered adjacent pair. Correct order: " + item.items.map((_,i)=>String.fromCharCode(65+i)).join(" → ")};
+    const att = await saveAttempt(t, {order: order.map(k=>String.fromCharCode(65+k))}, auto); $("#chk").disabled = true; $("#qresult").innerHTML = scoreHTML(auto, retryBtn()); bindRetry(t, att); });
+}
+/* ---------- Reading FIB (drag and drop) ---------- */
+function buildDND(t, item, body){
+  const pool = shuffle(item.a.concat(item.extra), S.idx + 3); const fill = {}; let selected = null;
+  body.innerHTML = `<div class="passage" id="dndText">${esc(item.text).replace(/\[\[(\d+)\]\]/g, (_, n) => `<span class="drop" data-d="${n}" tabindex="0">&nbsp;</span>`)}</div><div class="chips" id="pool"></div><button class="btn" type="button" id="chk">Submit answer</button>`;
+  const drawPool = () => { const used = Object.values(fill); $("#pool").innerHTML = pool.filter(w => !used.includes(w)).map(w => `<span class="chip ${selected===w?'sel':''}" draggable="true" data-w="${esc(w)}">${esc(w)}</span>`).join("");
+    $$(".chip").forEach(c => { c.addEventListener("dragstart", e => e.dataTransfer.setData("text/plain", c.dataset.w)); c.addEventListener("click", () => { selected = selected === c.dataset.w ? null : c.dataset.w; drawPool(); }); }); };
+  const place = (d, w) => { for (const k in fill) if (fill[k] === w) delete fill[k]; fill[d.dataset.d] = w; selected = null; drawDrops(); drawPool(); };
+  const drawDrops = () => $$(".drop").forEach(d => { const w = fill[d.dataset.d]; d.textContent = w || "\u00a0"; d.classList.toggle("filled", !!w); });
+  $$(".drop").forEach(d => { d.addEventListener("dragover", e => e.preventDefault()); d.addEventListener("drop", e => { e.preventDefault(); place(d, e.dataTransfer.getData("text/plain")); });
+    d.addEventListener("click", () => { if (d.dataset.locked) return; if (selected) place(d, selected); else if (fill[d.dataset.d]) { delete fill[d.dataset.d]; drawDrops(); drawPool(); } }); });
+  drawPool();
+  $("#chk").addEventListener("click", async () => { let got = 0; $$(".drop").forEach(d => { const ok = fill[d.dataset.d] === item.a[d.dataset.d]; if (ok) got++; d.classList.add(ok?"right":"wrong"); d.dataset.locked = "1"; });
+    const auto = {parts:[], total:got, max:item.a.length, note:"1 point per correct gap. Answers: " + item.a.join(", ")};
+    const att = await saveAttempt(t, {selections: item.a.map((_,i)=>fill[i]||"")}, auto); $("#chk").disabled = true; $("#pool").innerHTML = ""; $("#qresult").innerHTML = scoreHTML(auto, retryBtn()); bindRetry(t, att); });
+}
+/* ---------- Listening FIB ---------- */
+function buildLFIB(t, item, body){
+  const answers = []; const spoken = item.script.replace(/\[([^\]]+)\]/g, "$1");
+  const html = esc(item.script).replace(/\[([^\]]+)\]/g, (_, w) => { answers.push(w); return `<input class="blank" type="text" data-b="${answers.length-1}" spellcheck="false" autocomplete="off" aria-label="Blank ${answers.length}">`; });
+  body.innerHTML = audioBar() + `<div class="passage">${html}</div><button class="btn" type="button" id="chk" style="margin-block-start:14px">Submit answer</button>`;
+  bindAudio(spoken);
+  $("#chk").addEventListener("click", async () => { let got = 0; const typed = [];
+    $$("input.blank").forEach(i => { const ok = i.value.trim().toLowerCase() === answers[i.dataset.b].toLowerCase(); typed.push(i.value.trim()); if (ok) got++; i.classList.add(ok?"right":"wrong"); i.readOnly = true; });
+    const auto = {parts:[], total:got, max:answers.length, note:"1 point per correctly spelled word. Answers: " + answers.join(", ")};
+    const att = await saveAttempt(t, {selections: typed}, auto); $("#chk").disabled = true; $("#qresult").innerHTML = scoreHTML(auto, retryBtn()); bindRetry(t, att); });
+}
+/* ---------- Highlight incorrect words ---------- */
+function buildHIW(t, item, body){
+  const shown = item.shown.split(/\s+/), spoken = item.spoken.split(/\s+/), clean = w => w.toLowerCase().replace(/[^a-z0-9']/g,"");
+  const wrongIdx = shown.map((w,i) => clean(w) !== clean(spoken[i]||"") ? i : -1).filter(i => i >= 0);
+  body.innerHTML = audioBar() + `<div class="passage hiw">${shown.map((w,i)=>`<span data-i="${i}">${esc(w)}</span>`).join(" ")}</div><button class="btn" type="button" id="chk" style="margin-block-start:14px">Submit answer</button>`;
+  bindAudio(item.spoken); const sel = new Set();
+  $$(".hiw span").forEach(s => s.addEventListener("click", () => { if ($("#chk").disabled) return; const i = +s.dataset.i; sel.has(i) ? sel.delete(i) : sel.add(i); s.classList.toggle("sel"); }));
+  $("#chk").addEventListener("click", async () => { const good = [...sel].filter(i => wrongIdx.includes(i)).length, bad = sel.size - good;
+    $$(".hiw span").forEach(s => { const i = +s.dataset.i; s.classList.remove("sel"); if (sel.has(i)) s.classList.add(wrongIdx.includes(i) ? "right" : "wrong"); else if (wrongIdx.includes(i)) s.classList.add("missed"); });
+    const auto = {parts:[], total: Math.max(0, good-bad), max: wrongIdx.length, note:"+1 for each correct word, −1 for each wrong click. The speaker said: " + wrongIdx.map(i => `"${spoken[i]}" (not "${shown[i]}")`).join(", ")};
+    const att = await saveAttempt(t, {selections: [...sel].map(i => shown[i])}, auto); $("#chk").disabled = true; $("#qresult").innerHTML = scoreHTML(auto, retryBtn()); bindRetry(t, att); });
+}
+/* ---------- Write from dictation ---------- */
+function buildWFD(t, item, body){
+  body.innerHTML = audioBar() + `<input type="text" id="wfdIn" spellcheck="false" autocomplete="off" placeholder="Type the sentence you hear…"><button class="btn" type="button" id="chk" style="margin-block-start:14px">Submit answer</button>`;
+  bindAudio(item.text);
+  $("#chk").addEventListener("click", async () => { const target = words(item.text), typed = words($("#wfdIn").value); const pool = typed.slice(); let got = 0;
+    target.forEach(w => { const k = pool.indexOf(w); if (k >= 0) { got++; pool.splice(k,1); } });
+    const auto = {parts:[], total:got, max:target.length, note:"1 point per correct word (spelling must be exact)."};
+    const att = await saveAttempt(t, {text: $("#wfdIn").value}, auto); $("#wfdIn").readOnly = true; $("#chk").disabled = true;
+    $("#qresult").innerHTML = scoreHTML(auto, `<div class="model"><b>Sentence:</b> ${esc(item.text)}</div>` + retryBtn()); bindRetry(t, att); });
+}
+
+/* =====================================================================
+   STUDENT: MY WORK, SEND TO TEACHER, LOAD FEEDBACK
+   ===================================================================== */
+function describeResponse(a){
+  const r = a.response || {};
+  if (r.text !== undefined) return r.text || "—";
+  if (r.transcript !== undefined) return r.transcript ? "Recognised speech: " + r.transcript : "(Recording only)";
+  if (r.order) return "Order: " + r.order.join(" → ");
+  if (r.selections) { const it = getItem(a.type, a.itemIdx); if (it && it.o && (a.type==="rmcm"||a.type==="lmcm"||a.type==="rmcs"||a.type==="lmcs"||a.type==="smw")) return "Chose: " + r.selections.map(i => it.o[i]).join(" | "); return "Answers: " + r.selections.map(x => x===""?"(blank)":x).join(", "); }
+  return "—";
+}
+function promptSummary(type, idx){
+  const it = getItem(type, idx); if (!it) return "";
+  if (it.imageQ) return "Describe Image" + (it.title ? ": " + it.title : "");
+  return it.text || it.q || it.situation || (it.chart && it.chart.title) || it.title || it.script || it.shown || (it.items && it.items[0]) || "";
+}
+async function renderWork(app){
+  await ensureQuestions();
+  app.innerHTML = `<div class="hero"><div><h1>My work &amp; feedback</h1><div class="muted">Answers you submit go straight to your teacher. Their scores and comments appear here.</div></div>
+    <div class="row"><button class="btn ghost" type="button" id="refresh">↻ Refresh</button></div></div><div id="unsent"></div><div class="card" id="sentBox"><p class="muted">Loading your work…</p></div>`;
+  $("#refresh").addEventListener("click", () => render());
+  const local = (await DB.all("attempts")).filter(a => a.student.id === S.session.id);
+  const byLocal = Object.fromEntries(local.map(a => [a.id, a]));
+  const drawUnsent = () => { const un = local.filter(a => !a.submissionId).sort((a,b) => b.createdAt.localeCompare(a.createdAt)); const box = $("#unsent"); if (!box) return;
+    if (!un.length) { box.innerHTML = ""; return; }
+    box.innerHTML = `<div class="card" style="margin-block-end:18px"><div class="row"><h2 style="margin:0">Not yet submitted (${un.length})</h2><span class="spacer"></span><button class="btn sm" type="button" id="sendAllU">📤 Submit all</button></div>
+      <p class="small muted">These practice answers are saved on this device only. Submit the ones you'd like your teacher to review.</p>
+      <table class="t"><thead><tr><th>Date</th><th>Question</th><th>Your response</th><th>Auto-score</th><th></th></tr></thead><tbody>${un.slice(0,50).map(a => `<tr><td class="small">${esc(fmtDate(a.createdAt))}</td><td><b>${esc(TASK[a.type].name)}</b><br><span class="small muted">${esc(qLabel(a.type, a.itemIdx))}</span></td>
+      <td class="small" style="max-inline-size:340px">${esc(describeResponse(a)).slice(0,300)}${a.response&&a.response.audio?'<br><span class="badge b-info">🎙 recording</span>':''}</td><td>${a.auto&&a.auto.max?`<b>${a.auto.total}/${a.auto.max}</b>`:"–"}</td>
+      <td><button class="btn ghost sm" type="button" data-send="${esc(a.id)}">Submit</button></td></tr>`).join("")}</tbody></table></div>`;
+    $$("[data-send]", box).forEach(b => b.addEventListener("click", async () => { b.disabled = true; b.textContent = "Sending…"; try { await submitAttempt(byLocal[b.dataset.send]); render(); } catch(e){ toast(e.message, 5000); b.disabled = false; b.textContent = "Submit"; } }));
+    $("#sendAllU").addEventListener("click", async e => { const btn = e.target; btn.disabled = true; let n = 0;
+      for (const a of un) { btn.textContent = `Sending ${++n} of ${un.length}…`; try { await submitAttempt(a); } catch(err){ toast(err.message, 5000); break; } } render(); }); };
+  drawUnsent();
+  let items;
+  try { items = (await api("myWork", {code:S.session.code})).items; }
+  catch(e){ $("#sentBox").innerHTML = `<p style="color:var(--bad)">${esc(e.message)}</p>`; return; }
+  localStorage.setItem("pte_fb_seen_" + S.session.id, new Date().toISOString());
+  const box = $("#sentBox"); if (!box) return;
+  const rev = items.filter(x => x.status === "Reviewed").length;
+  box.innerHTML = `<div class="row"><h2 style="margin:0">Submitted to your teacher (${items.length})</h2><span class="spacer"></span><span class="badge b-ok">${rev} reviewed</span><span class="badge b-warn">${items.length-rev} waiting</span></div>
+    ${items.length ? items.map(x => { const la = byLocal[x.localId]; return `<div class="review-card"><div class="row"><b>${esc(x.taskName)}</b><span class="small muted">${esc(qLabel(x.type, x.itemIdx))} · submitted ${esc(fmtDate(x.submittedAt))}</span><span class="spacer"></span>${x.status==="Reviewed"?'<span class="badge b-ok">Reviewed</span>':'<span class="badge b-warn">Waiting for feedback</span>'}</div>
+      ${x.hasAudio ? `<div style="margin-block:6px">${la && la.response && la.response.audio instanceof Blob ? `<audio controls data-local="${esc(la.id)}"></audio>` : `<button class="btn ghost sm" type="button" data-aud="${esc(x.id)}">▶ Load my recording</button>`}</div>` : ""}
+      <div class="resp">${esc(x.response||"—")}</div>
+      <div class="small" style="margin-block-start:6px">Auto-score: <b>${x.autoMax?esc(x.autoTotal)+" / "+esc(x.autoMax):"–"}</b></div>
+      ${x.status==="Reviewed" ? `<div class="fb"><b>Teacher feedback${x.teacherScore?` · Score: ${esc(x.teacherScore)}${x.autoMax&&!/\//.test(x.teacherScore)?" / "+esc(x.autoMax):""}`:""}</b>${x.hasFeedbackAudio?`<div style="margin-block:6px"><button class="btn sm" type="button" data-fva="${esc(x.id)}">🔊 Play your teacher's voice message</button></div>`:""}${x.teacherFeedback?"\n"+esc(x.teacherFeedback):""}<div class="small muted" style="margin-block-start:4px">${esc(fmtDate(x.reviewedAt))}</div></div>` : ""}</div>`; }).join("") : `<p class="muted">Nothing submitted yet. After answering a question, click <b>📤 Submit for teacher feedback</b>.</p>`}`;
+  $$("audio[data-local]", box).forEach(au => { au.src = URL.createObjectURL(byLocal[au.dataset.local].response.audio); });
+  $$("[data-fva]", box).forEach(b => b.addEventListener("click", async () => { b.disabled = true; b.textContent = "Loading…"; try { const r = await api("myAudio", {code:S.session.code, id:b.dataset.fva, kind:"feedback"}); const au = document.createElement("audio"); au.controls = true; au.src = r.audio; b.replaceWith(au); au.play().catch(()=>{}); } catch(e){ toast(e.message); b.disabled = false; b.textContent = "🔊 Play your teacher's voice message"; } }));
+  $$("[data-aud]", box).forEach(b => b.addEventListener("click", async () => { b.disabled = true; b.textContent = "Loading…"; try { const r = await api("myAudio", {code:S.session.code, id:b.dataset.aud}); const au = document.createElement("audio"); au.controls = true; au.src = r.audio; b.replaceWith(au); au.play().catch(()=>{}); } catch(e){ toast(e.message); b.disabled = false; b.textContent = "▶ Load my recording"; } }));
+}
+function renderHelp(app){
+  app.innerHTML = `<div class="grid g2"><div class="card"><h2>How this platform works</h2><ol class="steps">
+    <li>Choose a question type on the <b>Practice</b> page. Each type follows PTE Core timings.</li>
+    <li>Speaking questions record your voice. Allow microphone access when your browser asks.</li>
+    <li>You get an instant automatic score. It is an estimate to guide your practice — your teacher gives the final feedback.</li>
+    <li>Click <b>📤 Submit for teacher feedback</b> under any answer. It goes straight to your teacher, including your voice recording.</li>
+    <li>Open <b>My work &amp; feedback</b> to see your teacher's score and comments. A banner on the Practice page tells you when new feedback arrives.</li></ol></div>
+    <div class="card"><h2>PTE Core at a glance</h2><table class="t"><thead><tr><th>Part</th><th>Time</th><th>Question types</th></tr></thead><tbody>
+    <tr><td>1 · Speaking &amp; Writing</td><td>50–65 min</td><td>${TASKS.filter(t=>t.sec==="speaking"||t.sec==="writing").map(t=>esc(t.name)).join(", ")}</td></tr>
+    <tr><td>2 · Reading</td><td>27–37 min</td><td>${TASKS.filter(t=>t.sec==="reading").map(t=>esc(t.name)).join(", ")}</td></tr>
+    <tr><td>3 · Listening</td><td>22–37 min</td><td>${TASKS.filter(t=>t.sec==="listening").map(t=>esc(t.name)).join(", ")}</td></tr></tbody></table>
+    <p class="small muted">The real test starts with an unscored Personal Introduction. Work you submit is stored online with your teacher, so you can see your feedback from any device.</p></div></div>`;
+}
+
+/* =====================================================================
+   TEACHER-UPLOADED QUESTIONS
+   Built-in questions keep their positions (0, 1, 2 …). Teacher questions use
+   1000 + their number, so adding or hiding questions never changes the
+   question numbers on work students have already submitted.
+   ===================================================================== */
+const CUSTOM_BASE = 999;
+let CUSTOM = {}, SHOW_BUILTIN = true, QLOADED = false;
+const MEDIA = {};
+
+const isCustom = idx => idx > CUSTOM_BASE;
+function getItem(type, idx){ if (isCustom(idx)) { const c = (CUSTOM[type]||{})[idx]; return c ? c.item : null; } return (BANK[type]||[])[idx] || null; }
+function qLabel(type, idx){ return isCustom(idx) ? `★ Teacher Q${idx - CUSTOM_BASE}` : `Practice Q${idx + 1}`; }
+function visibleList(type){
+  const out = [];
+  Object.keys(CUSTOM[type]||{}).map(Number).sort((a,b)=>a-b).forEach(idx => { const c = CUSTOM[type][idx]; if (c.status === "Active") out.push({idx, item:c.item, custom:true}); });
+  if (SHOW_BUILTIN) (BANK[type]||[]).forEach((item, i) => out.push({idx:i, item, custom:false}));
+  return out;
+}
+function applyQuestions(list, showBuiltin){
+  CUSTOM = {}; SHOW_BUILTIN = showBuiltin !== false;
+  (list||[]).forEach(q => { const f = QFORMS[q.type]; if (!f) return;
+    let item; try { item = f.toItem(q.data || {}, q); } catch(e){ return; }
+    item.qid = q.id; if (q.hasAudio) item.audioQid = q.id; if (q.hasImage) item.imageQid = q.id;
+    (CUSTOM[q.type] = CUSTOM[q.type] || {})[CUSTOM_BASE + q.no] = {item, status:q.status, no:q.no, id:q.id, data:q.data||{}, hasAudio:q.hasAudio, hasImage:q.hasImage, updated:q.updated}; });
+  QLOADED = true;
+}
+async function ensureQuestions(force){
+  if (QLOADED && !force) return;
+  try { const r = S.mode === "teacher" ? await tapi("t_questions") : await api("questions", {code:S.session.code}); applyQuestions(r.items, r.showBuiltin); }
+  catch(e){ if (!QLOADED) applyQuestions([], true); }
+}
+async function mediaURL(qid, kind){
+  const k = qid + ":" + kind; if (MEDIA[k]) return MEDIA[k];
+  const r = S.mode === "teacher" ? await tapi("qMedia", {id:qid, kind}) : await api("qMedia", {code:S.session.code, id:qid, kind});
+  return (MEDIA[k] = r.data);
+}
+/* Plays the teacher's own recording when there is one, otherwise the computer voice. */
+async function playPrompt(item, text, token){
+  if (item && item.audioQid) {
+    try { const url = await mediaURL(item.audioQid, "audio"); if (token && token.cancelled) return false;
+      return await new Promise(res => { const a = new Audio(url); a.onended = () => res(true); a.onerror = () => res(false);
+        if (token) { const old = token.cancel; token.cancel = function(){ try { a.pause(); } catch(e){} res(false); return old.apply(this, arguments); }; }
+        a.play().catch(() => res(false)); }); }
+    catch(e){ toast("Couldn't load the recording, so the computer voice is used instead."); }
+  }
+  return speak(text, token);
+}
+
+/* ---------- helpers that turn teacher input into scorable questions ---------- */
+const STOP = new Set("about above after again against because been before being below between both could does doing down during each further have having here into itself just more most other ought over same should some such than that their theirs them then there these they this those through under until very were what when where which while whom with would your yours also many much will shall from only well like make made take".split(" "));
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function stem(w){ return w.length > 7 ? w.slice(0, 6) : w; }
+function contentWords(text, n){ const seen = new Set(), out = [];
+  (String(text||"").toLowerCase().match(/[a-z][a-z'-]{3,}/g) || []).forEach(w => { if (STOP.has(w)) return; const s = stem(w); if (!seen.has(s)) { seen.add(s); out.push(s); } });
+  return n ? out.sort((a,b) => b.length - a.length).slice(0, n) : out; }
+/* "four-day / shorter week, productivity" → ["four\-day|shorter week","productivity"] */
+function keywordList(manual, fallbackText, generic){
+  const m = String(manual||"").split(/[,\n]+/).map(x => x.trim()).filter(Boolean);
+  if (m.length) return m.map(k => k.split("/").map(x => reEsc(x.trim().toLowerCase())).filter(Boolean).join("|"));
+  const auto = contentWords(fallbackText, 8).map(reEsc);
+  return auto.length >= 3 ? auto : generic;
+}
+function splitLines(v){ return String(v||"").split(/\r?\n|\s\|\s/).map(x => x.trim()).filter(Boolean); }
+function parseOptions(v, need){ const lines = splitLines(v); if (lines.length < 2) throw new Error("Add at least 2 answer options, one per line.");
+  const o = [], a = []; lines.forEach((l, i) => { if (l.startsWith("*")) { a.push(i); o.push(l.replace(/^\*+\s*/, "")); } else o.push(l); });
+  if (!a.length) throw new Error("Mark the correct option(s) with * at the start of the line.");
+  if (need === "single" && a.length !== 1) throw new Error("Mark exactly one correct option with *.");
+  if (need === "multi" && a.length < 1) throw new Error("Mark the correct options with *.");
+  return {o, a}; }
+function seedOf(s){ let h = 7; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) % 100000; return h || 1; }
+const req = (v, label) => { if (!String(v||"").trim()) throw new Error(`"${label}" is required.`); return String(v).trim(); };
+const GENERIC_DI = ["shows|illustrat|presents|describ|depicts","highest|most|largest|peak|maximum|top","lowest|least|smallest|minimum|bottom","increas|rise|rose|grow|decreas|fall|fell|drop|compar|while|whereas","overall|in conclusion|to sum up|in summary"];
+const GENERIC_RTS = ["hello|hi|excuse me|dear|good morning|good afternoon","sorry|apolog|unfortunately|afraid","because|since|reason|so that","could|would|can|suggest|instead|alternative|possible","thank|appreciate"];
+
+/* Field types: text, textarea, options, image, audio. csv:false fields are form-only. */
+const F = {
+  text:    (k, label, help, opt) => ({k, label, help, kind:"text", ...opt}),
+  area:    (k, label, help, opt) => ({k, label, help, kind:"textarea", ...opt}),
+  options: (k, label, help) => ({k, label, help: help || "One option per line. Put * at the start of each correct option. In the spreadsheet, separate options with  |  ", kind:"textarea", rows:5}),
+  audio:   () => ({k:"_audio", label:"Audio recording (optional)", help:"Record or upload your own audio. If you leave this empty, the computer voice reads the text.", kind:"audio", csv:false}),
+  kw:      (from) => ({k:"keywords", label:"Key ideas for automatic scoring (optional)", help:`Separate ideas with commas; use / for alternatives, e.g. "price / cost, delivery, refund". If empty, they're taken from the ${from}.`, kind:"text", optional:true}),
+  model:   (label) => ({k:"model", label: label || "Sample answer (optional)", help:"Shown to students after they answer and used for automatic scoring.", kind:"textarea", rows:4, optional:true})
+};
+const QFORMS = {
+  ra:   {fields:[F.area("text","Text to read aloud","Up to about 60 words.",{rows:5})], toItem: d => ({text:req(d.text,"Text to read aloud")}), sum: d => d.text},
+  rs:   {fields:[F.text("text","Sentence","The sentence students hear and repeat (about 8–15 words)."), F.audio()], toItem: d => ({text:req(d.text,"Sentence")}), sum: d => d.text},
+  di:   {fields:[{k:"_image", label:"Image", help:"A chart, graph, map, process diagram or photo (JPG or PNG).", kind:"image", csv:false}, F.text("title","Image title (optional)","Shown above the image, e.g. \"Monthly sales 2026\".",{optional:true}), F.model("Sample description (recommended)"), F.kw("sample description")],
+         toItem: d => ({imageQ:true, title:d.title||"", model:d.model||"", keywords:keywordList(d.keywords, d.model, GENERIC_DI)}), sum: d => d.title || "Image question"},
+  rts:  {fields:[F.area("text","Situation","Describe the situation and end with the question, e.g. \"… What would you say to your manager?\" (up to ~60 words).",{rows:4}), F.model(), F.kw("sample answer"), F.audio()],
+         toItem: d => ({text:req(d.text,"Situation"), model:d.model||"", keywords:keywordList(d.keywords, d.model, GENERIC_RTS)}), sum: d => d.text},
+  asq:  {fields:[F.text("q","Question","e.g. \"What do you call a doctor who treats teeth?\""), F.text("answers","Accepted answers","Separate with commas, e.g. \"dentist, a dentist\"."), F.audio()],
+         toItem: d => { const a = String(req(d.answers,"Accepted answers")).split(/[,\n]+/).map(x => x.trim().toLowerCase()).filter(Boolean); return {q:req(d.q,"Question"), a}; }, sum: d => d.q},
+  swt:  {fields:[F.text("title","Title (optional)","",{optional:true}), F.area("text","Passage","The text students summarize (about 150–300 words).",{rows:8}), F.model("Sample summary (recommended)"), F.kw("sample summary")],
+         toItem: d => { const text = req(d.text,"Passage"); return {title:d.title||"Reading passage", text, model:d.model||"", keywords:keywordList(d.keywords, d.model || text, ["main|topic"])}; }, sum: d => d.title || d.text},
+  we:   {fields:[F.area("situation","Situation","e.g. \"You recently stayed at a hotel… Write an email to the hotel manager.\"",{rows:3}), F.text("p1","Point 1","e.g. \"Describe the jacket\""), F.text("p2","Point 2",""), F.text("p3","Point 3",""), F.model("Sample email (recommended)")],
+         toItem: d => { const pts = ["p1","p2","p3"].map((k,i) => { const label = req(d[k], "Point " + (i+1)); const w = contentWords(label).map(reEsc); return {label, kw:[w.length ? w.join("|") : reEsc(label.toLowerCase())]}; });
+           return {situation:req(d.situation,"Situation"), points:pts, model:d.model||""}; }, sum: d => d.situation},
+  rwfib:{fields:[F.area("text","Passage with gaps","Write each gap as [correct/wrong/wrong/wrong] — the FIRST word is the correct one. Options are shuffled automatically.\nExample: Staff must [complete/compete/complain/compare] the form by Friday.",{rows:6})],
+         toItem: d => { const blanks = []; const seed = seedOf(d.text);
+           const text = req(d.text,"Passage with gaps").replace(/\[([^\]]+)\]/g, (_, inner) => { const o = inner.split("/").map(x => x.trim()).filter(Boolean); if (o.length < 2) throw new Error("Each gap needs at least 2 options, e.g. [right/wrong/wrong]."); blanks.push({o: shuffle(o, seed + blanks.length), a:o[0]}); return `[[${blanks.length-1}]]`; });
+           if (!blanks.length) throw new Error("Add at least one gap in square brackets."); return {text, blanks}; }, sum: d => d.text},
+  rmcm: {fields:[F.area("text","Passage","",{rows:6}), F.text("q","Question","e.g. \"Which statements are true according to the text?\""), F.options("options","Options")],
+         toItem: d => { const {o,a} = parseOptions(d.options, "multi"); return {text:req(d.text,"Passage"), q:req(d.q,"Question"), o, a}; }, sum: d => d.q},
+  ro:   {fields:[F.area("sentences","Sentences in the CORRECT order","One sentence per line (3–6 sentences). Students see them shuffled. In the spreadsheet, separate sentences with  |  ",{rows:6})],
+         toItem: d => { const items = splitLines(d.sentences); if (items.length < 3 || items.length > 6) throw new Error("Re-order Paragraphs needs 3 to 6 sentences, one per line."); return {items}; }, sum: d => splitLines(d.sentences)[0]},
+  rfib: {fields:[F.area("text","Passage with gaps","Put each missing word in square brackets, e.g. \"One simple [strategy] is to save on payday.\"",{rows:6}), F.text("extra","Extra (wrong) words","Distractors for the word box, separated by commas, e.g. \"borrow, costs, hidden\".",{optional:true})],
+         toItem: d => { const a = []; const text = req(d.text,"Passage with gaps").replace(/\[([^\]]+)\]/g, (_, w) => { a.push(w.trim()); return `[[${a.length-1}]]`; });
+           if (!a.length) throw new Error("Put at least one missing word in square brackets."); return {text, a, extra:String(d.extra||"").split(/[,\n]+/).map(x => x.trim()).filter(Boolean)}; }, sum: d => d.text},
+  rmcs: {fields:[F.area("text","Passage","",{rows:6}), F.text("q","Question",""), F.options("options","Options","One option per line. Put * at the start of the ONE correct option. In the spreadsheet, separate options with  |  ")],
+         toItem: d => { const {o,a} = parseOptions(d.options, "single"); return {text:req(d.text,"Passage"), q:req(d.q,"Question"), o, a:a[0]}; }, sum: d => d.q},
+  sst:  {fields:[F.area("script","Recording script","What the speaker says (about 45–75 seconds when spoken).",{rows:6}), F.model("Sample summary (recommended)"), F.kw("sample summary"), F.audio()],
+         toItem: d => { const script = req(d.script,"Recording script"); return {script, model:d.model||"", keywords:keywordList(d.keywords, d.model || script, ["main|topic"])}; }, sum: d => d.script},
+  lmcm: {fields:[F.area("script","Recording script","",{rows:5}), F.text("q","Question",""), F.options("options","Options"), F.audio()],
+         toItem: d => { const {o,a} = parseOptions(d.options, "multi"); return {script:req(d.script,"Recording script"), q:req(d.q,"Question"), o, a}; }, sum: d => d.q},
+  lfib: {fields:[F.area("script","Recording script with gaps","Put each missing word in square brackets, e.g. \"The museum opens [daily] at [nine].\"",{rows:5}), F.audio()],
+         toItem: d => { const s = req(d.script,"Recording script with gaps"); if (!/\[[^\]]+\]/.test(s)) throw new Error("Put at least one missing word in square brackets."); return {script:s}; }, sum: d => d.script},
+  lmcs: {fields:[F.area("script","Recording script","",{rows:5}), F.text("q","Question",""), F.options("options","Options","One option per line. Put * at the start of the ONE correct option. In the spreadsheet, separate options with  |  "), F.audio()],
+         toItem: d => { const {o,a} = parseOptions(d.options, "single"); return {script:req(d.script,"Recording script"), q:req(d.q,"Question"), o, a:a[0]}; }, sum: d => d.q},
+  smw:  {fields:[F.area("script","Recording script (without the missing ending)","The recording stops here and a beep replaces the missing words.",{rows:4}), F.options("options","Options","One option per line. Put * at the start of the ONE correct ending. In the spreadsheet, separate options with  |  "), F.audio()],
+         toItem: d => { const {o,a} = parseOptions(d.options, "single"); return {script:req(d.script,"Recording script"), q:"Select the missing words.", o, a:a[0]}; }, sum: d => d.script},
+  hiw:  {fields:[F.area("spoken","What the speaker says","",{rows:3}), F.area("shown","What students read (with some words changed)","Must have the same number of words as the spoken text. Change 2–4 words.",{rows:3}), F.audio()],
+         toItem: d => { const sp = req(d.spoken,"What the speaker says"), sh = req(d.shown,"What students read"); const a = sp.split(/\s+/), b = sh.split(/\s+/);
+           if (a.length !== b.length) throw new Error(`Both texts must have the same number of words (spoken: ${a.length}, shown: ${b.length}).`);
+           if (!a.some((w,i) => w.toLowerCase().replace(/[^a-z0-9']/g,"") !== b[i].toLowerCase().replace(/[^a-z0-9']/g,""))) throw new Error("Change at least one word in the text students read.");
+           return {spoken:sp, shown:sh}; }, sum: d => d.shown},
+  wfd:  {fields:[F.text("text","Sentence","The sentence students type (about 8–14 words)."), F.audio()], toItem: d => ({text:req(d.text,"Sentence")}), sum: d => d.text}
+};
+const csvFields = type => QFORMS[type].fields.filter(f => f.csv !== false);
+
+/* ---------- CSV (Excel) import / export ---------- */
+function parseCSV(text){
+  text = String(text).replace(/^\uFEFF/, "");
+  const first = text.split(/\r?\n/)[0] || ""; const delim = [";", "\t", ","].sort((x,y) => first.split(y).length - first.split(x).length)[0];
+  const rows = []; let row = [], cur = "", q = false;
+  for (let i = 0; i < text.length; i++) { const c = text[i];
+    if (q) { if (c === '"') { if (text[i+1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; }
+    else if (c === '"') q = true; else if (c === delim) { row.push(cur); cur = ""; }
+    else if (c === "\n" || c === "\r") { if (c === "\r" && text[i+1] === "\n") i++; row.push(cur); rows.push(row); row = []; cur = ""; }
+    else cur += c; }
+  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
+  return rows.filter(r => r.some(x => String(x).trim() !== ""));
+}
+const csvCell = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+
+/* =====================================================================
+   TEACHER: QUESTIONS (add, edit, hide, bulk upload)
+   ===================================================================== */
+const QT = {type:"ra", editing:null};
+function compressImage(file){
+  return new Promise((res, rej) => { const fr = new FileReader(); fr.onerror = () => rej(new Error("Couldn't read the image."));
+    fr.onload = () => { const img = new Image(); img.onerror = () => rej(new Error("That file isn't a supported image. Use JPG or PNG."));
+      img.onload = () => { const max = 1400, sc = Math.min(1, max / Math.max(img.width, img.height)); const c = document.createElement("canvas");
+        c.width = Math.round(img.width * sc); c.height = Math.round(img.height * sc); const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+        res(c.toDataURL("image/jpeg", 0.85)); };
+      img.src = fr.result; };
+    fr.readAsDataURL(file); });
+}
+function typeSelect(cur){
+  return `<select id="qType" style="inline-size:auto;min-inline-size:280px">${SECTIONS.map(sec => `<optgroup label="${esc(sec.name)}">${TASKS.filter(t => t.sec === sec.id).map(t => `<option value="${t.id}" ${t.id===cur?"selected":""}>${esc(t.name)}</option>`).join("")}</optgroup>`).join("")}</select>`;
+}
+async function renderQuestions(p){
+  p.innerHTML = `<div class="card"><p class="muted">Loading questions…</p></div>`;
+  await ensureQuestions(true);
+  const t = TASK[QT.type], form = QFORMS[QT.type], mine = CUSTOM[QT.type] || {}, ed = QT.editing ? mine[QT.editing] : null;
+  const counts = TASKS.map(x => [x, Object.values(CUSTOM[x.id]||{}).filter(c => c.status === "Active").length]);
+  const totalActive = counts.reduce((s, [, n]) => s + n, 0);
+  p.innerHTML = `<div class="hero"><div><h1>Questions</h1><div class="muted">Add your own questions. They appear for students straight away, marked ★ Teacher.</div></div>
+      <div class="stat"><div><span class="small muted">Your active questions</span><b>${totalActive}</b></div></div></div>
+    <div class="card" style="margin-block-end:18px"><div class="row"><label class="row small" style="gap:8px"><input type="checkbox" id="showB" ${SHOW_BUILTIN?"checked":""}> Also show the built-in practice questions to students</label>
+      <span class="spacer"></span><span class="small muted">Untick to give students only your questions.</span></div></div>
+    <div class="grid" style="grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:18px" id="qGrid">
+      <div class="card"><div class="row" style="margin-block-end:6px"><h2 style="margin:0">${ed ? "Edit question" : "Add a question"}</h2><span class="spacer"></span>${ed?`<span class="badge b-info">${esc(qLabel(QT.type, QT.editing))}</span>`:""}</div>
+        <label class="f" for="qType">Question type</label>${ed ? `<div class="row"><b>${esc(t.name)}</b><button class="btn ghost sm" type="button" id="qCancel">Cancel editing</button></div>` : typeSelect(QT.type)}
+        <div class="instr small" style="margin-block:12px 0"><b>Students see:</b> ${esc(t.instr)}</div>
+        <div id="qFields"></div>
+        <div id="qErr" class="small" style="color:var(--bad);margin-block:8px"></div>
+        <div class="row"><button class="btn accent" type="button" id="qSave">${ed ? "Save changes" : "Add question"}</button>${ed?"":`<span class="small muted">Saved questions are ready for students immediately.</span>`}</div></div>
+      <div class="card"><h2>Upload from Excel</h2>
+        ${csvFields(QT.type).length && QT.type !== "di" ? `<ol class="steps small"><li>Download the template for <b>${esc(t.name)}</b>.</li><li>Open it in Excel, add one question per row (keep the first row).</li><li>Save as <b>CSV UTF-8 (Comma delimited)</b>.</li><li>Upload it, check the preview, and add the questions.</li></ol>
+          <div class="row"><button class="btn ghost sm" type="button" id="qTpl">⬇ Download template</button><button class="btn sm" type="button" id="qCsv">⬆ Upload CSV file</button></div><div id="qPrev"></div>`
+          : `<p class="small muted">${QT.type==="di"?"Describe Image needs an image for each question, so add them one at a time with the form.":"Use the form for this type."}</p>`}
+        <h3 style="margin-block-start:18px">Your questions by type</h3>
+        <div class="small">${counts.filter(([, n]) => n).map(([x, n]) => `<button class="btn ghost sm" type="button" data-qt="${x.id}" style="margin:2px">${esc(x.name)} · ${n}</button>`).join("") || '<span class="muted">None yet.</span>'}</div></div>
+    </div>
+    <div class="card" style="margin-block-start:18px"><h2>${esc(t.name)}: your questions (${Object.keys(mine).length})</h2><div id="qList"></div></div>`;
+  if (window.matchMedia("(max-width:900px)").matches) $("#qGrid").style.gridTemplateColumns = "1fr";
+
+  /* form */
+  const data = ed ? {...ed.data} : {}; let image = null, audio = null, removeAudio = false;
+  const fh = $("#qFields");
+  form.fields.forEach(f => { const w = document.createElement("div"); const id = "qf_" + f.k;
+    if (f.kind === "text") w.innerHTML = `<label class="f" for="${id}">${esc(f.label)}</label><input type="text" id="${id}" value="${esc(data[f.k]||"")}">`;
+    else if (f.kind === "textarea") w.innerHTML = `<label class="f" for="${id}">${esc(f.label)}</label><textarea id="${id}" rows="${f.rows||3}" style="min-block-size:${(f.rows||3)*24}px">${esc(data[f.k]||"")}</textarea>`;
+    else if (f.kind === "image") w.innerHTML = `<label class="f" for="${id}">${esc(f.label)}${ed&&ed.hasImage?" (leave empty to keep the current image)":""}</label><input type="file" id="${id}" accept="image/png,image/jpeg,image/webp,image/gif"><div id="qImgPrev" style="margin-block-start:8px"></div>`;
+    else if (f.kind === "audio") w.innerHTML = `<label class="f">${esc(f.label)}</label><div class="row"><input type="file" id="${id}" accept="audio/*" style="inline-size:auto"><span class="small muted">or</span><span id="qRec"></span></div><div id="qAudPrev" class="small" style="margin-block-start:6px"></div>`;
+    if (f.help) w.insertAdjacentHTML("beforeend", `<div class="small muted" style="white-space:pre-line;margin-block-start:3px">${esc(f.help)}</div>`);
+    fh.appendChild(w); });
+  if (!ed) { const sel = $("#qType"); if (sel) sel.addEventListener("change", e => { QT.type = e.target.value; QT.editing = null; renderQuestions(p); }); }
+  else $("#qCancel").addEventListener("click", () => { QT.editing = null; renderQuestions(p); });
+  const imgIn = $("#qf__image");
+  if (imgIn) { if (ed && ed.hasImage) mediaURL(ed.id, "image").then(u => { $("#qImgPrev").innerHTML = `<img src="${u}" alt="Current image" style="max-inline-size:100%;max-block-size:220px;border-radius:8px;border:1px solid var(--border)">`; }).catch(()=>{});
+    imgIn.addEventListener("change", async () => { const f = imgIn.files[0]; if (!f) return; try { image = await compressImage(f); $("#qImgPrev").innerHTML = `<img src="${image}" alt="Preview" style="max-inline-size:100%;max-block-size:220px;border-radius:8px;border:1px solid var(--border)">`; } catch(e){ toast(e.message); image = null; } }); }
+  const audIn = $("#qf__audio");
+  if (audIn) {
+    const showCur = () => { const ap = $("#qAudPrev"); if (!ap) return;
+      if (audio) { ap.innerHTML = `<span class="badge b-ok">New audio ready</span>`; return; }
+      if (ed && ed.hasAudio && !removeAudio) { ap.innerHTML = `Current audio: <button class="btn ghost sm" type="button" id="qAudPlay">▶ Play</button> <button class="btn ghost sm" type="button" id="qAudDel">Remove (use computer voice)</button>`;
+        $("#qAudPlay").addEventListener("click", async e => { const b = e.target; b.disabled = true; try { const u = await mediaURL(ed.id, "audio"); const a = document.createElement("audio"); a.controls = true; a.src = u; b.replaceWith(a); a.play().catch(()=>{}); } catch(err){ toast(err.message); b.disabled = false; } });
+        $("#qAudDel").addEventListener("click", () => { removeAudio = true; showCur(); }); return; }
+      ap.innerHTML = removeAudio ? `<span class="muted">The current audio will be removed when you save.</span>` : ""; };
+    const rec = makeRecorder($("#qRec"), b => { if (b) { blobToDataURL(b).then(u => { audio = u; audIn.value = ""; showCur(); }); } else { audio = null; showCur(); } }, "🎙 Record");
+    ACTIVE = rec;
+    audIn.addEventListener("change", async () => { const f = audIn.files[0]; if (!f) return; if (f.size > 6e6) { toast("Please use an audio file under 6 MB."); audIn.value = ""; return; } audio = await blobToDataURL(f); if (!/^data:audio\//.test(audio)) audio = audio.replace(/^data:[^;]*;/, "data:audio/mpeg;"); showCur(); });
+    showCur(); }
+  $("#qSave").addEventListener("click", async e => { const b = e.target; $("#qErr").textContent = "";
+    const d = {}; form.fields.filter(f => f.kind === "text" || f.kind === "textarea").forEach(f => d[f.k] = $("#qf_" + f.k).value.trim());
+    try { form.toItem(d); if (QT.type === "di" && !ed && !image) throw new Error("Please choose an image."); }
+    catch(err){ $("#qErr").textContent = err.message; return; }
+    b.disabled = true; b.textContent = image || audio ? "Uploading…" : "Saving…";
+    try { await tapi("t_saveQuestion", {id: ed ? ed.id : undefined, type:QT.type, data:d, image, audio, removeAudio: removeAudio && !audio});
+      if (ed) { delete MEDIA[ed.id + ":image"]; delete MEDIA[ed.id + ":audio"]; }
+      toast(ed ? "Question updated." : "Question added — students can practise it now."); QT.editing = null; renderQuestions(p); }
+    catch(err){ $("#qErr").textContent = err.message; b.disabled = false; b.textContent = ed ? "Save changes" : "Add question"; } });
+
+  /* list */
+  const ql = $("#qList"), keys = Object.keys(mine).map(Number).sort((a,b) => b-a);
+  ql.innerHTML = keys.length ? `<table class="t"><thead><tr><th>Question</th><th>Content</th><th>Media</th><th>Status</th><th></th></tr></thead><tbody>${keys.map(k => { const c = mine[k];
+    return `<tr><td><b>${esc(qLabel(QT.type, k))}</b><br><span class="small muted">${esc(fmtDate(c.updated))}</span></td><td class="small" style="max-inline-size:440px">${esc(String(form.sum(c.data)||"").slice(0,180))}</td>
+      <td class="small">${c.hasImage?"🖼 ":""}${c.hasAudio?"🔊 own audio":""}</td><td><span class="badge ${c.status==="Active"?"b-ok":"b-warn"}">${c.status==="Active"?"Visible":"Hidden"}</span></td>
+      <td><div class="row"><button class="btn ghost sm" type="button" data-qe="${k}">Edit</button><button class="btn ghost sm" type="button" data-qh="${k}">${c.status==="Active"?"Hide":"Show"}</button></div></td></tr>`; }).join("")}</tbody></table>
+    <p class="small muted">Hiding removes a question from students' lists but keeps their past answers and your feedback. Please hide questions rather than deleting rows in the Google Sheet.</p>`
+    : `<p class="muted">You haven't added any ${esc(t.name)} questions yet.</p>`;
+  $$("[data-qe]", ql).forEach(b => b.addEventListener("click", () => { QT.editing = +b.dataset.qe; renderQuestions(p); window.scrollTo(0, 0); }));
+  $$("[data-qh]", ql).forEach(b => b.addEventListener("click", async () => { const c = mine[+b.dataset.qh]; b.disabled = true;
+    try { await tapi("t_setQuestionStatus", {id:c.id, status: c.status === "Active" ? "Hidden" : "Active"}); toast(c.status === "Active" ? "Question hidden from students." : "Question visible to students again."); renderQuestions(p); }
+    catch(e){ toast(e.message); b.disabled = false; } }));
+  $$("[data-qt]", p).forEach(b => b.addEventListener("click", () => { QT.type = b.dataset.qt; QT.editing = null; renderQuestions(p); }));
+  $("#showB").addEventListener("change", async e => { const v = e.target.checked;
+    try { await tapi("t_saveSettings", {showBuiltin:v}); SHOW_BUILTIN = v; toast(v ? "Built-in practice questions are visible to students." : "Students now see only your questions."); }
+    catch(err){ e.target.checked = !v; toast(err.message, 5000); } });
+
+  /* CSV */
+  const tpl = $("#qTpl"); if (!tpl) return;
+  const cols = csvFields(QT.type);
+  tpl.addEventListener("click", () => { const ex = CSV_EXAMPLES[QT.type] || {};
+    download(`PTE-${QT.type}-template.csv`, "\uFEFF" + [cols.map(f => csvCell(f.k)).join(","), cols.map(f => csvCell(ex[f.k] || "")).join(",")].join("\r\n")); });
+  $("#qCsv").addEventListener("click", () => { const inp = document.createElement("input"); inp.type = "file"; inp.accept = ".csv,text/csv";
+    inp.addEventListener("change", async () => { const f = inp.files[0]; if (!f) return; const rows = parseCSV(await f.text());
+      if (rows.length < 2) { toast("The file has no question rows."); return; }
+      const head = rows[0].map(h => h.trim().toLowerCase()), map = cols.map(c => head.indexOf(c.k.toLowerCase()));
+      const missing = cols.filter((c, i) => map[i] < 0 && !c.optional && !/^(model|keywords|title|extra)$/.test(c.k)).map(c => c.k);
+      if (missing.length) { $("#qPrev").innerHTML = `<div class="tip small">This file doesn't match the <b>${esc(t.name)}</b> template. Missing column(s): ${esc(missing.join(", "))}. Download the template and try again.</div>`; return; }
+      const parsed = rows.slice(1).map((r, n) => { const d = {}; cols.forEach((c, i) => { if (map[i] >= 0) d[c.k] = String(r[map[i]] || "").trim(); });
+        try { form.toItem(d); return {n:n+2, d, ok:true}; } catch(e){ return {n:n+2, d, ok:false, err:e.message}; } });
+      const good = parsed.filter(x => x.ok);
+      $("#qPrev").innerHTML = `<div class="score"><b>${good.length} ready</b>${parsed.length - good.length ? ` · <span style="color:var(--bad)">${parsed.length - good.length} with problems (they'll be skipped)</span>` : ""}
+        <table class="t" style="margin-block-start:8px"><tbody>${parsed.slice(0, 40).map(x => `<tr><td class="small">Row ${x.n}</td><td class="small">${esc(String(form.sum(x.d)||"").slice(0,90))}</td><td class="small">${x.ok ? '<span class="badge b-ok">OK</span>' : `<span style="color:var(--bad)">${esc(x.err)}</span>`}</td></tr>`).join("")}</tbody></table>
+        ${parsed.length > 40 ? `<p class="small muted">Showing the first 40 rows.</p>` : ""}${good.length ? `<button class="btn accent sm" type="button" id="qImp">Add ${good.length} question${good.length>1?"s":""}</button>` : ""}</div>`;
+      const ib = $("#qImp"); if (ib) ib.addEventListener("click", async () => { ib.disabled = true; ib.textContent = "Adding…";
+        try { const r = await tapi("t_saveQuestions", {items: good.map(x => ({type:QT.type, data:x.d}))}); toast(`${r.added} question${r.added>1?"s":""} added — students can practise them now.`); renderQuestions(p); }
+        catch(e){ toast(e.message, 5000); ib.disabled = false; ib.textContent = "Try again"; } }); });
+    inp.click(); });
+}
+const CSV_EXAMPLES = {
+  ra:{text:"The community centre will be closed for renovations next month. All classes will move to the public library."},
+  rs:{text:"Please submit your timesheet before noon on Friday."},
+  rts:{text:"Your manager asked you to work on Saturday, but you promised to help a friend move house. What would you say to your manager?", model:"I'm sorry, but I can't work this Saturday because I promised to help a friend move. Could I work on Sunday instead?", keywords:"sorry / unfortunately, saturday, friend, sunday / another day"},
+  asq:{q:"What do you call a doctor who treats teeth?", answers:"dentist, a dentist"},
+  swt:{title:"Working from home", text:"Write the reading passage here.", model:"Write a one-sentence sample summary here.", keywords:""},
+  we:{situation:"You left your jacket in a hotel room. Write an email to the hotel manager.", p1:"Describe the jacket", p2:"Explain when you stayed", p3:"Ask how you can get it back", model:"Dear Manager, ..."},
+  rwfib:{text:"Staff must [complete/compete/complain/compare] the form by [Friday/friendly/fried/free]."},
+  rmcm:{text:"Write the reading passage here.", q:"Which statements are true?", options:"*First correct option | Wrong option | *Second correct option | Wrong option"},
+  ro:{sentences:"First sentence. | Second sentence. | Third sentence. | Fourth sentence."},
+  rfib:{text:"One simple [strategy] is to save money on [payday].", extra:"borrow, costs, hidden"},
+  rmcs:{text:"Write the reading passage here.", q:"What is the main idea?", options:"Wrong option | *Correct option | Wrong option | Wrong option"},
+  sst:{script:"Write what the speaker says here.", model:"Write a 20–30 word sample summary here.", keywords:""},
+  lmcm:{script:"Write what the speaker says here.", q:"Which statements are true?", options:"*Correct | Wrong | *Correct | Wrong"},
+  lfib:{script:"The museum is open [daily] from nine until [five] o'clock."},
+  lmcs:{script:"Write what the speaker says here.", q:"Why is the speaker calling?", options:"Wrong | *Correct | Wrong | Wrong"},
+  smw:{script:"To keep your account secure, never share your password. If someone else knows it, you should", options:"write it down | *change it immediately | share it again | ignore it"},
+  hiw:{spoken:"The company plans to open three new stores next year.", shown:"The company plans to open four new shops next year."},
+  wfd:{text:"The library will close early on public holidays."}
+};
+
+/* =====================================================================
+   TEACHER: WEBSITE ADMIN (results certificates, prices, payments, WhatsApp auto-replies)
+   ===================================================================== */
+const PKGS = [["acad-group","PTE Academic — Group Course"],["acad-private","PTE Academic — Private Full Course"],["acad-skill","PTE Academic — Private Skill-Focused (from)"],
+              ["core-group","PTE Core — Group Course"],["core-private","PTE Core — Private Full Course"],["core-skill","PTE Core — Private Skill-Focused (from)"]];
+const PKG_DEFAULTS = {"acad-group":{jod:"155",usd:"220"},"acad-private":{jod:"220",usd:"310"},"acad-skill":{jod:"60",usd:"85"},"core-group":{jod:"140",usd:"200"},"core-private":{jod:"200",usd:"280"},"core-skill":{jod:"60",usd:"85"}};
+const WA_DEFAULT_GREETING = "Hi there 👋 Welcome to PTE Decode Academy!\nChoose a topic below for an instant answer, or continue the conversation with us on WhatsApp.";
+const WA_DEFAULT_REPLIES = [
+  {q:"Course prices", a:"{prices}"},
+  {q:"Academic or Core?", a:"PTE Academic is for university study, professional registration and visas in many countries, and is accepted by thousands of universities worldwide.\n\nPTE Core is the general-English test accepted by IRCC for Canadian immigration (permanent residency and citizenship).\n\nApplying for Canadian PR? Choose PTE Core. Planning to study? Choose PTE Academic."},
+  {q:"Group size & duration", a:"Group courses: 5 weeks, 5–7 students, weekly live classes (1.5 hours each).\nPrivate full course: 5 weeks, one-to-one, flexible scheduling.\nSkill-focused: one-to-one, choose 1, 2 or 3 skills, flexible duration."},
+  {q:"How do I pay?", a:"You can pay by Visa or Mastercard on our secure payment page, or by CliQ or bank transfer.\nOpen the Payments page from the menu, or ask us here for help."},
+  {q:"When do PTE results come out?", a:"Pearson typically releases PTE Academic and PTE Core results within about 48 hours of the test, often sooner."},
+  {q:"Talk to the trainer", a:"Of course! Tap “Continue on WhatsApp” and send your name, the exam you're preparing for (Academic or Core) and your target score. We'll reply as soon as we can."}
+];
+const WEB = {editing:null};
+async function renderWebsite(p){
+  p.innerHTML = `<div class="card"><p class="muted">Loading website settings…</p></div>`;
+  let data; try { data = await tapi("t_site"); } catch(e){ p.innerHTML = `<div class="card"><p style="color:var(--bad)">${esc(e.message)}</p><p class="small muted">If this says "Unknown request", update the Apps Script to the latest version and deploy a new version.</p></div>`; return; }
+  const s = data.site || {}, results = data.results || [], ed = WEB.editing ? results.find(r => r.id === WEB.editing) : null;
+  const replies = (s.autoReplies && s.autoReplies.length) ? s.autoReplies : WA_DEFAULT_REPLIES;
+  const prices = Object.assign({}, PKG_DEFAULTS, s.prices || {}), links = s.payLinks || {};
+  p.innerHTML = `<div class="hero"><div><h1>Website</h1><div class="muted">Manage what visitors see on your public website. Changes appear on the site straight away (visitors may need to refresh).</div></div>
+      <div class="row"><a class="btn ghost" href="index.html" target="_blank" rel="noopener">Open website ↗</a></div></div>
+    <div class="grid g2" style="align-items:start">
+    <div class="card" id="wResults"><h2>${ed ? "Edit student result" : "Add a student result"}</h2>
+      <p class="small muted">Upload the student's official score report (screenshot or photo, JPG or PNG). It appears on the Results page and on the matching exam page.</p>
+      <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px">
+        <div><label class="f" for="rName">Student name (or initials)</label><input type="text" id="rName" value="${esc(ed?ed.name:"")}" placeholder="e.g. Lina H."></div>
+        <div><label class="f" for="rExam">Exam</label><select id="rExam"><option value="Academic" ${ed&&ed.exam==="Academic"?"selected":""}>PTE Academic</option><option value="Core" ${ed&&ed.exam==="Core"?"selected":""}>PTE Core</option></select></div></div>
+      <div class="grid" style="grid-template-columns:repeat(5,1fr);gap:8px">${[["overall","Overall"],["listening","Listening"],["reading","Reading"],["speaking","Speaking"],["writing","Writing"]].map(([k,l]) => `<div><label class="f" for="r_${k}">${l}</label><input type="number" min="10" max="90" id="r_${k}" value="${esc(ed&&ed[k]!==""&&ed[k]!=null?ed[k]:"")}"></div>`).join("")}</div>
+      <div class="grid" style="grid-template-columns:1fr 2fr;gap:10px"><div><label class="f" for="rDate">Test date (optional)</label><input type="date" id="rDate" value="${esc(ed?ed.date:"")}"></div>
+        <div><label class="f" for="rQuote">Student quote (optional)</label><input type="text" id="rQuote" maxlength="400" value="${esc(ed?ed.quote:"")}" placeholder="e.g. The strategies made speaking so much easier!"></div></div>
+      <label class="f" for="rImg">Certificate image${ed ? " (leave empty to keep the current one)" : ""}</label><input type="file" id="rImg" accept="image/png,image/jpeg,image/webp"><div id="rPrev" style="margin-block-start:8px"></div>
+      ${ed ? "" : `<label class="row small" style="margin-block-start:10px;gap:8px;align-items:flex-start"><input type="checkbox" id="rConsent"> <span>The student agreed to have their name, scores and certificate published on the website.</span></label>`}
+      <p class="small muted">Tip: blur or crop out the candidate ID, date of birth and photo if the student prefers.</p>
+      <div id="rErr" class="small" style="color:var(--bad);margin-block:6px"></div>
+      <div class="row"><button class="btn accent" type="button" id="rSave">${ed ? "Save changes" : "Publish result"}</button>${ed ? `<button class="btn ghost" type="button" id="rCancel">Cancel</button>` : ""}</div>
+      <h3 style="margin-block-start:20px">Published results (${results.length})</h3>
+      ${results.length ? `<table class="t"><tbody>${results.map(r => `<tr><td style="inline-size:70px"><div class="rThumb" data-id="${esc(r.id)}" style="inline-size:60px;block-size:45px;border-radius:6px;background:var(--bg);overflow:hidden"></div></td>
+        <td><b>${esc(r.name)}</b> <span class="badge b-info">PTE ${esc(r.exam)}</span><br><span class="small muted">Overall ${esc(r.overall)}${r.date?" · "+esc(r.date):""}</span></td>
+        <td><span class="badge ${r.status==="Active"?"b-ok":"b-warn"}">${r.status==="Active"?"Visible":"Hidden"}</span></td>
+        <td><div class="row"><button class="btn ghost sm" type="button" data-re="${esc(r.id)}">Edit</button><button class="btn ghost sm" type="button" data-rh="${esc(r.id)}" data-st="${esc(r.status)}">${r.status==="Active"?"Hide":"Show"}</button><button class="btn ghost sm" type="button" data-rd="${esc(r.id)}">Delete</button></div></td></tr>`).join("")}</tbody></table>` : `<p class="muted small">No results yet.</p>`}
+    </div>
+    <div>
+    <div class="card"><h2>Contact &amp; social links</h2>
+      <label class="f" for="sWa">Business WhatsApp number</label><input type="text" id="sWa" value="${s.whatsapp?"+"+esc(s.whatsapp):""}" placeholder="+962 79 123 4567">
+      <p class="small muted">Used by every WhatsApp button and the auto-reply assistant on the website.</p>
+      <label class="f" for="sIg">Instagram page link</label><input type="text" id="sIg" value="${esc(s.instagram)}" placeholder="https://www.instagram.com/...">
+      <label class="f" for="sFb">Facebook page link</label><input type="text" id="sFb" value="${esc(s.facebook || CONFIG.facebookPage)}">
+      <label class="f" for="sEm">Business email (optional)</label><input type="text" id="sEm" value="${esc(s.email)}" placeholder="info@yourdomain.com">
+      <div class="row" style="margin-block-start:12px"><button class="btn sm" type="button" id="sSaveC">Save contact links</button></div></div>
+
+    <div class="card" style="margin-block-start:18px"><h2>Prices &amp; card payments</h2>
+      <p class="small muted">Create a <b>payment link</b> for each course in your payment provider's dashboard (for example your bank's gateway, HyperPay, PayTabs or Network International), then paste it here. The website's <b>Pay by card</b> buttons open these links. Courses without a link show "Request a card payment link" (WhatsApp).</p>
+      <table class="t"><thead><tr><th>Course</th><th>JOD</th><th>≈ USD</th><th>Card payment link (https://…)</th></tr></thead><tbody>${PKGS.map(([id, name]) => `<tr><td class="small"><b>${esc(name)}</b></td>
+        <td><input type="text" data-pj="${id}" value="${esc(prices[id].jod)}" style="inline-size:70px"></td><td><input type="text" data-pu="${id}" value="${esc(prices[id].usd)}" style="inline-size:70px"></td>
+        <td><input type="text" data-pl="${id}" value="${esc(links[id]||"")}" placeholder="https://"></td></tr>`).join("")}</tbody></table>
+      <label class="f" for="sCliq">CliQ alias</label><input type="text" id="sCliq" value="${esc(s.cliqAlias)}" placeholder="e.g. PTEDECODE">
+      <label class="f" for="sCliqN">Name shown on CliQ (optional)</label><input type="text" id="sCliqN" value="${esc(s.cliqName)}">
+      <label class="f" for="sBank">Bank transfer details (optional)</label><textarea id="sBank" style="min-block-size:80px" placeholder="Bank name, account name, IBAN">${esc(s.bank)}</textarea>
+      <label class="f" for="sNote">Payment note shown on the Payments page (optional)</label><textarea id="sNote" style="min-block-size:70px" placeholder="e.g. Seats are confirmed once payment is received.">${esc(s.payNote)}</textarea>
+      <div class="row" style="margin-block-start:12px"><button class="btn sm" type="button" id="sSaveP">Save prices &amp; payments</button></div></div>
+
+    <div class="card" style="margin-block-start:18px"><h2>WhatsApp auto-replies</h2>
+      <p class="small muted">Visitors tap the green WhatsApp button on the website, choose a topic and get an instant answer, then continue the chat on your WhatsApp. Type <span class="kbd">{prices}</span> in an answer to insert the current price list.</p>
+      <label class="f" for="sGreet">Greeting message</label><textarea id="sGreet" style="min-block-size:70px">${esc(s.greeting || WA_DEFAULT_GREETING)}</textarea>
+      <div id="arList"></div>
+      <div class="row" style="margin-block-start:10px"><button class="btn ghost sm" type="button" id="arAdd">+ Add reply</button><button class="btn ghost sm" type="button" id="arReset">Restore default replies</button><span class="spacer"></span><button class="btn sm" type="button" id="sSaveW">Save auto-replies</button></div>
+      <details class="small" style="margin-block-start:14px"><summary><b>Also set up auto-replies in the WhatsApp Business app</b></summary>
+        <ol class="small"><li>Install <b>WhatsApp Business</b> on the phone with your business number.</li>
+        <li><b>Settings → Business tools → Greeting message</b>: turn on and paste your greeting above.</li>
+        <li><b>Business tools → Away message</b>: turn on, choose "Outside of business hours", e.g. "Thanks for your message! We'll reply during working hours."</li>
+        <li><b>Business tools → Quick replies</b>: add shortcuts such as /prices and /pay with the answers above, so you can reply in one tap.</li></ol></details></div>
+    </div></div>`;
+
+  /* results */
+  let img = null;
+  $("#rImg").addEventListener("change", async e => { const f = e.target.files[0]; if (!f) return; try { img = await compressImage(f); $("#rPrev").innerHTML = `<img src="${img}" alt="Preview" style="max-inline-size:100%;max-block-size:200px;border-radius:8px;border:1px solid var(--border)">`; } catch(err){ toast(err.message); img = null; } });
+  if (ed && ed.hasImage) tapi("t_resultImage", {id:ed.id}).then(r => { if (!img) $("#rPrev").innerHTML = `<img src="${r.data}" alt="Current certificate" style="max-inline-size:100%;max-block-size:200px;border-radius:8px;border:1px solid var(--border)">`; }).catch(()=>{});
+  $("#rSave").addEventListener("click", async e => { const b = e.target; $("#rErr").textContent = "";
+    const d = {name:$("#rName").value.trim(), exam:$("#rExam").value, date:$("#rDate").value, quote:$("#rQuote").value.trim(), consent: ed ? true : $("#rConsent").checked};
+    ["overall","listening","reading","speaking","writing"].forEach(k => d[k] = $("#r_" + k).value.trim());
+    if (!d.name) return $("#rErr").textContent = "Enter the student's name or initials.";
+    if (!d.overall) return $("#rErr").textContent = "Enter the overall score.";
+    if (!ed && !img) return $("#rErr").textContent = "Choose the certificate image.";
+    if (!ed && !d.consent) return $("#rErr").textContent = "Please confirm the student agreed to publish their result.";
+    b.disabled = true; b.textContent = "Uploading…";
+    try { await tapi("t_saveResult", {id: ed ? ed.id : undefined, data:d, image:img}); toast(ed ? "Result updated." : "Result published on the website."); WEB.editing = null; renderWebsite(p); }
+    catch(err){ $("#rErr").textContent = err.message; b.disabled = false; b.textContent = ed ? "Save changes" : "Publish result"; } });
+  const rc = $("#rCancel"); if (rc) rc.addEventListener("click", () => { WEB.editing = null; renderWebsite(p); });
+  $$(".rThumb", p).forEach(el => tapi("t_resultImage", {id:el.dataset.id}).then(r => { el.innerHTML = `<img src="${r.data}" alt="" style="inline-size:100%;block-size:100%;object-fit:cover">`; }).catch(()=>{}));
+  $$("[data-re]", p).forEach(b => b.addEventListener("click", () => { WEB.editing = b.dataset.re; renderWebsite(p); window.scrollTo(0,0); }));
+  $$("[data-rh]", p).forEach(b => b.addEventListener("click", async () => { b.disabled = true; try { await tapi("t_setResultStatus", {id:b.dataset.rh, status: b.dataset.st === "Active" ? "Hidden" : "Active"}); renderWebsite(p); } catch(e){ toast(e.message); b.disabled = false; } }));
+  $$("[data-rd]", p).forEach(b => b.addEventListener("click", async () => { if (!confirm("Delete this result and its certificate image? This can't be undone.")) return; b.disabled = true; try { await tapi("t_setResultStatus", {id:b.dataset.rd, status:"Deleted"}); toast("Result deleted."); renderWebsite(p); } catch(e){ toast(e.message); b.disabled = false; } }));
+
+  /* settings */
+  const save = async (btn, site, msg) => { const old = btn.textContent; btn.disabled = true; btn.textContent = "Saving…";
+    try { await tapi("t_saveSite", {site}); toast(msg); } catch(err){ toast(err.message, 6000); } btn.disabled = false; btn.textContent = old; };
+  $("#sSaveC").addEventListener("click", e => save(e.target, {whatsapp:$("#sWa").value.trim(), instagram:$("#sIg").value.trim(), facebook:$("#sFb").value.trim(), email:$("#sEm").value.trim()}, "Contact links saved."));
+  $("#sSaveP").addEventListener("click", e => { const pr = {}, pl = {};
+    PKGS.forEach(([id]) => { pr[id] = {jod:$(`[data-pj="${id}"]`).value.trim(), usd:$(`[data-pu="${id}"]`).value.trim()}; const l = $(`[data-pl="${id}"]`).value.trim(); if (l) pl[id] = l; });
+    if (PKGS.some(([id]) => !pr[id].jod)) return toast("Enter a JOD price for every course.");
+    save(e.target, {prices:pr, payLinks:pl, cliqAlias:$("#sCliq").value.trim(), cliqName:$("#sCliqN").value.trim(), bank:$("#sBank").value.trim(), payNote:$("#sNote").value.trim()}, "Prices and payment details saved."); });
+  let list = replies.map(r => ({...r}));
+  const drawAR = () => { $("#arList").innerHTML = list.map((r, i) => `<div class="review-card" style="padding:10px"><div class="row"><b class="small">Topic ${i+1}</b><span class="spacer"></span><button class="btn ghost sm" type="button" data-ard="${i}">Remove</button></div>
+      <label class="f">Button label</label><input type="text" data-arq="${i}" maxlength="80" value="${esc(r.q)}"><label class="f">Instant answer</label><textarea data-ara="${i}" style="min-block-size:70px">${esc(r.a)}</textarea></div>`).join("");
+    $$("[data-arq]").forEach(x => x.addEventListener("input", () => list[+x.dataset.arq].q = x.value));
+    $$("[data-ara]").forEach(x => x.addEventListener("input", () => list[+x.dataset.ara].a = x.value));
+    $$("[data-ard]").forEach(x => x.addEventListener("click", () => { list.splice(+x.dataset.ard, 1); drawAR(); })); };
+  drawAR();
+  $("#arAdd").addEventListener("click", () => { if (list.length >= 12) return toast("Up to 12 topics."); list.push({q:"", a:""}); drawAR(); });
+  $("#arReset").addEventListener("click", () => { list = WA_DEFAULT_REPLIES.map(r => ({...r})); $("#sGreet").value = WA_DEFAULT_GREETING; drawAR(); });
+  $("#sSaveW").addEventListener("click", e => { const clean = list.filter(r => r.q.trim() && r.a.trim()); if (!clean.length) return toast("Add at least one topic with an answer.");
+    save(e.target, {greeting:$("#sGreet").value.trim(), autoReplies:clean}, "Auto-replies saved — they're live on the website."); });
+}
+
+/* =====================================================================
+   TEACHER PORTAL  (open the site with #teacher at the end of the address)
+   ===================================================================== */
+const siteBase = () => location.href.split("#")[0];
+const inviteLink = code => siteBase() + "#code=" + code;
+const tapi = (action, data={}) => api(action, {pass:S.teacher.pass, ...data}).catch(e => { if (/incorrect teacher password/i.test(e.message)) { S.teacher.pass = null; sessionStorage.removeItem("pte_tpass"); localStorage.removeItem("pte_tpass"); render(); } throw e; });
+let TSET = {groupLink:"", countryCode:"962", waMode:"app", showBuiltin:true};
+async function loadTSettings(){ try { const r = await tapi("t_login"); if (r.settings) TSET = r.settings; } catch(e){} }
+function waOpen(phone, text){
+  const d = String(phone||"").replace(/\D/g,"");
+  const url = TSET.waMode === "web" ? `https://web.whatsapp.com/send?phone=${d}&text=${encodeURIComponent(text)}` : `whatsapp://send?phone=${d}&text=${encodeURIComponent(text)}`;
+  if (TSET.waMode === "web") window.open(url, "_blank", "noopener"); else window.location.href = url;
+}
+const waBtn = (attr, val, label="WhatsApp") => `<button class="btn ghost sm wa" type="button" ${attr}="${esc(val)}" title="Open WhatsApp with this message ready to send">💬 ${label}</button>`;
+const fmtPhone = p => p ? "+" + p : "";
+function feedbackWaText(x){ return `Hi ${x.studentName}, I've reviewed your ${x.taskName} answer (${qLabel(x.type, x.itemIdx).replace("★ ","")}) on our PTE Core practice platform${x.teacherScore?` — score: ${x.teacherScore}${x.autoMax&&!/\//.test(x.teacherScore)?"/"+x.autoMax:""}`:""}.${x.hasFeedbackAudio?" I've left you a voice message there too.":""}\n\nOpen "My work & feedback" to see it: ${siteBase()}\n\n${CONFIG.teacherName}`; }
+
+/* Voice recorder used for teacher voice feedback */
+function makeRecorder(host, onChange, label){
+  label = label || "🎙 Record voice feedback";
+  let rec = null, chunks = [], stream = null, timer = null, blob = null, t0 = 0; const MAX = 180;
+  host.innerHTML = `<div class="row vr"><button class="btn ghost sm vrStart" type="button">${label}</button><span class="small vrInfo muted"></span></div>`;
+  const start = host.querySelector(".vrStart"), info = host.querySelector(".vrInfo");
+  const stopAll = () => { clearInterval(timer); try { rec && rec.state !== "inactive" && rec.stop(); } catch(e){} };
+  const reset = () => { blob = null; onChange(null); const pv = host.querySelector(".vrPrev"); if (pv) pv.remove(); start.textContent = label; start.classList.remove("danger"); info.textContent = ""; };
+  start.addEventListener("click", async () => {
+    if (rec && rec.state === "recording") { stopAll(); return; }
+    try { stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true}}); }
+    catch(e){ toast("Microphone access is blocked. Click the padlock in the address bar and allow the microphone."); return; }
+    reset(); chunks = []; rec = new MediaRecorder(stream); rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+    rec.onstop = () => { stream.getTracks().forEach(x => x.stop()); blob = new Blob(chunks, {type: rec.mimeType || "audio/webm"}); onChange(blob);
+      start.textContent = "🎙 Record again"; start.classList.remove("danger"); info.textContent = `Recording ready (${Math.round((Date.now()-t0)/1000)} s) — it will be saved when you click Send/Save.`;
+      const wrap = document.createElement("div"); wrap.className = "row vrPrev"; wrap.style.marginBlockStart = "6px";
+      wrap.innerHTML = `<audio controls></audio><button class="btn ghost sm" type="button">✕ Discard</button>`; wrap.querySelector("audio").src = URL.createObjectURL(blob);
+      wrap.querySelector("button").addEventListener("click", reset); host.appendChild(wrap); };
+    rec.start(); t0 = Date.now(); start.textContent = "■ Stop recording"; start.classList.add("danger");
+    timer = setInterval(() => { const s = Math.round((Date.now()-t0)/1000); info.textContent = `● Recording… ${Math.floor(s/60)}:${String(s%60).padStart(2,"0")} (max 3:00)`; if (s >= MAX) stopAll(); }, 250);
+  });
+  return { cancel: stopAll };
+}
+
+function studentMessage(c){ return `Hi ${c.name},\n\nHere is your personal access to our PTE Core practice platform:\n${inviteLink(c.code)}\n\nOpen the link in Google Chrome or Microsoft Edge on a computer with a microphone. If it doesn't sign you in automatically, enter this code on the sign-in page:\n${c.code}\n\nAfter each answer, click "Submit for teacher feedback" and I'll review it. You'll find my comments under "My work & feedback".\n\nYour access is valid until ${c.expires}. Please don't share this code.${TSET.groupLink?`\n\nPlease also join our class WhatsApp group:\n${TSET.groupLink}`:""}\n\nGood luck!\n${CONFIG.teacherName}`; }
+
+function renderTeacher(app){
+  if (!S.teacher.pass) return renderTLogin(app);
+  app.innerHTML = `<div id="tpanel"></div>`; const p = $("#tpanel");
+  if (S.teacher.tab === "codes") return renderCodes(p);
+  if (S.teacher.tab === "settings") return renderSettings(p);
+  if (S.teacher.tab === "questions") return renderQuestions(p);
+  if (S.teacher.tab === "website") return renderWebsite(p);
+  return renderReview(p);
+}
+function renderTLogin(app){
+  app.innerHTML = `<div class="login-wrap"><div class="card login"><h1>Teacher portal</h1>
+    <p class="muted">Sign in to create student access codes, see submitted work and send feedback.</p>
+    ${CONFIG.apiUrl ? "" : `<div class="tip small"><b>Not connected yet.</b> Paste your Google Apps Script Web app URL into <span class="kbd">apiUrl</span> at the top of the script in index.html, then upload it to GitHub again.</div>`}
+    <label class="f" for="tPass">Teacher password</label><input type="password" id="tPass" autocomplete="current-password" style="inline-size:100%;border:1px solid var(--border);border-radius:8px;padding:9px 11px;background:var(--card)">
+    <label class="small row" style="margin-block-start:10px"><input type="checkbox" id="tRem"> Keep me signed in on this device (your own computer only)</label>
+    <div id="tErr" class="small" style="color:var(--bad);margin-block:8px"></div>
+    <button class="btn" type="button" id="tGo" style="inline-size:100%;justify-content:center">Sign in</button>
+    <p class="small"><a href="#app" id="toStudent">← Back to the student site</a></p></div></div>`;
+  const go_ = async () => { const pass = $("#tPass").value; if (!pass) return; const b = $("#tGo"); b.disabled = true; b.textContent = "Signing in…";
+    try { const lr = await api("t_login", {pass}); if (lr.settings) TSET = lr.settings; S.teacher.pass = pass; ($("#tRem").checked ? localStorage : sessionStorage).setItem("pte_tpass", pass); S.teacher.tab = "review"; render(); }
+    catch(e){ $("#tErr").textContent = e.message; b.disabled = false; b.textContent = "Sign in"; } };
+  $("#tGo").addEventListener("click", go_); $("#tPass").addEventListener("keydown", e => { if (e.key === "Enter") go_(); });
+  $("#toStudent").addEventListener("click", e => { e.preventDefault(); location.hash = ""; });
+}
+
+/* ---------- Review work ---------- */
+async function renderReview(p){
+  p.innerHTML = `<div class="hero"><div><h1>Review student work</h1><div class="muted">New submissions appear here automatically. Listen, score, comment and click <b>Send feedback</b> — the student sees it straight away.</div></div>
+    <div class="row"><button class="btn ghost" type="button" id="rRef">↻ Refresh</button></div></div><div id="rBody"><div class="card"><p class="muted">Loading submissions…</p></div></div>`;
+  $("#rRef").addEventListener("click", () => renderReview(p));
+  let data; try { [data] = await Promise.all([tapi("t_list"), loadTSettings(), ensureQuestions(true)]); } catch(e){ $("#rBody").innerHTML = `<div class="card"><p style="color:var(--bad)">${esc(e.message)}</p></div>`; return; }
+  const F = S.teacher, all = data.items, st = data.stats;
+  const students = {}; all.forEach(x => { const s = students[x.studentId] = students[x.studentId] || {id:x.studentId, name:x.studentName, n:0, rev:0, auto:[], last:""}; s.n++; if (x.status === "Reviewed") s.rev++; if (x.autoMax) s.auto.push(x.autoTotal/x.autoMax); if (x.submittedAt > s.last) s.last = x.submittedAt; });
+  const list = all.filter(x => (!F.filterStudent || x.studentId === F.filterStudent) && (!F.filterTask || x.type === F.filterTask) && (F.filterStatus === "all" || (F.filterStatus === "todo" ? x.status !== "Reviewed" : x.status === "Reviewed")));
+  $("#rBody").innerHTML = `<div class="stat" style="margin-block-end:18px"><div><span class="small muted">Waiting for review</span><b style="color:var(--ai)">${st.pending}</b></div><div><span class="small muted">Reviewed</span><b>${st.reviewed}</b></div><div><span class="small muted">Active students</span><b>${st.students}</b></div></div>
+    <div class="card"><h2>Students</h2>${Object.keys(students).length ? `<table class="t"><thead><tr><th>Student</th><th>Submitted</th><th>Waiting</th><th>Avg auto-score</th><th>Last submission</th><th></th></tr></thead><tbody>${Object.values(students).map(s => `<tr>
+      <td><b>${esc(s.name)}</b> <span class="small muted">${esc(s.id)}</span></td><td>${s.n}</td><td>${s.n-s.rev ? `<span class="badge b-warn">${s.n-s.rev}</span>` : '<span class="badge b-ok">0</span>'}</td>
+      <td>${s.auto.length?Math.round(s.auto.reduce((x,y)=>x+y,0)/s.auto.length*100)+"%":"–"}</td><td class="small">${esc(fmtDate(s.last))}</td>
+      <td><button class="btn ghost sm" type="button" data-show="${esc(s.id)}">Show work</button></td></tr>`).join("")}</tbody></table>` : `<p class="muted">No submissions yet. When students click <b>Submit for teacher feedback</b>, their work shows up here.</p>`}</div>
+    <div class="card" style="margin-block-start:18px"><div class="row"><h2 style="margin:0">Submissions</h2><span class="spacer"></span>
+      <select id="fS" style="inline-size:auto"><option value="">All students</option>${Object.values(students).map(s=>`<option value="${esc(s.id)}" ${F.filterStudent===s.id?"selected":""}>${esc(s.name)}</option>`).join("")}</select>
+      <select id="fT" style="inline-size:auto"><option value="">All question types</option>${TASKS.map(t=>`<option value="${t.id}" ${F.filterTask===t.id?"selected":""}>${esc(t.name)}</option>`).join("")}</select>
+      <select id="fR" style="inline-size:auto">${[["todo","Waiting for review"],["done","Reviewed"],["all","All"]].map(([v,l])=>`<option value="${v}" ${F.filterStatus===v?"selected":""}>${l}</option>`).join("")}</select></div>
+      <div id="rlist">${list.length ? "" : `<p class="muted">Nothing to show for this filter.</p>`}</div></div>`;
+  const rl = $("#rlist");
+  list.slice(0, 80).forEach(x => { const it = getItem(x.type, x.itemIdx) || {}; const card = document.createElement("div"); card.className = "review-card";
+    let parts = []; try { parts = JSON.parse(x.autoDetail || "[]"); } catch(e){}
+    let key = ""; if (it.model) key = `<details class="small" style="margin-block-start:6px"><summary>Sample answer</summary><div style="white-space:pre-wrap">${esc(it.model)}</div></details>`; else if (x.type==="asq" && it.a) key = `<div class="small muted">Expected: ${esc(it.a[0])}</div>`;
+    const reviewed = x.status === "Reviewed";
+    card.innerHTML = `<div class="row"><b>${esc(x.taskName)}</b><span class="small muted">${esc(x.section||"")} · ${esc(qLabel(x.type, x.itemIdx))}</span><span class="spacer"></span><span class="small"><b>${esc(x.studentName)}</b> · ${esc(fmtDate(x.submittedAt))}</span><span class="badge ${reviewed?"b-ok":"b-warn"} stBadge">${reviewed?"Reviewed":"Waiting"}</span></div>
+      <details class="small" style="margin-block:6px"><summary>Question</summary><div style="white-space:pre-wrap">${esc(x.prompt)}</div></details>
+      ${x.hasAudio ? `<div style="margin-block:6px"><button class="btn ghost sm aBtn" type="button">▶ Play recording</button></div>` : ""}
+      <div class="resp">${esc(x.response||"—")}</div>${key}
+      <div class="small" style="margin-block-start:6px">Auto-score: <b>${x.autoMax?`${esc(x.autoTotal)} / ${esc(x.autoMax)}`:"not available"}</b> ${parts.length?"("+parts.map(q=>esc(q.label)+" "+esc(q.got)+"/"+esc(q.max)).join(", ")+")":""}</div>
+      <div class="row" style="margin-block-start:10px;align-items:flex-start"><div style="inline-size:150px"><label class="f">Your score${x.autoMax?" (out of "+esc(x.autoMax)+")":""}</label><input type="text" class="rScore" value="${esc(x.teacherScore||"")}" placeholder="${x.autoMax?"e.g. "+esc(x.autoMax):"e.g. 8/10"}"></div>
+        <div style="flex:1;min-inline-size:240px"><label class="f">Feedback for the student</label><textarea class="rCom" style="min-block-size:80px" placeholder="What went well, what to improve, one specific tip…">${esc(x.teacherFeedback||"")}</textarea></div></div>
+      <div class="vrHost" style="margin-block-start:8px"></div>
+      <div class="fbVoice small" style="margin-block-start:6px">${x.hasFeedbackAudio?`Your voice message: <button class="btn ghost sm fvPlay" type="button">▶ Play</button> <button class="btn ghost sm fvDel" type="button">Remove</button>`:""}</div>
+      <div class="row" style="margin-block-start:8px"><button class="btn sm rSave" type="button">${reviewed?"Update feedback":"Send feedback"}</button>
+        <span class="waSlot">${reviewed && x.studentPhone ? waBtn("data-wan", x.id, "Tell student on WhatsApp") : ""}</span><span class="small muted rInfo">${reviewed?"Sent "+esc(fmtDate(x.reviewedAt)):""}</span></div>`;
+    const ab = card.querySelector(".aBtn"); if (ab) ab.addEventListener("click", async () => { ab.disabled = true; ab.textContent = "Loading…";
+      try { const r = await tapi("t_audio", {id:x.id}); const au = document.createElement("audio"); au.controls = true; au.src = r.audio; ab.replaceWith(au); au.play().catch(()=>{}); } catch(e){ toast(e.message); ab.disabled = false; ab.textContent = "▶ Play recording"; } });
+    let voice = null, removeVoice = false; const vrs = [makeRecorder(card.querySelector(".vrHost"), b => voice = b)];
+    const prevActive = ACTIVE; ACTIVE = { cancel(){ vrs.forEach(v => v.cancel()); if (prevActive && prevActive.cancel) prevActive.cancel(); } };
+    const bindVoice = () => { const pl = card.querySelector(".fvPlay"), dl = card.querySelector(".fvDel");
+      if (pl) pl.addEventListener("click", async () => { pl.disabled = true; pl.textContent = "Loading…"; try { const r = await tapi("t_audio", {id:x.id, kind:"feedback"}); const au = document.createElement("audio"); au.controls = true; au.src = r.audio; pl.replaceWith(au); au.play().catch(()=>{}); } catch(e){ toast(e.message); pl.disabled = false; pl.textContent = "▶ Play"; } });
+      if (dl) dl.addEventListener("click", () => { removeVoice = true; card.querySelector(".fbVoice").innerHTML = '<span class="muted">The voice message will be removed when you click Update feedback.</span>'; }); };
+    bindVoice();
+    const bindWa = () => { const w = card.querySelector("[data-wan]"); if (w) w.addEventListener("click", () => waOpen(x.studentPhone, feedbackWaText(x))); }; bindWa();
+    card.querySelector(".rSave").addEventListener("click", async e => { const b = e.target; b.disabled = true; b.textContent = voice ? "Uploading voice…" : "Sending…";
+      try { const audio = voice ? await blobToDataURL(voice) : null;
+        const r = await tapi("t_feedback", {id:x.id, score:card.querySelector(".rScore").value.trim(), comment:card.querySelector(".rCom").value.trim(), audio, removeAudio: removeVoice && !voice});
+        x.status = "Reviewed"; x.reviewedAt = r.reviewedAt; x.hasFeedbackAudio = r.hasFeedbackAudio; voice = null; removeVoice = false;
+        vrs.push(makeRecorder(card.querySelector(".vrHost"), bb => voice = bb));
+        card.querySelector(".fbVoice").innerHTML = x.hasFeedbackAudio ? `Your voice message: <button class="btn ghost sm fvPlay" type="button">▶ Play</button> <button class="btn ghost sm fvDel" type="button">Remove</button>` : ""; bindVoice();
+        if (x.studentPhone) { card.querySelector(".waSlot").innerHTML = waBtn("data-wan", x.id, "Tell student on WhatsApp"); bindWa(); } x.teacherScore = card.querySelector(".rScore").value.trim(); x.teacherFeedback = card.querySelector(".rCom").value.trim();
+        card.querySelector(".stBadge").className = "badge b-ok stBadge"; card.querySelector(".stBadge").textContent = "Reviewed"; card.querySelector(".rInfo").textContent = "Sent just now"; b.textContent = "Update feedback"; b.disabled = false; toast("Feedback sent to " + x.studentName + "."); }
+      catch(err){ toast(err.message, 5000); b.disabled = false; b.textContent = reviewed ? "Update feedback" : "Send feedback"; } });
+    rl.appendChild(card); });
+  if (list.length > 80) rl.insertAdjacentHTML("beforeend", `<p class="small muted">Showing 80 of ${list.length}. Use the filters to narrow the list.</p>`);
+  $("#fS").addEventListener("change", e => { F.filterStudent = e.target.value; renderReview(p); });
+  $("#fT").addEventListener("change", e => { F.filterTask = e.target.value; renderReview(p); });
+  $("#fR").addEventListener("change", e => { F.filterStatus = e.target.value; renderReview(p); });
+  $$("[data-show]", p).forEach(b => b.addEventListener("click", () => { F.filterStudent = b.dataset.show; F.filterStatus = "all"; renderReview(p); }));
+}
+
+/* ---------- Students & access codes ---------- */
+async function renderCodes(p){
+  await loadTSettings();
+  const def = new Date(Date.now() + 90*864e5).toISOString().slice(0,10);
+  p.innerHTML = `<div class="grid g2"><div class="card"><h2>Create a student access code</h2>
+      <label class="f" for="cName">Student name</label><input type="text" id="cName" placeholder="e.g. Lina Haddad">
+      <label class="f" for="cPhone">WhatsApp number (optional)</label><input type="text" id="cPhone" inputmode="tel" placeholder="e.g. +962 79 123 4567 or 079 123 4567">
+      <label class="f" for="cEmail">Email or note (optional)</label><input type="text" id="cEmail" placeholder="e.g. lina@example.com · Evening group">
+      <label class="f" for="cExp">Access expires on</label><input type="date" id="cExp" value="${def}">
+      <div class="row" style="margin-block-start:14px"><button class="btn" type="button" id="cGen">Create code</button><button class="btn ghost" type="button" id="cBulk">Create for a whole class…</button></div>
+      <div id="cOut"></div></div>
+    <div class="card"><h2>How access works</h2><ol class="steps small">
+      <li>Each student gets a personal code like <span class="kbd">PTE-AB12-CD34-EF56</span>. Codes are checked online every time a student signs in.</li>
+      <li>Send each student the <b>invite message</b>. The link signs them in with one click.</li>
+      <li><b>Withdraw</b> stops a code immediately. <b>Extend</b> changes the expiry date. No changes to GitHub are needed.</li>
+      <li>Add a WhatsApp number to send the invite from <b>WhatsApp Desktop</b> with the 💬 button. ${TSET.groupLink?"Your class group link is included in the message.":"Add your class group link under <b>Setup</b> to include it."}</li>
+      <li>Everything is also visible in your Google Sheet (tabs <i>Students</i> and <i>Submissions</i>).</li></ol></div></div>
+    <div class="card" style="margin-block-start:18px" id="cList"><p class="muted">Loading students…</p></div>`;
+  const showCreated = list => { if (list.length === 1) { const c = list[0];
+      $("#cOut").innerHTML = `<div class="score"><b>Code created for ${esc(c.name)}:</b> <span class="kbd" style="font-size:14px">${esc(c.code)}</span><div class="small muted">Valid until ${esc(c.expires)}</div>
+        <div class="row" style="margin-block-start:8px"><button class="btn sm" type="button" id="cpM">Copy invite message</button><button class="btn ghost sm" type="button" id="cpL">Copy link only</button></div></div>`;
+      if (c.phone) { $("#cOut .row").insertAdjacentHTML("afterbegin", `<button class="btn sm" type="button" id="cpW">💬 Send invite on WhatsApp</button>`); $("#cpW").addEventListener("click", () => waOpen(c.phone, studentMessage(c))); }
+      $("#cpM").addEventListener("click", () => copyText(studentMessage(c))); $("#cpL").addEventListener("click", () => copyText(inviteLink(c.code))); }
+    else { $("#cOut").innerHTML = `<div class="score"><b>${list.length} codes created.</b> <button class="btn sm" type="button" id="cpAll">Copy all invite links</button></div>`;
+      $("#cpAll").addEventListener("click", () => copyText(list.map(c => `${c.name}: ${inviteLink(c.code)}`).join("\n"))); } };
+  const create = async (students, btn) => { btn.disabled = true; const old = btn.textContent; btn.textContent = "Creating…";
+    try { const r = await tapi("t_createCodes", {students}); r.created.forEach(c => { if (!c.expires || typeof c.expires !== "string" || c.expires.length > 10) c.expires = students[0].expires; c.phone = c.phone ? String(c.phone) : ""; }); showCreated(r.created); $("#cName").value = ""; $("#cEmail").value = ""; $("#cPhone").value = ""; loadList(); }
+    catch(e){ toast(e.message, 5000); } btn.disabled = false; btn.textContent = old; };
+  $("#cGen").addEventListener("click", e => { const name = $("#cName").value.trim(), expires = $("#cExp").value; if (!name) return toast("Enter the student's name."); if (!expires) return toast("Choose an expiry date."); create([{name, email:$("#cEmail").value.trim(), phone:$("#cPhone").value.trim(), expires}], e.target); });
+  $("#cBulk").addEventListener("click", e => { const raw = prompt("One student per line: name, WhatsApp number (number optional). You can paste two columns from Excel.\nExample:\nLina Haddad, 0791234567\nOmar Saleh, +962 78 765 4321"); if (!raw) return; const expires = $("#cExp").value;
+    const list = raw.split(/\n+/).map(l => l.split(/[,\t;]/).map(x => x.trim())).filter(x => x[0]).map(([name, phone]) => ({name, phone: phone||"", email:"", expires})); if (list.length) create(list, e.target); });
+  let students = [];
+  async function loadList(){ const box = $("#cList"); if (!box) return;
+    try { students = (await tapi("t_codes")).students; } catch(e){ box.innerHTML = `<p style="color:var(--bad)">${esc(e.message)}</p>`; return; }
+    box.innerHTML = `<div class="row" style="justify-content:space-between"><h2 style="margin:0">Students (${students.length})</h2><button class="btn ghost sm" type="button" id="cCsv" ${students.length?"":"disabled"}>Export list (CSV)</button></div>
+      ${students.length ? `<table class="t" style="margin-block-start:10px"><thead><tr><th>Student</th><th>Code</th><th>Expires</th><th>Status</th><th>Submissions</th><th>Last sign-in</th><th>Actions</th></tr></thead><tbody>${students.map(c => `<tr>
+        <td><b>${esc(c.name)}</b><br><span class="small muted">${esc(fmtPhone(c.phone))}${c.phone&&c.email?" · ":""}${esc(c.email||"")}</span></td><td class="small"><span class="kbd">${esc(c.code)}</span></td><td class="small">${esc(c.expires)}</td>
+        <td><span class="badge ${c.status==="Active"?"b-ok":c.status==="Expired"?"b-warn":"b-bad"}">${esc(c.status)}</span></td><td>${c.submissions}</td><td class="small">${c.lastLogin?esc(fmtDate(c.lastLogin)):'<span class="muted">Never</span>'}</td>
+        <td><div class="row">${c.phone ? waBtn("data-wa", c.code) : `<button class="btn ghost sm" type="button" data-ph="${esc(c.code)}">+ WhatsApp no.</button>`}<button class="btn ghost sm" type="button" data-msg="${esc(c.code)}">Copy invite</button><button class="btn ghost sm" type="button" data-ext="${esc(c.code)}">Extend</button>
+          ${c.status==="Withdrawn" ? `<button class="btn ghost sm" type="button" data-act="${esc(c.code)}">Reactivate</button>` : `<button class="btn ghost sm" type="button" data-wd="${esc(c.code)}">Withdraw</button>`}</div></td></tr>`).join("")}</tbody></table>` : `<p class="muted">No students yet. Create the first code above.</p>`}`;
+    const find = code => students.find(c => c.code === code);
+    const upd = async (code, data, msg) => { try { await tapi("t_updateCode", {code, ...data}); toast(msg); loadList(); } catch(e){ toast(e.message, 5000); } };
+    $$("[data-msg]", box).forEach(b => b.addEventListener("click", () => copyText(studentMessage(find(b.dataset.msg)))));
+    $$("[data-wa]", box).forEach(b => b.addEventListener("click", () => { const c = find(b.dataset.wa); waOpen(c.phone, studentMessage(c)); }));
+    $$("[data-ph]", box).forEach(b => b.addEventListener("click", () => { const c = find(b.dataset.ph); const v = prompt(`WhatsApp number for ${c.name} (with country code, e.g. +962 79 123 4567):`, ""); if (v) upd(c.code, {phone:v.trim()}, "WhatsApp number saved."); }));
+    $$("[data-wd]", box).forEach(b => b.addEventListener("click", () => { if (confirm(`Withdraw access for ${find(b.dataset.wd).name}? They will be signed out immediately.`)) upd(b.dataset.wd, {status:"Withdrawn"}, "Access withdrawn."); }));
+    $$("[data-act]", box).forEach(b => b.addEventListener("click", () => upd(b.dataset.act, {status:"Active"}, "Access reactivated.")));
+    $$("[data-ext]", box).forEach(b => b.addEventListener("click", () => { const d = prompt("New expiry date (YYYY-MM-DD):", new Date(Date.now()+90*864e5).toISOString().slice(0,10)); if (d) upd(b.dataset.ext, {expires:d.trim()}, "Expiry date updated."); }));
+    const csv = $("#cCsv"); if (csv) csv.addEventListener("click", () => {
+    const rows = [["Name","WhatsApp","Email/note","Code","Expires","Status","Submissions","Invite link"]].concat(students.map(c => [c.name, fmtPhone(c.phone), c.email||"", c.code, c.expires, c.status, c.submissions, inviteLink(c.code)]));
+      download("PTE-students.csv", rows.map(r => r.map(x => `"${String(x).replace(/"/g,'""')}"`).join(",")).join("\r\n")); });
+  }
+  loadList();
+}
+
+/* ---------- Setup ---------- */
+async function renderSettings(p){
+  await loadTSettings();
+  p.innerHTML = `<div class="grid g2"><div class="card"><h2>Connection</h2>
+      <p class="small">Online storage: <span class="badge b-ok">Connected</span></p>
+      <p class="small muted" style="word-break:break-all">${esc(CONFIG.apiUrl)}</p>
+      <p class="small">All codes, submissions and feedback are stored in your Google Sheet. Voice recordings are saved in your Google Drive folder <i>PTE Core Practice Hub - Recordings</i>.</p>
+      <h3 style="margin-block-start:16px">Change your teacher password</h3>
+      <p class="small">In the Apps Script editor, change <span class="kbd">TEACHER_PASSWORD</span>, then choose <b>Deploy → Manage deployments → Edit → Version: New version → Deploy</b>. The Web app URL stays the same.</p></div>
+    <div class="card"><h2>WhatsApp</h2>
+      <p class="small">The 💬 buttons open WhatsApp with the message already written — you just press Send.</p>
+      <label class="f" for="sGroup">Class WhatsApp group invite link (optional)</label><input type="text" id="sGroup" placeholder="https://chat.whatsapp.com/..." value="${esc(TSET.groupLink)}">
+      <p class="small muted">In WhatsApp: open the group → tap the group name → <b>Invite via link</b> → <b>Copy link</b>. It's added to every invite message so students can join in one tap.</p>
+      <label class="f" for="sCC">Default country code (used for numbers starting with 0)</label><input type="text" id="sCC" style="inline-size:120px" value="${esc(TSET.countryCode)}">
+      <label class="f" for="sMode">Open messages in</label><select id="sMode" style="inline-size:auto"><option value="app" ${TSET.waMode!=="web"?"selected":""}>WhatsApp Desktop app</option><option value="web" ${TSET.waMode==="web"?"selected":""}>WhatsApp Web (browser)</option></select>
+      <div class="row" style="margin-block-start:12px"><button class="btn sm" type="button" id="sSave">Save WhatsApp settings</button></div></div>
+    <div class="card"><h2>Your links</h2><p class="small">Student site:<br><span class="kbd" style="word-break:break-all">${esc(siteBase())}</span></p>
+      <p class="small">Teacher portal (bookmark it):<br><span class="kbd" style="word-break:break-all">${esc(siteBase())}#teacher</span></p>
+      <p class="small muted">Create codes from the live GitHub address so invite links point to the published platform.</p></div></div>`;
+  $("#sSave").addEventListener("click", async e => { const b = e.target; b.disabled = true;
+    try { const r = await tapi("t_saveSettings", {groupLink:$("#sGroup").value.trim(), countryCode:$("#sCC").value.trim(), waMode:$("#sMode").value}); TSET = r.settings; toast("WhatsApp settings saved."); }
+    catch(err){ toast(err.message, 5000); } b.disabled = false; });
+}
+
+/* =====================================================================
+   BOOT
+   ===================================================================== */
+async function boot(){
+  document.title = CONFIG.platformName;
+  S.mode = /^#teacher/i.test(location.hash) ? "teacher" : "student";
+  if (S.mode === "teacher" && !S.teacher.pass) S.teacher.pass = sessionStorage.getItem("pte_tpass") || localStorage.getItem("pte_tpass") || null;
+  if (S.mode === "student" && !S.session && !/code=/.test(location.hash)) { try { const s = JSON.parse(localStorage.getItem("pte_session") || "null"); if (s && s.code && s.id) S.session = s; } catch(e){} }
+  render();
+}
+window.addEventListener("hashchange", () => { const m = /^#teacher/i.test(location.hash) ? "teacher" : "student"; if (m !== S.mode || /code=/.test(location.hash)) { if (/code=/.test(location.hash)) S.session = null; boot(); } });
+boot();
+</script>
+</body>
+</html>
