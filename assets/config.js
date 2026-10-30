@@ -7,7 +7,7 @@
    2. The values below are only fallbacks used before the online settings load.
    ===================================================================== */
 window.SITE_CONFIG = {
-  apiUrl: "https://script.google.com/macros/s/AKfycbzDg3N1KQvN97zcNVQIl7I7hNsFKQDiDN4-ZQFTD2dEofJd1-Kny5HWEieC0gO0_dcrJA/exec",
+  apiUrl: "https://script.google.com/macros/s/AKfycbzt3DTz89kftd7xc9KKnb_YqBpVO5mMR34427NNmO5jS6ACx8JXnCVRllV2hXZGy9U7/exec",
   whatsapp: "",                                   // e.g. "962791234567" (country code, no + or spaces)
   instagram: "",                                  // e.g. "https://www.instagram.com/ptedecodeacademy"
   facebook: "https://www.facebook.com/ptedecodeacademy",
