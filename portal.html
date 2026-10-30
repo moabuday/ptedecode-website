@@ -183,6 +183,11 @@ body.exam-on main{max-inline-size:none;padding:0}
 .xm-foot .xm-info{color:#ddd;font-size:13px}
 .xm-next{margin-inline-start:auto;background:#fff;color:#333;border:1px solid #888;border-radius:4px;padding:6px 26px;font-weight:700;cursor:pointer}
 .xm-next:disabled{opacity:.5;cursor:default}
+.xm-quit{background:transparent;color:#fff;border:1px solid #aaa;border-radius:4px;padding:6px 16px;font-weight:600;cursor:pointer}
+.xm-quit:hover{background:rgba(255,255,255,.12)}
+.xm-quit:disabled{opacity:.5;cursor:default}
+.modal .row.three{flex-wrap:wrap}
+.modal:has(.row.three){max-inline-size:540px}
 .xm-instr{font-weight:700;margin-block-end:16px;line-height:1.5}
 .xm-box{border:1px solid #bbb;border-radius:4px;padding:12px 16px;max-inline-size:440px;margin:14px auto;background:#fafafa;font-size:14px}
 .xm-box .bar{margin-block:8px}
@@ -2152,7 +2157,7 @@ async function renderMockReview(p, id){
   const reused = items.filter(x => x.d.reuse).length;
   const num = (k, v, label) => `<div><label class="f" for="${k}">${label}</label><input type="number" min="10" max="90" id="${k}" value="${esc(v === undefined || v === null ? "" : v)}"></div>`;
   let html = `<div class="row" style="margin-block-end:12px"><button class="btn ghost sm" type="button" id="mrBack">← All mock exams</button><span class="spacer"></span><span class="badge ${a.status==="Reviewed"?"b-ok":"b-warn"}" id="mrStatus">${a.status==="Reviewed"?"Published":"Submitted – awaiting review"}</span></div>
-    <div class="hero"><div><h1>${esc(a.title)}</h1><div class="muted"><b>${esc(a.student.name)}</b> · ${examBadge(a.exam)} · started ${esc(fmtDate(a.started))}${a.finished?" · finished "+esc(fmtDate(a.finished)):""} · ${(a.answers||[]).length} of ${a.draw.length} answered${a.reviewedBy?" · reviewed by "+esc(a.reviewedBy):""}</div></div></div>
+    <div class="hero"><div><h1>${esc(a.title)}</h1><div class="muted"><b>${esc(a.student.name)}</b> · ${examBadge(a.exam)} · started ${esc(fmtDate(a.started))}${a.finished?" · finished "+esc(fmtDate(a.finished)):""} · ${(a.answers||[]).filter(x => x.response !== null && x.response !== undefined).length} of ${a.draw.length} answered${(a.answers||[]).length < a.draw.length || (a.answers||[]).some(x => x.response === null || x.response === undefined) ? " (unanswered items are blank)" : ""}${a.reviewedBy?" · reviewed by "+esc(a.reviewedBy):""}</div></div></div>
     ${reused ? `<div class="tip small">Note: the question bank had fewer items than this test needs for some types, so ${reused} item${reused>1?"s were":" was"} reused (marked “reused”). Add more questions in the Questions tab to avoid this.</div>` : ""}
     <div class="card" id="mrScores" style="margin-block-end:18px;border-color:var(--orange)"><div class="row"><h2 style="margin:0">Score report</h2><span class="spacer"></span><button class="btn ghost sm" type="button" id="mrSuggest">✨ Auto-suggest from estimates</button></div>
       <div class="grid" style="grid-template-columns:repeat(5,1fr);gap:10px">${num("mrOverall", rep.overall, "Overall (10–90)")}${num("mrL", sk.listening, "Listening")}${num("mrR", sk.reading, "Reading")}${num("mrS", sk.speaking, "Speaking")}${num("mrW", sk.writing, "Writing")}</div>
@@ -2256,10 +2261,11 @@ async function renderExam(app){
   app.innerHTML = `<div class="xm" id="xm"><div class="xm-top"><span class="xm-title" id="xmTitle">PTE Mock Test</span><span class="small" style="opacity:.8">${esc(S.session.n)}</span>
       <span class="xm-right"><span id="xmQ"></span><span class="xm-timer" id="xmT"></span></span></div><div class="xm-sub"></div>
     <div class="xm-body" id="xmB"><p>Loading your test…</p></div>
-    <div class="xm-foot"><span class="xm-info" id="xmInfo"></span><button class="xm-next" id="xmNext" type="button" disabled>Next</button></div></div>`;
+    <div class="xm-foot"><button class="xm-quit" id="xmQuit" type="button">Finish / Exit test</button><span class="xm-info" id="xmInfo"></span><button class="xm-next" id="xmNext" type="button" disabled>Next</button></div></div>`;
   const sess = {cancelled:false, stops:[], cancel(){ this.cancelled = true; this.stops.forEach(f => { try { f(); } catch(e){} }); window.removeEventListener("beforeunload", mxUnload); }};
   ACTIVE = sess;
   window.addEventListener("beforeunload", mxUnload);
+  $("#xmQuit").addEventListener("click", () => mxQuit(sess));
   try { await mxRun(sess); }
   catch(e){ if (sess.cancelled) return; window.removeEventListener("beforeunload", mxUnload);
     $("#xmB").innerHTML = `<div class="xm-screen"><h2>Something went wrong</h2><p>${esc(e.message)}</p><p>Your answers so far are saved. Check your internet connection and try again.</p><button class="btn" type="button" id="xmRetry">Try again</button> <button class="btn ghost" type="button" id="xmLeave">Back to Mock Exam</button></div>`;
@@ -2314,7 +2320,49 @@ async function mxRun(sess){
   sess.stops.forEach(f => { try { f(); } catch(e){} }); sess.stops = [];
   mxFinished(a, false);
 }
+/* Student leaves the mock test early: either pause and resume later, or end now and submit what was answered. */
+function mxChoose(html, options){
+  return new Promise(res => { const bg = document.createElement("div"); bg.className = "modal-bg";
+    bg.innerHTML = `<div class="modal" role="dialog" aria-modal="true"><div style="line-height:1.6">${html}</div><div class="row three" style="justify-content:flex-end;gap:8px;margin-block-start:16px">${options.map((o, i) => `<button class="btn ${o.cls || ""}" type="button" data-i="${i}">${esc(o.label)}</button>`).join("")}</div></div>`;
+    document.body.appendChild(bg);
+    bg.querySelectorAll("button[data-i]").forEach(b => b.addEventListener("click", () => { bg.remove(); res(options[+b.dataset.i].value); }));
+    bg.querySelector("button[data-i]").focus(); });
+}
+async function mxQuit(sess){
+  const a = MX.att;
+  if (!a || sess.cancelled) { go("mock"); return; }
+  const done = MX.done ? MX.done.size : 0, total = a.draw.length;
+  const choice = await mxChoose(`<b>Leave this mock test?</b><br><br>You have answered <b>${done} of ${total}</b> questions.<br><br>
+    <b>Save &amp; exit</b> — go back to your portal and resume later from the Mock Exam page. Part timers that have started keep running while you are away.<br><br>
+    <b>End test now</b> — submit the test as it is. Unanswered questions are marked blank and your teacher reviews what you completed. You can't continue it afterwards.<br><br>
+    <span class="small muted">The answer on the current screen is not saved.</span>`,
+    [{label:"Keep going", value:"stay", cls:"ghost"}, {label:"Save & exit", value:"exit", cls:"ghost"}, {label:"End test now", value:"end"}]);
+  if (choice === "stay" || sess.cancelled) return;
+  const qb = $("#xmQuit"); if (qb) qb.disabled = true;
+  sess.cancel(); try { speechSynthesis.cancel(); } catch(e){}
+  if (choice === "exit") {
+    try { await mxFlush(a); } catch(e){}
+    localStorage.removeItem("pte_mock_active"); toast("Your test is saved. Choose “Resume test” on the Mock Exam page to continue.", 5000); go("mock"); return;
+  }
+  $("#xmNext").disabled = true; $("#xmQ").textContent = ""; $("#xmT").textContent = "";
+  $("#xmB").innerHTML = `<div class="xm-screen"><h2>Submitting your test…</h2><p>Please wait and keep this page open.</p></div>`;
+  try {
+    await mxFlush(a);
+    const left = a.draw.map((d, i) => MX.done.has(i) ? -1 : i).filter(i => i >= 0);
+    for (let k = 0; k < left.length; k += 100) await api("m_save", {code:S.session.code, attemptId:a.id, blanks:left.slice(k, k + 100)});
+    await api("m_finish", {code:S.session.code, attemptId:a.id, early:true});
+    for (const x of (await DB.all("mock")).filter(x => x.attemptId === a.id)) await DB.del("mock", x.id);
+    await DB.del("mockp", a.id); localStorage.removeItem("pte_mock_active"); localStorage.removeItem("pte_mock_intro_" + a.id);
+    toast("Test submitted. Your teacher will review the questions you answered.", 5000); go("mock");
+  } catch(e){
+    $("#xmB").innerHTML = `<div class="xm-screen"><h2>Couldn't submit yet</h2><p>${esc(e.message)}</p><p>Your answers so far are saved. Check your internet connection and try again.</p><button class="btn" type="button" id="xmEndRetry">Try again</button> <button class="btn ghost" type="button" id="xmEndLeave">Back to Mock Exam</button></div>`;
+    $("#xmEndRetry").addEventListener("click", () => mxQuitEnd(a));
+    $("#xmEndLeave").addEventListener("click", () => { localStorage.removeItem("pte_mock_active"); go("mock"); });
+  }
+}
+async function mxQuitEnd(a){ const fake = {cancelled:false, cancel(){ this.cancelled = true; }}; MX.att = a; const orig = mxChoose; mxChoose = async () => "end"; try { await mxQuit(fake); } finally { mxChoose = orig; } }
 function mxFinished(a, already){
+  const q = $("#xmQuit"); if (q) q.remove();
   $("#xmQ").textContent = ""; $("#xmT").textContent = "";
   $("#xmB").innerHTML = `<div class="xm-screen" id="xmDone"><h2>${already ? "This test has been submitted" : "Test complete"}</h2><p><b>Test complete — your answers have been sent to your teacher for a full review.</b></p><p>You'll see the status <b>Submitted – awaiting review</b> on the Mock Exam page. When your teacher publishes your score report, it appears there.</p></div>`;
   const nx = $("#xmNext"); nx.disabled = false; nx.textContent = "Finish"; nx.onclick = () => { nx.textContent = "Next"; go("mock"); };
@@ -2388,8 +2436,8 @@ function mxItem(sess, a, i, d){
     const cleanup = () => { it.timers.forEach(x => clearInterval(x)); it.stops.forEach(f => { try { f(); } catch(e){} }); };
     sess.stops.push(cleanup);
     const finish = r => { if (it.finished) return; it.finished = true; cleanup(); $$(".modal-bg").forEach(m => m.remove()); nx.onclick = null; nx.disabled = true; resolve(r); };
-    const tick = (fn, ms=250) => { const x = setInterval(fn, ms); it.timers.push(x); return x; };
-    const setT = sec => { $("#xmT").textContent = sec === null ? "" : "Time Remaining " + fmtClock(sec); };
+    const tick = (fn, ms=250) => { if (sess.cancelled) return 0; const x = setInterval(() => { if (sess.cancelled || !document.getElementById("xmB")) { clearInterval(x); return; } fn(); }, ms); it.timers.push(x); return x; };
+    const setT = sec => { const tEl = $("#xmT"); if (!tEl) return; tEl.textContent = sec === null ? "" : "Time Remaining " + fmtClock(sec); };
     setT(null);
     if (g) { tick(() => { const left = mxGroupLeft(a, g); setT(left); if (left <= 0 && it.onTimeUp) it.onTimeUp(); }); setT(mxGroupLeft(a, g)); }
     const instr = `<div class="xm-instr">${esc(t.instr)}</div>`;
