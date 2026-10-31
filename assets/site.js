@@ -7,34 +7,38 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 
 /* ---------- default content (overridden by Teacher Portal → Website) ---------- */
 const DEFAULT_PRICES = {
-  "acad-group":{jod:"155",usd:"220"}, "acad-private":{jod:"220",usd:"310"}, "acad-skill":{jod:"60",usd:"85"},
-  "core-group":{jod:"140",usd:"200"}, "core-private":{jod:"200",usd:"280"}, "core-skill":{jod:"60",usd:"85"}
+  "acad-group":{usd:"220"}, "acad-private":{usd:"290"}, "core-group":{usd:"220"}, "core-private":{usd:"290"},
+  "skill-1":{usd:"75"}, "skill-2":{usd:"125"}, "skill-3":{usd:"170"}
 };
+const ALIAS = {"acad-skill":"skill-1", "core-skill":"skill-1"};
 const COURSE_NAMES = {
-  "acad-group":"PTE Academic — Group Course", "acad-private":"PTE Academic — Private Full Course", "acad-skill":"PTE Academic — Private Skill-Focused",
-  "core-group":"PTE Core — Group Course", "core-private":"PTE Core — Private Full Course", "core-skill":"PTE Core — Private Skill-Focused"
+  "acad-group":"PTE Academic — Group Course", "acad-private":"PTE Academic — Private Full Course",
+  "core-group":"PTE Core — Group Course", "core-private":"PTE Core — Private Full Course",
+  "skill-1":"Private Skill-Focused — 1 skill", "skill-2":"Private Skill-Focused — 2 skills", "skill-3":"Private Skill-Focused — 3 skills",
+  "acad-skill":"PTE Academic — Private Skill-Focused", "core-skill":"PTE Core — Private Skill-Focused"
 };
 const FROM = {"acad-skill":true, "core-skill":true};
 const DEFAULT_GREETING = "Hi there 👋 Welcome to PTE Decode Academy!\nChoose a topic below for an instant answer, or continue the conversation with us on WhatsApp.";
 const DEFAULT_REPLIES = [
   {q:"Course prices", a:"{prices}"},
   {q:"Academic or Core?", a:"PTE Academic is for university study, professional registration and visas in many countries, and is accepted by thousands of universities worldwide.\n\nPTE Core is the general-English test accepted by IRCC for Canadian immigration (permanent residency and citizenship).\n\nApplying for Canadian PR? Choose PTE Core. Planning to study? Choose PTE Academic."},
-  {q:"Group size & duration", a:"Group courses: 5 weeks, 5–7 students, weekly live classes (1.5 hours each).\nPrivate full course: 5 weeks, one-to-one, flexible scheduling.\nSkill-focused: one-to-one, choose 1, 2 or 3 skills, flexible duration."},
-  {q:"How do I pay?", a:"You can pay by Visa or Mastercard on our secure payment page, or by CliQ or bank transfer.\nOpen the Payments page from the menu, or ask us here for help."},
+  {q:"Group size & duration", a:"Group courses: 6 weeks, 5–7 students, weekly live classes (1.5 hours each).\nPrivate full course: one-to-one, flexible duration and scheduling.\nSkill-focused: one-to-one, choose 1, 2 or 3 skills, flexible duration."},
+  {q:"How do I pay?", a:"You can pay by Visa or Mastercard on our secure payment page, or by CliQ or bank transfer.\nSee the Payments page (linked at the bottom of every page), or ask us here for help."},
   {q:"When do PTE results come out?", a:"Pearson typically releases PTE Academic and PTE Core results within about 48 hours of the test, often sooner."},
   {q:"Talk to the trainer", a:"Of course! Tap “Continue on WhatsApp” and send your name, the exam you're preparing for (Academic or Core) and your target score. We'll reply as soon as we can."}
 ];
 
 /* ---------- live settings ---------- */
-let SITE = {whatsapp:CFG.whatsapp||"", instagram:CFG.instagram||"", facebook:CFG.facebook||"", email:CFG.email||"",
+let SITE = {whatsapp:CFG.whatsapp||"", instagram:CFG.instagram||"", email:CFG.email||"",
   cliqAlias:"", cliqName:"", bank:"", payNote:"", greeting:"", payLinks:{}, prices:{}, autoReplies:[]};
 let RESULTS = readCache().results || [];
 SITE = (function(c){ const o = Object.assign({}, SITE); Object.keys(c||{}).forEach(k => { const v = c[k]; if (v && (typeof v !== "object" || Object.keys(v).length)) o[k] = v; }); return o; })(readCache().site);
 function readCache(){ try { return JSON.parse(localStorage.getItem("pd_site") || "{}"); } catch(e){ return {}; } }
-function merge(s){ const o = {whatsapp:CFG.whatsapp||"", instagram:CFG.instagram||"", facebook:CFG.facebook||"", email:CFG.email||"",
+function merge(s){ const o = {whatsapp:CFG.whatsapp||"", instagram:CFG.instagram||"", email:CFG.email||"",
   cliqAlias:"", cliqName:"", bank:"", payNote:"", greeting:"", payLinks:{}, prices:{}, autoReplies:[]};
   Object.keys(s||{}).forEach(k => { const v = s[k]; if (v && (typeof v !== "object" || Object.keys(v).length)) o[k] = v; }); return o; }
-const price = id => (SITE.prices && SITE.prices[id] && SITE.prices[id].jod) ? SITE.prices[id] : DEFAULT_PRICES[id];
+const price = id => { id = ALIAS[id] || id; const p = SITE.prices && SITE.prices[id]; return (p && p.usd && !("jod" in p)) ? p : DEFAULT_PRICES[id] || {usd:""}; }; /* old JOD-era saved prices are ignored */
+const usd = id => `${price(id).usd} USD`;
 const waNum = () => String(SITE.whatsapp || "").replace(/\D/g, "");
 const waLink = text => waNum() ? `https://wa.me/${waNum()}?text=${encodeURIComponent(text || "Hello PTE Decode Academy!")}` : "";
 
@@ -57,23 +61,51 @@ function apply(){
   $$("[data-wa]").forEach(a => { const l = waLink(a.dataset.wa); if (l) { a.href = l; a.target = "_blank"; a.rel = "noopener"; a.classList.remove("hidden"); } else { a.href = "contact.html"; a.removeAttribute("target"); } });
   $$("[data-wa-only]").forEach(el => el.classList.toggle("hidden", !waNum()));
   // social
-  $$("[data-ig]").forEach(a => { if (SITE.instagram) { a.href = SITE.instagram; a.classList.remove("hidden"); } else a.classList.add("hidden"); });
-  $$("[data-fb]").forEach(a => { a.href = SITE.facebook || "https://www.facebook.com/ptedecodeacademy"; });
-  $$("[data-fbvideo]").forEach(a => { a.href = CFG.facebookVideo || SITE.facebook; });
+  $$("[data-ig]").forEach(a => { if (SITE.instagram) { a.href = SITE.instagram; a.target = "_blank"; a.classList.remove("hidden"); }
+    else if (a.dataset.ig === "always") { a.href = "contact.html"; a.removeAttribute("target"); } else a.classList.add("hidden"); });
   $$("[data-email]").forEach(a => { if (SITE.email) { a.href = "mailto:" + SITE.email; a.textContent = a.dataset.email === "text" ? SITE.email : a.textContent; a.classList.remove("hidden"); } else a.classList.add("hidden"); });
   $$("[data-trainer]").forEach(el => { if (CFG.trainerName) { el.textContent = CFG.trainerName; el.closest("[data-trainer-wrap]")?.classList.remove("hidden"); } });
   // prices
-  $$("[data-price]").forEach(el => { const p = price(el.dataset.price); el.innerHTML = `${FROM[el.dataset.price] ? '<span class="small muted" style="font-size:.9rem;font-weight:600">From </span>' : ""}${esc(p.jod)} JOD<small>${p.usd ? "(≈ " + esc(p.usd) + " USD)" : "&nbsp;"}</small>`; });
-  $$("[data-price-text]").forEach(el => { const p = price(el.dataset.priceText); el.textContent = (FROM[el.dataset.priceText] ? "from " : "") + p.jod + " JOD"; });
+  $$("[data-price]").forEach(el => { const id = el.dataset.price; el.innerHTML = `${FROM[id] ? '<span class="small muted" style="font-size:.9rem;font-weight:600">From </span>' : ""}${esc(price(id).usd)} <span class="cur">USD</span><small>${FROM[id] ? "1 skill · 2 skills " + esc(price("skill-2").usd) + " · 3 skills " + esc(price("skill-3").usd) : "&nbsp;"}</small>`; });
+  $$("[data-price-text]").forEach(el => { const id = el.dataset.priceText; el.textContent = (FROM[id] ? "from " : "") + usd(id); });
   // card payment buttons
   $$("[data-pay]").forEach(a => { const id = a.dataset.pay, link = (SITE.payLinks || {})[id];
     if (link) { a.href = link; a.target = "_blank"; a.rel = "noopener"; a.innerHTML = a.dataset.label || "Pay by card"; a.removeAttribute("aria-disabled"); }
-    else { const l = waLink(`Hello! I'd like to pay for: ${COURSE_NAMES[id]}. Could you send me a payment link?`); a.href = l || "contact.html"; if (l) { a.target = "_blank"; a.rel = "noopener"; } a.innerHTML = "Request a card payment link"; } });
+    else { const l = waLink(`Hello! I'd like to pay for: ${COURSE_NAMES[id]}${a.dataset.extra ? " (" + a.dataset.extra + ")" : ""}. Could you send me a payment link?`); a.href = l || "contact.html"; if (l) { a.target = "_blank"; a.rel = "noopener"; } a.innerHTML = "Request a card payment link"; } });
   // CliQ / bank
   $$("[data-cliq]").forEach(el => { el.innerHTML = SITE.cliqAlias ? `<b>CliQ alias:</b> <span class="copy">${esc(SITE.cliqAlias)}</span>${SITE.cliqName ? ` <span class="muted small">(${esc(SITE.cliqName)})</span>` : ""}` : `<span class="muted">Message us on WhatsApp and we'll send you our CliQ alias.</span>`; });
   $$("[data-bank]").forEach(el => { el.innerHTML = SITE.bank ? esc(SITE.bank).replace(/\n/g, "<br>") : `<span class="muted">Message us on WhatsApp for bank transfer details.</span>`; });
   $$("[data-paynote]").forEach(el => { el.classList.toggle("hidden", !SITE.payNote); el.innerHTML = esc(SITE.payNote).replace(/\n/g, "<br>"); });
-  renderResults();
+  renderResults(); skillBuilder();
+}
+
+/* ---------- skill-focused course builder (skills.html) ---------- */
+function skillBuilder(){
+  const box = $("#skillBuilder"); if (!box) return;
+  if (!box.dataset.bound) {
+    box.dataset.bound = "1";
+    const q = new URLSearchParams(location.search).get("exam");
+    if (q) { const v = /core/i.test(q) ? "PTE Core" : "PTE Academic"; $$('input[name="exam"]', box).forEach(r => r.checked = r.value === v); }
+    box.addEventListener("change", e => {
+      if (e.target.name === "skill") { const on = $$('input[name="skill"]:checked', box); if (on.length > 3) { e.target.checked = false; toast("You can choose up to 3 skills — for all four, choose the Private Full Course."); } }
+      skillBuilder(); });
+  }
+  const exam = ($('input[name="exam"]:checked', box) || {}).value || "PTE Academic";
+  const sk = $$('input[name="skill"]:checked', box).map(i => i.value), n = sk.length, id = n ? "skill-" + n : "";
+  $$("[data-tier]", box).forEach(t => t.classList.toggle("on", +t.dataset.tier === n));
+  $("#skSel").textContent = n ? `${exam} · ${sk.join(", ")}` : "No skills selected yet";
+  $("#skPrice").textContent = n ? usd(id) : "—";
+  const note = $("#skNote a"); if (note) note.href = (exam === "PTE Core" ? "pte-core.html" : "pte-academic.html") + "#courses";
+  const desc = n ? `${exam} — Private Skill-Focused (${sk.join(", ")}) — ${usd(id)}` : "";
+  const pay = $("#skPay"), cliq = $("#skCliq"), ask = $("#skAsk");
+  [pay, cliq].forEach(b => { b.setAttribute("aria-disabled", n ? "false" : "true"); if (!n) { b.href = "#"; b.removeAttribute("target"); } });
+  if (n) {
+    const link = (SITE.payLinks || {})[id];
+    if (link) { pay.href = link; pay.target = "_blank"; pay.rel = "noopener"; pay.textContent = `Pay ${usd(id)} by card`; }
+    else { const l = waLink(`Hello! I'd like to pay by card for: ${desc}. Could you send me a payment link?`); pay.href = l || "contact.html"; if (l) { pay.target = "_blank"; pay.rel = "noopener"; } pay.textContent = "Request a card payment link"; }
+    const c = waLink(`Hello! I'd like to pay for: ${desc} by CliQ or bank transfer.`); cliq.href = c || "payments.html"; if (c) { cliq.target = "_blank"; cliq.rel = "noopener"; }
+  } else pay.textContent = "Pay by card";
+  const a = waLink(n ? `Hello! I'm interested in: ${desc}.` : "Hello! I'm interested in the Private Skill-Focused course."); ask.href = a || "contact.html"; if (a) { ask.target = "_blank"; ask.rel = "noopener"; }
 }
 
 /* ---------- student results ---------- */
@@ -106,8 +138,8 @@ $$("[data-filter-for]").forEach(group => $$("button", group).forEach(b => b.addE
 
 /* ---------- WhatsApp auto-reply assistant ---------- */
 function pricesText(){
-  const l = id => `${COURSE_NAMES[id].split(" — ")[1]}: ${FROM[id] ? "from " : ""}${price(id).jod} JOD`;
-  return `PTE Academic\n• ${l("acad-group")}\n• ${l("acad-private")}\n• ${l("acad-skill")}\n\nPTE Core\n• ${l("core-group")}\n• ${l("core-private")}\n• ${l("core-skill")}`;
+  const l = id => `${COURSE_NAMES[id].split(" — ")[1]}: ${usd(id)}`;
+  return `PTE Academic\n• ${l("acad-group")} (6 weeks)\n• ${l("acad-private")} (flexible duration)\n\nPTE Core\n• ${l("core-group")} (6 weeks)\n• ${l("core-private")} (flexible duration)\n\nPrivate Skill-Focused (Academic or Core)\n• 1 skill: ${usd("skill-1")}\n• 2 skills: ${usd("skill-2")}\n• 3 skills: ${usd("skill-3")}`;
 }
 function buildAssistant(){
   if ($(".wa-fab")) return;
@@ -127,13 +159,19 @@ function buildAssistant(){
     const body = $(".wa-body", panel), go = $(".wa-go", panel); let lastTopic = "";
     const add = (text, cls) => { const m = document.createElement("div"); m.className = "msg " + cls; m.innerHTML = esc(text) + `<span class="t">${now()}</span>`; body.appendChild(m); body.scrollTop = body.scrollHeight; };
     const setGo = () => { const l = waLink(lastTopic ? `Hello PTE Decode Academy! I have a question about: ${lastTopic}` : "Hello PTE Decode Academy! I'd like to know more about your PTE courses.");
-      if (l) { go.href = l; go.target = "_blank"; go.rel = "noopener"; } else { go.href = SITE.facebook || "contact.html"; go.target = "_blank"; go.innerHTML = "Message us on Facebook"; } };
+      if (l) { go.href = l; go.target = "_blank"; go.rel = "noopener"; } else { go.href = "contact.html"; go.removeAttribute("target"); go.innerHTML = "Contact us"; } };
     add(SITE.greeting || DEFAULT_GREETING, "in"); setGo();
     $("header button", panel).addEventListener("click", () => { panel.remove(); panel = null; });
     $$(".quick button", panel).forEach(b => b.addEventListener("click", () => { const r = replies[+b.dataset.i]; lastTopic = r.q.replace(/^[^\w]+/u, "").trim();
       add(r.q, "out"); setTimeout(() => { add(String(r.a).replace(/__PRICES__|\{prices\}/g, pricesText()), "in"); setGo(); }, 450); }));
   });
 }
+
+/* ---------- official certificates: open full size ---------- */
+document.addEventListener("click", e => { const b = e.target.closest("[data-cert]"); if (!b) return;
+  const lb = document.createElement("div"); lb.className = "lightbox doc"; lb.setAttribute("role", "dialog"); lb.setAttribute("aria-label", "Official score report");
+  lb.innerHTML = `<img src="${b.dataset.cert}" alt="Official PTE score report">`; const close = () => { lb.remove(); document.removeEventListener("keydown", esc2); };
+  const esc2 = ev => { if (ev.key === "Escape") close(); }; lb.addEventListener("click", close); document.addEventListener("keydown", esc2); document.body.appendChild(lb); });
 
 /* ---------- navigation ---------- */
 function nav(){
@@ -143,7 +181,7 @@ function nav(){
   // contact form → WhatsApp
   const cf = $("#enquiry"); if (cf) cf.addEventListener("submit", e => { e.preventDefault(); const f = new FormData(cf);
     const text = `Hello PTE Decode Academy!\nName: ${f.get("name")}\nExam: ${f.get("exam")}\nTarget score: ${f.get("target") || "-"}\nPreferred course: ${f.get("course")}\n\n${f.get("message") || ""}`;
-    const l = waLink(text); if (l) window.open(l, "_blank", "noopener"); else window.open(SITE.facebook || "https://www.facebook.com/ptedecodeacademy", "_blank", "noopener"); });
+    const l = waLink(text); if (l) window.open(l, "_blank", "noopener"); else toast("WhatsApp isn't set up yet — please try again later."); });
   // copy buttons
   document.addEventListener("click", e => { const c = e.target.closest(".copy"); if (!c) return; navigator.clipboard && navigator.clipboard.writeText(c.textContent.trim()).then(() => toast("Copied")); });
 }
