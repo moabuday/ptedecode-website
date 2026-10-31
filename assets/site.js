@@ -1,3 +1,5 @@
+/* clean addresses: show /pte-core instead of /pte-core.html */
+(function(){ var p = location.pathname; if (/\.html$/i.test(p)) { var c = p.replace(/index\.html$/i, "").replace(/\.html$/i, ""); try { history.replaceState(null, "", c + location.search + location.hash); } catch(e){} } })();
 /* PTE Decode Academy — shared website script (navigation, live prices, payments, results, WhatsApp assistant) */
 (function(){
 "use strict";
@@ -58,11 +60,11 @@ const ICON = {
 /* ---------- apply settings to the page ---------- */
 function apply(){
   // WhatsApp links
-  $$("[data-wa]").forEach(a => { const l = waLink(a.dataset.wa); if (l) { a.href = l; a.target = "_blank"; a.rel = "noopener"; a.classList.remove("hidden"); } else { a.href = "contact.html"; a.removeAttribute("target"); } });
+  $$("[data-wa]").forEach(a => { const l = waLink(a.dataset.wa); if (l) { a.href = l; a.target = "_blank"; a.rel = "noopener"; a.classList.remove("hidden"); } else { a.href = "contact"; a.removeAttribute("target"); } });
   $$("[data-wa-only]").forEach(el => el.classList.toggle("hidden", !waNum()));
   // social
   $$("[data-ig]").forEach(a => { if (SITE.instagram) { a.href = SITE.instagram; a.target = "_blank"; a.classList.remove("hidden"); }
-    else if (a.dataset.ig === "always") { a.href = "contact.html"; a.removeAttribute("target"); } else a.classList.add("hidden"); });
+    else if (a.dataset.ig === "always") { a.href = "contact"; a.removeAttribute("target"); } else a.classList.add("hidden"); });
   $$("[data-email]").forEach(a => { if (SITE.email) { a.href = "mailto:" + SITE.email; a.textContent = a.dataset.email === "text" ? SITE.email : a.textContent; a.classList.remove("hidden"); } else a.classList.add("hidden"); });
   $$("[data-trainer]").forEach(el => { if (CFG.trainerName) { el.textContent = CFG.trainerName; el.closest("[data-trainer-wrap]")?.classList.remove("hidden"); } });
   // prices
@@ -71,7 +73,7 @@ function apply(){
   // card payment buttons
   $$("[data-pay]").forEach(a => { const id = a.dataset.pay, link = (SITE.payLinks || {})[id];
     if (link) { a.href = link; a.target = "_blank"; a.rel = "noopener"; a.innerHTML = a.dataset.label || "Pay by card"; a.removeAttribute("aria-disabled"); }
-    else { const l = waLink(`Hello! I'd like to pay for: ${COURSE_NAMES[id]}${a.dataset.extra ? " (" + a.dataset.extra + ")" : ""}. Could you send me a payment link?`); a.href = l || "contact.html"; if (l) { a.target = "_blank"; a.rel = "noopener"; } a.innerHTML = "Request a card payment link"; } });
+    else { const l = waLink(`Hello! I'd like to pay for: ${COURSE_NAMES[id]}${a.dataset.extra ? " (" + a.dataset.extra + ")" : ""}. Could you send me a payment link?`); a.href = l || "contact"; if (l) { a.target = "_blank"; a.rel = "noopener"; } a.innerHTML = "Request a card payment link"; } });
   // CliQ / bank
   $$("[data-cliq]").forEach(el => { el.innerHTML = SITE.cliqAlias ? `<b>CliQ alias:</b> <span class="copy">${esc(SITE.cliqAlias)}</span>${SITE.cliqName ? ` <span class="muted small">(${esc(SITE.cliqName)})</span>` : ""}` : `<span class="muted">Message us on WhatsApp and we'll send you our CliQ alias.</span>`; });
   $$("[data-bank]").forEach(el => { el.innerHTML = SITE.bank ? esc(SITE.bank).replace(/\n/g, "<br>") : `<span class="muted">Message us on WhatsApp for bank transfer details.</span>`; });
@@ -79,7 +81,7 @@ function apply(){
   renderResults(); skillBuilder();
 }
 
-/* ---------- skill-focused course builder (skills.html) ---------- */
+/* ---------- skill-focused course builder (skills) ---------- */
 function skillBuilder(){
   const box = $("#skillBuilder"); if (!box) return;
   if (!box.dataset.bound) {
@@ -95,17 +97,17 @@ function skillBuilder(){
   $$("[data-tier]", box).forEach(t => t.classList.toggle("on", +t.dataset.tier === n));
   $("#skSel").textContent = n ? `${exam} · ${sk.join(", ")}` : "No skills selected yet";
   $("#skPrice").textContent = n ? usd(id) : "—";
-  const note = $("#skNote a"); if (note) note.href = (exam === "PTE Core" ? "pte-core.html" : "pte-academic.html") + "#courses";
+  const note = $("#skNote a"); if (note) note.href = (exam === "PTE Core" ? "pte-core" : "pte-academic") + "#courses";
   const desc = n ? `${exam} — Private Skill-Focused (${sk.join(", ")}) — ${usd(id)}` : "";
   const pay = $("#skPay"), cliq = $("#skCliq"), ask = $("#skAsk");
   [pay, cliq].forEach(b => { b.setAttribute("aria-disabled", n ? "false" : "true"); if (!n) { b.href = "#"; b.removeAttribute("target"); } });
   if (n) {
     const link = (SITE.payLinks || {})[id];
     if (link) { pay.href = link; pay.target = "_blank"; pay.rel = "noopener"; pay.textContent = `Pay ${usd(id)} by card`; }
-    else { const l = waLink(`Hello! I'd like to pay by card for: ${desc}. Could you send me a payment link?`); pay.href = l || "contact.html"; if (l) { pay.target = "_blank"; pay.rel = "noopener"; } pay.textContent = "Request a card payment link"; }
-    const c = waLink(`Hello! I'd like to pay for: ${desc} by CliQ or bank transfer.`); cliq.href = c || "payments.html"; if (c) { cliq.target = "_blank"; cliq.rel = "noopener"; }
+    else { const l = waLink(`Hello! I'd like to pay by card for: ${desc}. Could you send me a payment link?`); pay.href = l || "contact"; if (l) { pay.target = "_blank"; pay.rel = "noopener"; } pay.textContent = "Request a card payment link"; }
+    const c = waLink(`Hello! I'd like to pay for: ${desc} by CliQ or bank transfer.`); cliq.href = c || "payments"; if (c) { cliq.target = "_blank"; cliq.rel = "noopener"; }
   } else pay.textContent = "Pay by card";
-  const a = waLink(n ? `Hello! I'm interested in: ${desc}.` : "Hello! I'm interested in the Private Skill-Focused course."); ask.href = a || "contact.html"; if (a) { ask.target = "_blank"; ask.rel = "noopener"; }
+  const a = waLink(n ? `Hello! I'm interested in: ${desc}.` : "Hello! I'm interested in the Private Skill-Focused course."); ask.href = a || "contact"; if (a) { ask.target = "_blank"; ask.rel = "noopener"; }
 }
 
 /* ---------- student results ---------- */
@@ -159,7 +161,7 @@ function buildAssistant(){
     const body = $(".wa-body", panel), go = $(".wa-go", panel); let lastTopic = "";
     const add = (text, cls) => { const m = document.createElement("div"); m.className = "msg " + cls; m.innerHTML = esc(text) + `<span class="t">${now()}</span>`; body.appendChild(m); body.scrollTop = body.scrollHeight; };
     const setGo = () => { const l = waLink(lastTopic ? `Hello PTE Decode Academy! I have a question about: ${lastTopic}` : "Hello PTE Decode Academy! I'd like to know more about your PTE courses.");
-      if (l) { go.href = l; go.target = "_blank"; go.rel = "noopener"; } else { go.href = "contact.html"; go.removeAttribute("target"); go.innerHTML = "Contact us"; } };
+      if (l) { go.href = l; go.target = "_blank"; go.rel = "noopener"; } else { go.href = "contact"; go.removeAttribute("target"); go.innerHTML = "Contact us"; } };
     add(SITE.greeting || DEFAULT_GREETING, "in"); setGo();
     $("header button", panel).addEventListener("click", () => { panel.remove(); panel = null; });
     $$(".quick button", panel).forEach(b => b.addEventListener("click", () => { const r = replies[+b.dataset.i]; lastTopic = r.q.replace(/^[^\w]+/u, "").trim();
