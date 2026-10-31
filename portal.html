@@ -213,10 +213,10 @@ body.exam-on main{max-inline-size:none;padding:0}
 <body>
 <header class="top no-print">
   <div class="top-in">
-    <a class="logo" href="index.html" aria-label="PTE Decode Academy website"><img src="assets/logo.png" alt="PTE Decode Academy" style="block-size:42px;inline-size:auto"></a>
+    <a class="logo" href="./" aria-label="PTE Decode Academy website"><img src="assets/logo.png" alt="PTE Decode Academy" style="block-size:42px;inline-size:auto"></a>
     <nav class="tabs" id="tabs"></nav>
     <span class="spacer"></span>
-    <a class="btn ghost sm" href="index.html">← Website</a>
+    <a class="btn ghost sm" href="./">← Website</a>
     <span class="who" id="who"></span>
     <button class="btn ghost sm hidden" id="logoutBtn" type="button">Sign out</button>
   </div>
@@ -225,6 +225,9 @@ body.exam-on main{max-inline-size:none;padding:0}
 <div id="toast" class="toast hidden" role="status"></div>
 <input type="file" id="filePick" class="hidden" accept=".json,application/json" multiple>
 <script src="assets/config.js"></script>
+<script>/* clean addresses: show /pte-core instead of /pte-core.html */
+(function(){ var p = location.pathname; if (/\.html$/i.test(p)) { var c = p.replace(/index\.html$/i, "").replace(/\.html$/i, ""); try { history.replaceState(null, "", c + location.search + location.hash); } catch(e){} } })();
+</script>
 <script>
 /* =====================================================================
    PTE DECODE ACADEMY PORTAL — CONFIGURATION
@@ -864,14 +867,14 @@ function renderLogin(app){
         <div class="small muted" style="margin-block-start:4px">Codes starting with <b>CO</b> are for PTE Core, <b>AC</b> for PTE Academic.</div>
         <div id="loginErr" class="small" style="color:var(--bad);margin-block:6px"></div>
         <button class="btn accent" id="loginBtn" type="button" style="inline-size:100%;justify-content:center">Sign in</button>
-        <p class="small muted" style="margin-block:12px 0">Don't have a code? <a href="contact.html">Contact us</a> or visit our <a href="index.html">website</a>. Codes are personal — please don't share yours.</p></div></div>
+        <p class="small muted" style="margin-block:12px 0">Don't have a code? <a href="contact">Contact us</a> or visit our <a href="./">website</a>. Codes are personal — please don't share yours.</p></div></div>
     <div class="lfeat"><div><b>🎙 Speaking with AI Score</b><span class="small muted">Read Aloud, Repeat Sentence, Describe Image, Re-tell Lecture, Summarize Group Discussion, Respond to a Situation and more — with real exam timers.</span></div>
       <div><b>✍️ Writing & Reading</b><span class="small muted">Write Essay (Academic), Write Email (Core), Summarize Written Text, Fill in the Blanks, Re-order Paragraphs and Multiple Choice.</span></div>
       <div><b>🎧 Listening</b><span class="small muted">Write from Dictation, Highlight Incorrect Words, Highlight Correct Summary, Summarize Spoken Text and more.</span></div>
       <div><b>📝 Mock exams</b><span class="small muted">Full-length mock tests that look and feel like the real test, with a full score report from your teacher.</span></div></div>
     <div class="grid g2"><div class="card"><h2>PTE Core</h2><p class="small muted">For Canadian immigration (IRCC). 19 question types including Write Email and Respond to a Situation. Your code starts with <span class="kbd">CO-</span>.</p></div>
       <div class="card"><h2>PTE Academic</h2><p class="small muted">For study, work and visas worldwide. 22 question types including Write Essay, Re-tell Lecture, Summarize Group Discussion and Highlight Correct Summary. Your code starts with <span class="kbd">AC-</span>.</p></div></div>
-    <footer class="site"><span>© ${new Date().getFullYear()} PTE Decode Academy · ${esc(CONFIG.tagline)}</span><span><a href="index.html">Website</a> · <a href="contact.html">Contact</a></span></footer>
+    <footer class="site"><span>© ${new Date().getFullYear()} PTE Decode Academy · ${esc(CONFIG.tagline)}</span><span><a href="./">Website</a> · <a href="contact">Contact</a></span></footer>
   </div>`;
   const doLogin = async () => { const code = normCode($("#codeIn").value); if (!code) { $("#loginErr").textContent = "Please enter the full code, for example CO-AB12-CD34 or AC-AB12-CD34."; return; }
     const btn = $("#loginBtn"); btn.disabled = true; btn.textContent = "Signing in…"; $("#loginErr").textContent = "";
@@ -1559,7 +1562,7 @@ async function renderWebsite(p){
   const replies = (s.autoReplies && s.autoReplies.length) ? s.autoReplies : WA_DEFAULT_REPLIES;
   const prices = {}; PKGS.forEach(([id]) => prices[id] = {usd: (s.prices && s.prices[id] && s.prices[id].usd) || PKG_DEFAULTS[id].usd}); const links = s.payLinks || {};
   p.innerHTML = `<div class="hero"><div><h1>Website</h1><div class="muted">Manage what visitors see on your public website. Changes appear on the site straight away (visitors may need to refresh).</div></div>
-      <div class="row"><a class="btn ghost" href="index.html" target="_blank" rel="noopener">Open website ↗</a></div></div>
+      <div class="row"><a class="btn ghost" href="./" target="_blank" rel="noopener">Open website ↗</a></div></div>
     <div class="grid g2" style="align-items:start">
     <div class="card" id="wResults"><h2>${ed ? "Edit student result" : "Add a student result"}</h2>
       <p class="small muted">Upload the student's official score report (screenshot or photo, JPG or PNG). It appears on the Results page and on the matching exam page.</p>
@@ -1712,7 +1715,7 @@ function renderTeacher(app){
 function renderTLogin(app){
   app.innerHTML = `<div class="login-wrap"><div class="card login"><h1>Teacher portal</h1>
     <p class="muted">Main teacher: leave the username empty and enter the teacher password. Additional teachers: enter the username and password the main teacher gave you.</p>
-    ${CONFIG.apiUrl ? "" : `<div class="tip small"><b>Not connected yet.</b> Paste your Google Apps Script Web app URL into <span class="kbd">apiUrl</span> at the top of the script in index.html, then upload it to GitHub again.</div>`}
+    ${CONFIG.apiUrl ? "" : `<div class="tip small"><b>Not connected yet.</b> Paste your Google Apps Script Web app URL into <span class="kbd">apiUrl</span> at the top of the script in ./, then upload it to GitHub again.</div>`}
     <label class="f" for="tUser">Username (additional teachers only)</label><input type="text" id="tUser" autocomplete="username" spellcheck="false" placeholder="Leave empty if you are the main teacher">
     <label class="f" for="tPass">Password</label><input type="password" id="tPass" autocomplete="current-password" style="inline-size:100%;border:1px solid var(--border);border-radius:8px;padding:9px 11px;background:var(--card)">
     <label class="small row" style="margin-block-start:10px"><input type="checkbox" id="tRem"> Keep me signed in on this device (your own computer only)</label>
@@ -2115,7 +2118,8 @@ async function renderMocksAdmin(p){
           ${main ? `<div class="row small" style="margin-block:6px;gap:14px"><label class="row" style="gap:6px"><input type="radio" name="aud-${m.id}" value="all" ${m.audience==="all"?"checked":""}> All ${esc(examLabel(m.exam))} students</label>
             <label class="row" style="gap:6px"><input type="radio" name="aud-${m.id}" value="selected" ${m.audience==="selected"?"checked":""}> Selected students only</label></div>` : `<div class="small muted" style="margin-block:6px">Choose which of your ${esc(examLabel(m.exam))} students can take this test.</div>`}
           <div class="mPickWrap"><input type="text" class="mSearch" placeholder="Search ${esc(examLabel(m.exam))} students…" style="margin-block-end:6px">
-            <div class="picklist mPick">${d.students.filter(s => s.exam === m.exam).map(s => `<label data-name="${esc((s.name+" "+s.code).toLowerCase())}"><input type="checkbox" value="${esc(s.id)}" ${m.students.includes(s.id)?"checked":""}> ${esc(s.name)} <span class="muted small">${esc(s.code)}</span>${s.status!=="Active"?` <span class="badge b-warn">${esc(s.status)}</span>`:""}</label>`).join("") || `<span class="small muted">No ${esc(examLabel(m.exam))} students${main?"":" assigned to you"}.</span>`}</div></div>
+            <div class="picklist mPick">${d.students.filter(s => s.exam === m.exam).map(s => `<label data-name="${esc((s.name+" "+s.code).toLowerCase())}"><input type="checkbox" value="${esc(s.id)}" ${m.students.includes(s.id)?"checked":""}> ${esc(s.name)} <span class="muted small">${esc(s.code)}</span>${s.status!=="Active"?` <span class="badge b-warn">${esc(s.status)}</span>`:""}</label>`).join("") || `<span class="small muted">No ${esc(examLabel(m.exam))} students${main?"":" assigned to you"}.</span>`}</div>
+            <p class="small muted" style="margin:6px 0 0">Only students set to <b>${esc(examLabel(m.exam))}</b> appear here. To add someone, change their exam in <b>Students &amp; codes → Edit</b>.</p></div>
           ${main ? `<div class="grid" style="grid-template-columns:1fr 1fr;gap:10px"><div><label class="f">Opens (optional)</label><input type="date" class="mOpen" value="${esc(m.opens)}"></div><div><label class="f">Closes (optional)</label><input type="date" class="mClose" value="${esc(m.closes)}"></div></div>` : ""}
           <div class="row" style="margin-block-start:10px"><button class="btn sm mSave" type="button">Save</button>${m.updated?`<span class="small muted">Last changed ${esc(fmtDate(m.updated))}${m.updatedBy?" by "+esc(m.updatedBy):""}</span>`:""}</div></div></div>`; }).join("")}</div>`).join("")}
     <div class="card" style="margin-block-start:18px"><div class="row"><h2 style="margin:0">Attempts</h2><span class="spacer"></span>
@@ -2141,10 +2145,22 @@ async function renderMocksAdmin(p){
     const syncAud = () => { if (!main) return; const all = card.querySelector(`input[name="aud-${id}"]:checked`).value === "all"; card.querySelector(".mPickWrap").style.opacity = all ? .45 : 1; card.querySelectorAll(".mPick input,.mSearch").forEach(i => i.disabled = all); };
     card.querySelectorAll(`input[name="aud-${id}"]`).forEach(r => r.addEventListener("change", syncAud)); syncAud();
     card.querySelector(".mSearch").addEventListener("input", e => { const q = e.target.value.toLowerCase(); card.querySelectorAll(".mPick label").forEach(l => l.classList.toggle("hidden", !!q && !l.dataset.name.includes(q))); });
-    card.querySelector(".mSave").addEventListener("click", async e => { const b = e.target; b.disabled = true;
-      const payload = {mockId:id, active:card.querySelector(".mAct").checked, students:[...card.querySelectorAll(".mPick input:checked")].map(i => i.value)};
+    // Ticking a student (or choosing "Selected students only") switches the test on automatically.
+    const act = card.querySelector(".mAct");
+    card.querySelectorAll(".mPick input").forEach(i => i.addEventListener("change", () => { if (i.checked) act.checked = true; }));
+    card.querySelectorAll(`input[name="aud-${id}"]`).forEach(r => r.addEventListener("change", () => { if (r.checked && r.value === "selected" && card.querySelector(".mPick input:checked")) act.checked = true; }));
+    card.querySelector(".mSave").addEventListener("click", async e => { const b = e.target;
+      const picked = card.querySelectorAll(".mPick input:checked").length, audSel = main ? card.querySelector(`input[name="aud-${id}"]:checked`).value === "selected" : true;
+      if (!act.checked && audSel && picked) {
+        const go2 = await mxConfirm(`<b>${esc(m.title)} is switched off.</b><br><br>You've selected ${picked} student${picked>1?"s":""}, but the test is not active, so it stays <b>locked</b> for them.<br><br>Activate it for the selected students now?`, "Activate now", "Keep it off");
+        if (go2) act.checked = true; }
+      if (act.checked && audSel && !picked) { toast("Tick at least one student, or choose “All students”.", 5000); return; }
+      b.disabled = true;
+      const payload = {mockId:id, active:act.checked, students:[...card.querySelectorAll(".mPick input:checked")].map(i => i.value)};
       if (main) Object.assign(payload, {audience: card.querySelector(`input[name="aud-${id}"]:checked`).value, opens: card.querySelector(".mOpen").value, closes: card.querySelector(".mClose").value});
-      try { await tapi("t_mockSet", payload); toast(`${m.title} saved.`); renderMocksAdmin(p); } catch(err){ toast(err.message, 6000); b.disabled = false; } }); });
+      try { await tapi("t_mockSet", payload);
+        toast(payload.active ? (audSel ? `${m.title} is now open to ${picked} selected student${picked>1?"s":""}. They may need to press ↻ Refresh on their Mock Exam page.` : `${m.title} is now open to all ${examLabel(m.exam)} students.`) : `${m.title} is switched off.`, 6000);
+        renderMocksAdmin(p); } catch(err){ toast(err.message, 6000); b.disabled = false; } }); });
 }
 
 /* ---------- Teacher: full review of one mock attempt ---------- */
