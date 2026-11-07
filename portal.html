@@ -1543,8 +1543,11 @@ const CSV_EXAMPLES = {
 /* Prices are in USD only. Skill-focused tiers are shared by PTE Core and PTE Academic. */
 const PKGS = [["acad-group","PTE Academic — Group Course"],["acad-private","PTE Academic — Private Full Course"],
               ["core-group","PTE Core — Group Course"],["core-private","PTE Core — Private Full Course"],
-              ["skill-1","Skill-Focused (Core or Academic) — 1 skill"],["skill-2","Skill-Focused (Core or Academic) — 2 skills"],["skill-3","Skill-Focused (Core or Academic) — 3 skills"]];
-const PKG_DEFAULTS = {"acad-group":{usd:"220"},"acad-private":{usd:"290"},"core-group":{usd:"220"},"core-private":{usd:"290"},"skill-1":{usd:"75"},"skill-2":{usd:"125"},"skill-3":{usd:"170"}};
+              ["acad-skill-1","PTE Academic — Skill-Focused, 1 skill"],["acad-skill-2","PTE Academic — Skill-Focused, 2 skills"],["acad-skill-3","PTE Academic — Skill-Focused, 3 skills"],
+              ["core-skill-1","PTE Core — Skill-Focused, 1 skill"],["core-skill-2","PTE Core — Skill-Focused, 2 skills"],["core-skill-3","PTE Core — Skill-Focused, 3 skills"]];
+const PKG_DEFAULTS = {"acad-group":{usd:"220"},"acad-private":{usd:"290"},"core-group":{usd:"220"},"core-private":{usd:"290"},
+  "acad-skill-1":{usd:"75"},"acad-skill-2":{usd:"125"},"acad-skill-3":{usd:"170"},"core-skill-1":{usd:"75"},"core-skill-2":{usd:"125"},"core-skill-3":{usd:"170"}};
+const PKG_OLD = id => { const m = /^(?:acad|core)-skill-(\d)$/.exec(id); return m ? "skill-" + m[1] : ""; };
 const WA_DEFAULT_GREETING = "Hi there 👋 Welcome to PTE Decode Academy!\nChoose a topic below for an instant answer, or continue the conversation with us on WhatsApp.";
 const WA_DEFAULT_REPLIES = [
   {q:"Course prices", a:"{prices}"},
@@ -1560,7 +1563,8 @@ async function renderWebsite(p){
   let data; try { data = await tapi("t_site"); } catch(e){ p.innerHTML = `<div class="card"><p style="color:var(--bad)">${esc(e.message)}</p><p class="small muted">If this says "Unknown request", update the Apps Script to the latest version and deploy a new version.</p></div>`; return; }
   const s = data.site || {}, results = data.results || [], ed = WEB.editing ? results.find(r => r.id === WEB.editing) : null;
   const replies = (s.autoReplies && s.autoReplies.length) ? s.autoReplies : WA_DEFAULT_REPLIES;
-  const prices = {}; PKGS.forEach(([id]) => prices[id] = {usd: (s.prices && s.prices[id] && s.prices[id].usd) || PKG_DEFAULTS[id].usd}); const links = s.payLinks || {};
+  const sp = s.prices || {}, sl = s.payLinks || {}, prices = {}, links = {};
+  PKGS.forEach(([id]) => { const o = PKG_OLD(id); prices[id] = {usd: (sp[id] && sp[id].usd) || (o && sp[o] && sp[o].usd) || PKG_DEFAULTS[id].usd}; links[id] = sl[id] || (o && sl[o]) || ""; });
   p.innerHTML = `<div class="hero"><div><h1>Website</h1><div class="muted">Manage what visitors see on your public website. Changes appear on the site straight away (visitors may need to refresh).</div></div>
       <div class="row"><a class="btn ghost" href="./" target="_blank" rel="noopener">Open website ↗</a></div></div>
     <div class="grid g2" style="align-items:start">
@@ -2633,5 +2637,6 @@ async function boot(){
 window.addEventListener("hashchange", () => { const m = /^#teacher/i.test(location.hash) ? "teacher" : "student"; if (m !== S.mode || /code=/.test(location.hash)) { if (/code=/.test(location.hash)) S.session = null; S.preview = null; if (m === "teacher") S.session = null; boot(); } });
 boot();
 </script>
+<script src="assets/protect.js?v=10"></script>
 </body>
 </html>
