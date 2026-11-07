@@ -354,3 +354,9 @@ textarea.in{min-block-size:110px;resize:vertical}
 .lightbox.doc img{max-block-size:none;inline-size:min(900px,96vw);margin:20px auto}
 
 @media (max-width:560px){.mini-90{flex-wrap:nowrap;gap:6px}.mini-90 span{min-inline-size:0;flex:1;padding:8px 4px}.mini-90 b{font-size:1.25rem}}
+
+/* v6.2 skill prices per exam on the Payments page */
+.pay-box .tier-label{font-weight:800;color:var(--navy);font-size:.85rem;margin-block-start:6px}
+.pay-box .tiers{margin-block:6px 10px}
+.pay-box .row2{display:grid;gap:8px;margin-block-start:auto}
+.pay-box .row2 .btn{padding:10px 12px;font-size:.92rem}

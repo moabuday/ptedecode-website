@@ -10,13 +10,18 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 /* ---------- default content (overridden by Teacher Portal → Website) ---------- */
 const DEFAULT_PRICES = {
   "acad-group":{usd:"220"}, "acad-private":{usd:"290"}, "core-group":{usd:"220"}, "core-private":{usd:"290"},
-  "skill-1":{usd:"75"}, "skill-2":{usd:"125"}, "skill-3":{usd:"170"}
+  "acad-skill-1":{usd:"75"}, "acad-skill-2":{usd:"125"}, "acad-skill-3":{usd:"170"},
+  "core-skill-1":{usd:"75"}, "core-skill-2":{usd:"125"}, "core-skill-3":{usd:"170"}
 };
-const ALIAS = {"acad-skill":"skill-1", "core-skill":"skill-1"};
+const ALIAS = {"acad-skill":"acad-skill-1", "core-skill":"core-skill-1"};
+/* exam-specific skill prices fall back to the older shared skill prices until the teacher saves new ones */
+const OLD_KEY = id => { const m = /^(?:acad|core)-skill-(\d)$/.exec(id); return m ? "skill-" + m[1] : ""; };
+const skillKey = (exam, n) => (/core/i.test(exam) ? "core" : "acad") + "-skill-" + n;
 const COURSE_NAMES = {
   "acad-group":"PTE Academic — Group Course", "acad-private":"PTE Academic — Private Full Course",
   "core-group":"PTE Core — Group Course", "core-private":"PTE Core — Private Full Course",
-  "skill-1":"Private Skill-Focused — 1 skill", "skill-2":"Private Skill-Focused — 2 skills", "skill-3":"Private Skill-Focused — 3 skills",
+  "acad-skill-1":"PTE Academic — Skill-Focused, 1 skill", "acad-skill-2":"PTE Academic — Skill-Focused, 2 skills", "acad-skill-3":"PTE Academic — Skill-Focused, 3 skills",
+  "core-skill-1":"PTE Core — Skill-Focused, 1 skill", "core-skill-2":"PTE Core — Skill-Focused, 2 skills", "core-skill-3":"PTE Core — Skill-Focused, 3 skills",
   "acad-skill":"PTE Academic — Private Skill-Focused", "core-skill":"PTE Core — Private Skill-Focused"
 };
 const FROM = {"acad-skill":true, "core-skill":true};
@@ -39,7 +44,9 @@ function readCache(){ try { return JSON.parse(localStorage.getItem("pd_site") ||
 function merge(s){ const o = {whatsapp:CFG.whatsapp||"", instagram:CFG.instagram||"", email:CFG.email||"",
   cliqAlias:"", cliqName:"", bank:"", payNote:"", greeting:"", payLinks:{}, prices:{}, autoReplies:[]};
   Object.keys(s||{}).forEach(k => { const v = s[k]; if (v && (typeof v !== "object" || Object.keys(v).length)) o[k] = v; }); return o; }
-const price = id => { id = ALIAS[id] || id; const p = SITE.prices && SITE.prices[id]; return (p && p.usd && !("jod" in p)) ? p : DEFAULT_PRICES[id] || {usd:""}; }; /* old JOD-era saved prices are ignored */
+const price = id => { id = ALIAS[id] || id; const P = SITE.prices || {}, ok = p => p && p.usd && !("jod" in p);
+  if (ok(P[id])) return P[id]; const o = OLD_KEY(id); if (o && ok(P[o])) return P[o]; return DEFAULT_PRICES[id] || {usd:""}; }; /* old JOD-era saved prices are ignored */
+const payLink = id => { const L = SITE.payLinks || {}; return L[id] || L[OLD_KEY(id)] || ""; };
 const usd = id => `${price(id).usd} USD`;
 const waNum = () => String(SITE.whatsapp || "").replace(/\D/g, "");
 const waLink = text => waNum() ? `https://wa.me/${waNum()}?text=${encodeURIComponent(text || "Hello PTE Decode Academy!")}` : "";
@@ -68,10 +75,10 @@ function apply(){
   $$("[data-email]").forEach(a => { if (SITE.email) { a.href = "mailto:" + SITE.email; a.textContent = a.dataset.email === "text" ? SITE.email : a.textContent; a.classList.remove("hidden"); } else a.classList.add("hidden"); });
   $$("[data-trainer]").forEach(el => { if (CFG.trainerName) { el.textContent = CFG.trainerName; el.closest("[data-trainer-wrap]")?.classList.remove("hidden"); } });
   // prices
-  $$("[data-price]").forEach(el => { const id = el.dataset.price; el.innerHTML = `${FROM[id] ? '<span class="small muted" style="font-size:.9rem;font-weight:600">From </span>' : ""}${esc(price(id).usd)} <span class="cur">USD</span><small>${FROM[id] ? "1 skill · 2 skills " + esc(price("skill-2").usd) + " · 3 skills " + esc(price("skill-3").usd) : "&nbsp;"}</small>`; });
+  $$("[data-price]").forEach(el => { const id = el.dataset.price; el.innerHTML = `${FROM[id] ? '<span class="small muted" style="font-size:.9rem;font-weight:600">From </span>' : ""}${esc(price(id).usd)} <span class="cur">USD</span><small>${FROM[id] ? "1 skill · 2 skills " + esc(price(id.slice(0,4) + "-skill-2").usd) + " · 3 skills " + esc(price(id.slice(0,4) + "-skill-3").usd) : "&nbsp;"}</small>`; });
   $$("[data-price-text]").forEach(el => { const id = el.dataset.priceText; el.textContent = (FROM[id] ? "from " : "") + usd(id); });
   // card payment buttons
-  $$("[data-pay]").forEach(a => { const id = a.dataset.pay, link = (SITE.payLinks || {})[id];
+  $$("[data-pay]").forEach(a => { const id = a.dataset.pay, link = payLink(id);
     if (link) { a.href = link; a.target = "_blank"; a.rel = "noopener"; a.innerHTML = a.dataset.label || "Pay by card"; a.removeAttribute("aria-disabled"); }
     else { const l = waLink(`Hello! I'd like to pay for: ${COURSE_NAMES[id]}${a.dataset.extra ? " (" + a.dataset.extra + ")" : ""}. Could you send me a payment link?`); a.href = l || "contact"; if (l) { a.target = "_blank"; a.rel = "noopener"; } a.innerHTML = "Request a card payment link"; } });
   // CliQ / bank
@@ -93,7 +100,9 @@ function skillBuilder(){
       skillBuilder(); });
   }
   const exam = ($('input[name="exam"]:checked', box) || {}).value || "PTE Academic";
-  const sk = $$('input[name="skill"]:checked', box).map(i => i.value), n = sk.length, id = n ? "skill-" + n : "";
+  const sk = $$('input[name="skill"]:checked', box).map(i => i.value), n = sk.length, id = n ? skillKey(exam, n) : "";
+  $$("[data-tier]", box).forEach(t => { const v = t.querySelector("[data-tier-price]"); if (v) v.textContent = usd(skillKey(exam, t.dataset.tier)); });
+  const ex = $("#skExam"); if (ex) ex.textContent = exam;
   $$("[data-tier]", box).forEach(t => t.classList.toggle("on", +t.dataset.tier === n));
   $("#skSel").textContent = n ? `${exam} · ${sk.join(", ")}` : "No skills selected yet";
   $("#skPrice").textContent = n ? usd(id) : "—";
@@ -102,7 +111,7 @@ function skillBuilder(){
   const pay = $("#skPay"), cliq = $("#skCliq"), ask = $("#skAsk");
   [pay, cliq].forEach(b => { b.setAttribute("aria-disabled", n ? "false" : "true"); if (!n) { b.href = "#"; b.removeAttribute("target"); } });
   if (n) {
-    const link = (SITE.payLinks || {})[id];
+    const link = payLink(id);
     if (link) { pay.href = link; pay.target = "_blank"; pay.rel = "noopener"; pay.textContent = `Pay ${usd(id)} by card`; }
     else { const l = waLink(`Hello! I'd like to pay by card for: ${desc}. Could you send me a payment link?`); pay.href = l || "contact"; if (l) { pay.target = "_blank"; pay.rel = "noopener"; } pay.textContent = "Request a card payment link"; }
     const c = waLink(`Hello! I'd like to pay for: ${desc} by CliQ or bank transfer.`); cliq.href = c || "payments"; if (c) { cliq.target = "_blank"; cliq.rel = "noopener"; }
@@ -141,7 +150,7 @@ $$("[data-filter-for]").forEach(group => $$("button", group).forEach(b => b.addE
 /* ---------- WhatsApp auto-reply assistant ---------- */
 function pricesText(){
   const l = id => `${COURSE_NAMES[id].split(" — ")[1]}: ${usd(id)}`;
-  return `PTE Academic\n• ${l("acad-group")} (6 weeks)\n• ${l("acad-private")} (flexible duration)\n\nPTE Core\n• ${l("core-group")} (6 weeks)\n• ${l("core-private")} (flexible duration)\n\nPrivate Skill-Focused (Academic or Core)\n• 1 skill: ${usd("skill-1")}\n• 2 skills: ${usd("skill-2")}\n• 3 skills: ${usd("skill-3")}`;
+  return `PTE Academic\n• ${l("acad-group")} (6 weeks)\n• ${l("acad-private")} (flexible duration)\n\nPTE Core\n• ${l("core-group")} (6 weeks)\n• ${l("core-private")} (flexible duration)\n\nPrivate Skill-Focused — PTE Academic\n• 1 skill: ${usd("acad-skill-1")}\n• 2 skills: ${usd("acad-skill-2")}\n• 3 skills: ${usd("acad-skill-3")}\n\nPrivate Skill-Focused — PTE Core\n• 1 skill: ${usd("core-skill-1")}\n• 2 skills: ${usd("core-skill-2")}\n• 3 skills: ${usd("core-skill-3")}`;
 }
 function buildAssistant(){
   if ($(".wa-fab")) return;
